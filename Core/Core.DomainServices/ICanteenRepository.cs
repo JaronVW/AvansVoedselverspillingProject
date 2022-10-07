@@ -6,6 +6,12 @@ public interface ICanteenRepository
 {
     IEnumerable<Canteen> GetCanteens();
 
-    Canteen GetCanteenById();
+    Canteen GetCanteenById(int id);
+
+    void UpdateCanteen(Canteen canteen);
+
+    void DeleteCanteen(Canteen canteen);
+
+    void AddCanteen(Canteen canteen);
 
 }

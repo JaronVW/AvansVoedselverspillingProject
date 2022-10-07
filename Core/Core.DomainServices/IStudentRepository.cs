@@ -6,6 +6,12 @@ public interface IStudentRepository
 {
     IEnumerable<Student> GetStudents();
 
-    Student GetStudentById();
+    Student GetStudentById(int id);
+
+    void UpdateStudent(Student student);
+
+    void DeleteStudent(Student student);
+
+    void AddStudent(Student student);
 
 }
