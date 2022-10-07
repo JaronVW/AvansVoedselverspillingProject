@@ -13,7 +13,7 @@ namespace Domain
         
         public DateTime ExpireTime { get; set; }
         
-        public bool EightteenPlus { get; set; }
+        public bool EighteenPlus { get; set; }
         
         public decimal Price { get; set; }
         
@@ -23,7 +23,7 @@ namespace Domain
         
         public List<Product> Products { get; set; }
         
-        public Cantine Cantine { get; set; }
+        public Canteen Canteen { get; set; }
         
     }
 }
