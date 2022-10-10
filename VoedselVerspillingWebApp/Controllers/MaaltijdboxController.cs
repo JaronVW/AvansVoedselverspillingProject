@@ -6,7 +6,7 @@ namespace VoedselVerspillingWebApp.Controllers;
 
 public class MaaltijdboxController : Controller
 {
-    private IMealBoxRepository _mealBoxRepository;
+    private readonly IMealBoxRepository _mealBoxRepository;
 
     public MaaltijdboxController(IMealBoxRepository repository)
     {
