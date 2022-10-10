@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Beschikbare Maaltijdboxen";
+}
+@model IEnumerable<Domain.MealBox>
+
+
+<h1>Gereserveerd</h1>
+
+    @foreach (var m in Model)
+    {
+        <p>@m.Id</p>
+    }
+
+
+
+

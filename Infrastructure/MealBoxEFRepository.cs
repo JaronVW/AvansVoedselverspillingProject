@@ -33,12 +33,13 @@ public class MealBoxEFRepository : IMealBoxRepository
         _context.MealBoxes.Add(mealBox);
         await _context.SaveChangesAsync();
     }
-
-   
+    
 
     public void UpdateMealBox(MealBox mealBox)
     {
-        _context.MealBoxes.Update(mealBox);
+        var recordToUpdate = _context.MealBoxes.FirstOrDefault(m => m.Id == mealBox.Id);
+        recordToUpdate = mealBox;
+        _context.MealBoxes.Update(recordToUpdate);
         _context.SaveChanges();
     }
     
@@ -48,4 +49,18 @@ public class MealBoxEFRepository : IMealBoxRepository
         _context.MealBoxes.Remove(mealBox);
         _context.SaveChanges();
     }
+
+    public ICollection<Product> GetMealBoxProducts(int id)
+    {
+        return _context.MealBoxes.First(m => m.Id == id).Products;
+    }
+
+    public void ReserveMealBox(int mealBoxId, int studentId)
+    { 
+        var recordToUpdate = _context.MealBoxes.FirstOrDefault(m => m.Id == mealBoxId);
+        recordToUpdate.Student = _context.Students.FirstOrDefault(m => m.Id == studentId);
+        _context.MealBoxes.Update(recordToUpdate);
+        _context.SaveChanges();
+    }
+    
 }

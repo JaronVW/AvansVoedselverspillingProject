@@ -1,5 +1,7 @@
-﻿using Domain;
+﻿using System.Collections.Immutable;
+using Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure;
 
@@ -13,10 +15,17 @@ public class ApplicationDBContext :DbContext
     
     public DbSet<Student> Students { get; set; }
 
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public ApplicationDBContext()
     {
-        optionsBuilder.UseSqlServer("");
+        
     }
 
+    public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
+    {
+        
+    }
+
+
 }
+
+// data source=LAPTOP-60VI45O7;initial catalog=voedselverspillingtest;trusted_connection=true

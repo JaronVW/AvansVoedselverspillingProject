@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Gereserveerde boxen";
+}
+@using Domain
+@model IEnumerable<Domain.MealBox>
+
+
+<h1>Aanbod</h1>
+
+@foreach (var m in Model)
+{
+    <p>@m.Id</p>
+    
+
+}

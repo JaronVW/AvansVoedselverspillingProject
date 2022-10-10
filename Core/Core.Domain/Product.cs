@@ -9,5 +9,7 @@
         public bool ContainsAlcohol { get; set; }
         
         public string Photo { get; set; }
+        
+        public ICollection<MealBox> MealBoxes { get; set; }
     }
 }

@@ -13,4 +13,6 @@ public interface IMealBoxRepository
     void UpdateMealBox(MealBox mealBox);
 
     void DeleteMealBox(MealBox mealBox);
+
+
 }

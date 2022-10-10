@@ -1,7 +1,20 @@
+using Core.DomainServices;
+using Infrastructure;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<ApplicationDBContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddTransient<IMealBoxRepository, MealBoxEFRepository>();
+builder.Services.AddTransient<ICanteenRepository, CanteenEFRepository>();
+builder.Services.AddTransient<IProductRepository, ProductEFRepository>();
+builder.Services.AddTransient<IStudentRepository, StudentEFRepository>();
+
 
 var app = builder.Build();
 
@@ -13,6 +26,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -23,5 +37,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 app.Run();
