@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Domain
+﻿namespace Domain
 {
     public class MealBox
     {
@@ -19,11 +16,11 @@ namespace Domain
         
         public MealType Type { get; set; }
 
-        public Student Student { get; set; } = null;
+        public Student? Student { get; set; }
         
-        public ICollection<Product> Products { get; set; }
+        public ICollection<Product> Products { get; set; }= null!;
         
-        public Canteen Canteen { get; set; }
+        public Canteen Canteen { get; set; }= null!;
         
     }
 }

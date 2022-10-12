@@ -6,10 +6,10 @@
         
         public City City { get; set; }
         
-        public string Address { get; set; }
+        public string Address { get; set; }= null!;
         
-        public string PostalCode { get; set; }
+        public string PostalCode { get; set; }= null!;
         
-        public bool WarmMealsprovided { get; set; }
+        public bool? WarmMealsprovided { get; set; }
     }
 }

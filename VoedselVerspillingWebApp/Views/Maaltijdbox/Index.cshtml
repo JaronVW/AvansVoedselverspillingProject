@@ -4,13 +4,16 @@
 @model IEnumerable<Domain.MealBox>
 
 
-<h1>Gereserveerd</h1>
+<h1>Beschikbare maaltijdboxen</h1>
 
-    @foreach (var m in Model)
-    {
-        <p>@m.Id</p>
-    }
-
-
-
-
+@foreach (var m in Model)
+{
+    <div>
+        <h3>@m.Price</h3>
+        <ul>
+            <li>@m.City , @m.City</li>
+            <li>@m.PickupDateTime</li>
+        </ul>
+        <button asp-controller="Maaltijdbox" asp-action="BoxDetails" asp-route-id="@m.Id">Details</button>
+    </div>
+}

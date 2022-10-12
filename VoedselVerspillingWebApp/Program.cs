@@ -10,10 +10,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddTransient<IMealBoxRepository, MealBoxEFRepository>();
-builder.Services.AddTransient<ICanteenRepository, CanteenEFRepository>();
-builder.Services.AddTransient<IProductRepository, ProductEFRepository>();
-builder.Services.AddTransient<IStudentRepository, StudentEFRepository>();
+builder.Services.AddScoped<IMealBoxRepository, MealBoxEFRepository>();
+builder.Services.AddScoped<ICanteenRepository, CanteenEFRepository>();
+builder.Services.AddScoped<IProductRepository, ProductEFRepository>();
+builder.Services.AddScoped<IStudentRepository, StudentEFRepository>();
 
 
 var app = builder.Build();
