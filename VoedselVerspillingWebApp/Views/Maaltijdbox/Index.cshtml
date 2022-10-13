@@ -9,11 +9,13 @@
 @foreach (var m in Model)
 {
     <div>
-        <h3>@m.Price</h3>
+        <h3>@m.MealBoxName</h3>
         <ul>
-            <li>@m.City , @m.City</li>
+            <li>@m.City , @m.Canteen</li>
             <li>@m.PickupDateTime</li>
+            <li>@m.Price</li>
         </ul>
-        <button asp-controller="Maaltijdbox" asp-action="BoxDetails" asp-route-id="@m.Id">Details</button>
+        <a asp-controller="Maaltijdbox" asp-action="BoxDetails" asp-route-id="@m.Id"><button >Details</button></a>
+        
     </div>
 }

@@ -11,5 +11,7 @@
         public string PostalCode { get; set; }= null!;
         
         public bool? WarmMealsprovided { get; set; }
+        
+    
     }
 }

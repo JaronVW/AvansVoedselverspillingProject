@@ -1,5 +1,6 @@
 using Core.DomainServices;
 using Infrastructure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,15 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDbContext<AppIdentityDBContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityDB")));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<AppIdentityDBContext>();
+
+
+builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IMealBoxRepository, MealBoxEFRepository>();
 builder.Services.AddScoped<ICanteenRepository, CanteenEFRepository>();
@@ -26,12 +36,13 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// app.UseAuthentication();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

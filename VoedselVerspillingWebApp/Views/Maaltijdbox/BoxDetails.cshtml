@@ -1,9 +1,9 @@
-﻿@model System.Collections.Generic.IEnumerable<Domain.MealBox>
+﻿@model Domain.MealBox
 
 @{
     ViewBag.Title = "Maaltijdbox details";
 }
 
-<h2>Details</h2>
+<h2>@Model.MealBoxName</h2>
 
-
+<p>€@Model.Price</p>

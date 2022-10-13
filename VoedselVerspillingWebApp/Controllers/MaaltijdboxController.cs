@@ -17,13 +17,13 @@ public class MaaltijdboxController : Controller
     public IActionResult Index()
     {
         return View(_mealBoxRepository.GetMealBoxes()
-            .Where(m => m.Student == null));
+            .Where(m => m.StudentId == null));
     }
 
     public IActionResult BoxDetails(int id)
     {
         return View(_mealBoxRepository.GetMealBoxes()
-            .Where(m => m.Id == id));
+            .First(m => m.Id == id));
     }
 
     [HttpGet]
