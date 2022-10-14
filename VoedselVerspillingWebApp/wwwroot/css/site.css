@@ -16,3 +16,38 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.nav-footer-bg{
+  background: #9AC03E;
+  color: white;
+}
+
+.nav-footer-bg a{
+  color: white !important;
+}
+
+.nav-footer-bg a:hover {
+  transition: 500ms;
+  color: #FFFDD0 !important;
+}
+
+.main-page-images {
+  width: 75%;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr ;
+  grid-template-rows: auto;
+  row-gap: 2rem;
+  column-gap: 4rem;
+}
+
+@media only screen and (max-width: 768px) {
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    row-gap: 2rem;
+  }
+}

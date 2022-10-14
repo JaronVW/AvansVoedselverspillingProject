@@ -4,11 +4,26 @@
 @model IEnumerable<Domain.MealBox>
 
 
-<h1>Aanbod</h1>
+<h1 class="text-center" >Gereserveerd</h1>
 
-@foreach (var m in Model)
-{
-    <p>@m.Id</p>
-    
+<div class="w-75 mx-auto  mt-5 grid-container mb-5 ">
+    @foreach (var m in Model)
+    {
+        <div class="card ">
+              <img src="images/box.jpg" class="card-img-top " alt="...">
+            <div class="card-body">
+                <h3>@m.MealBoxName</h3>
+                <ul class="list-unstyled">
+                    <li >@m.PickupDateTime</li>
+                    <li >€@m.Price</li>
+                    <li >@m.City , @m.Canteen</li>
+                </ul>
+                <a asp-controller="Maaltijdbox" asp-action="BoxDetails" asp-route-id="@m.Id">
+                    <button class="btn btn btn-outline-dark">Details</button>
+                </a>
+            </div>
 
-}
+
+        </div>
+    }
+</div>

@@ -1,9 +1,41 @@
 ﻿@model Domain.MealBox
 
 @{
-    ViewBag.Title = "Maaltijdbox details";
+    ViewBag.Title = @Model.MealBoxName + ": details";
 }
 
-<h2>@Model.MealBoxName</h2>
-
-<p>€@Model.Price</p>
+<div class=" container mt-5 mb-3">
+    <div class="row my-2">
+        <div class="col">
+            <h2 class="display-4">@Model.MealBoxName</h2>
+        </div>
+    </div>
+    <div class="row my-2">
+        <div class="col">
+            <img src="/images/box.jpg" class="img-thumbnail" style="width: 20rem" alt="">
+        </div>
+    </div>
+    <div class="row my-2">
+        <div class="col">
+            <h3>€@Model.Price</h3>
+        </div>
+    </div>
+    <div class="row my-2">
+        <div class="col">
+            <p>Op te halen van @Model.PickupDateTime tot @Model.ExpireTime</p>
+        </div>
+    </div>
+    <div class="row my-2">
+        <div class="col">
+            <ul class="list-inline">
+                <li class="list-inline-item">
+                    <button class="btn btn-outline-dark">Producten</button>
+                </li>
+                <li class="list-inline-item">
+                    <button class="btn btn-outline-danger">Reservatie annuleren</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<hr>

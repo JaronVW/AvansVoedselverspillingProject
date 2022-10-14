@@ -16,8 +16,8 @@ public class MaaltijdboxController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        return View(_mealBoxRepository.GetMealBoxes()
-            .Where(m => m.StudentId == null));
+        return View(_mealBoxRepository.GetMealBoxes());
+        // .Where(m => m.StudentId == null));
     }
 
     public IActionResult BoxDetails(int id)
@@ -42,5 +42,17 @@ public class MaaltijdboxController : Controller
     {
         return View(_mealBoxRepository.GetMealBoxes()
             .Where(m => m.Student.Id == studentId));
+    }
+
+    [HttpGet]
+    public IActionResult Aanmaken()
+    {
+        return View();
+    }
+    
+    [HttpPost]
+    public IActionResult Aanmaken(MealBox mealBox)
+    {
+        return View();
     }
 }
