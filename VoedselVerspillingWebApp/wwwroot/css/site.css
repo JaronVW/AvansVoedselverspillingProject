@@ -1,53 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Raleway&display=swap');
+
 html {
-  font-size: 14px;
+    font-size: 14px;
+
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    font-family: 'Libre Baskerville', serif !important;
 }
 
-.nav-footer-bg{
-  background: #9AC03E;
-  color: white;
+.nav-footer-bg {
+    background: #9AC03E;
+    color: white;
 }
 
-.nav-footer-bg a{
-  color: white !important;
-}
 
-.nav-footer-bg a:hover {
-  transition: 500ms;
-  color: #FFFDD0 !important;
-}
+/*.nav-footer-bg a:hover {*/
+/*  transition: 500ms;*/
+/*  color: #FFFDD0 !important;*/
+/*}*/
 
 .main-page-images {
-  width: 75%;
+    width: 75%;
 }
 
 .grid-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr ;
-  grid-template-rows: auto;
-  row-gap: 2rem;
-  column-gap: 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    row-gap: 2rem;
+    column-gap: 4rem;
 }
 
 @media only screen and (max-width: 768px) {
-  .grid-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    row-gap: 2rem;
-  }
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        row-gap: 2rem;
+    }
 }
+
+h1, h2, h3, h4, h5, h6, a {
+    font-family: 'Raleway', sans-serif;
+
+}
+
+.login-form-wrapper {
+    margin-top: 5rem;
+    display: grid;
+    grid-gap: 3rem;
+    grid-template-areas: "one"
+                     "two"
+
+}
+
+.login-background {
+    background: linear-gradient(
+            rgba(0, 0, 0, 0.5),
+            rgba(0, 0, 0, 0.5)
+    ), url("../images/banner.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+
+}
+
+.form-container {
+    background: white;
+    grid-area: two;
+    border-radius: 4px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    min-width: 45%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-form-wrapper h1 {
+    grid-area: one;
+    color: white;
+}
+

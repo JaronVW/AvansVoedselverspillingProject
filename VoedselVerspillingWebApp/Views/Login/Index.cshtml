@@ -1,25 +1,51 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
 
+
+
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
-    <title>title</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - VoedselVerspillingWebApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/VoedselVerspillingWebApp.styles.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/fonts/bootstrap-icons.css" asp-append-version="true"/>
 </head>
-<body>
-<div>
+<body class="login-background" >
 
-    <h1>Login</h1>
-    <form action="" method="post">
-        
-        <input type="text" placeholder="Email" name="" id="email">
-        <input type="password" placeholder="Wachtwoord" name="" id="password">
-        <input type="button" value="">
-    </form>
+<div class="">
+    <main role="main" class="pb-3">
+        @* <img src="images/logo.png" class="img-thumbnail" alt="..."> *@
 
+        <div class="login-form-wrapper">
+            <h1 class="text-center">Voedselverspilling</h1>
+
+            <div class="  form-container p-3">
+                <h3>Login</h3>
+                <form action="" method="post">
+
+
+                    <div class="mb-3">
+                        <input type="text" class="form-control" placeholder="Email" name="" id="email">
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" class="form-control" placeholder="Wachtwoord" name="" id="password">
+                    </div>
+                    <input type="submit" class="btn btn-outline-success" value="Login">
+                </form>
+            </div>
+        </div>
+
+
+    </main>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
 </body>
 </html>

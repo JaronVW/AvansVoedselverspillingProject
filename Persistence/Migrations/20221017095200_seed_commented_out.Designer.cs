@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20221017095200_seed_commented_out")]
+    partial class seedcommentedout
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,24 +50,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Canteens");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "straat 2",
-                            City = 2,
-                            PostalCode = "12345",
-                            WarmMealsprovided = true
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Address = "straat 5",
-                            City = 0,
-                            PostalCode = "54321",
-                            WarmMealsprovided = false
-                        });
                 });
 
             modelBuilder.Entity("Domain.Employee", b =>
@@ -139,33 +124,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("MealBoxes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CanteenId = 1,
-                            City = 2,
-                            EighteenPlus = true,
-                            ExpireTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MealBoxName = "box1",
-                            PickupDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Price = 5.45m,
-                            StudentId = 1,
-                            Type = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CanteenId = 1,
-                            City = 1,
-                            EighteenPlus = false,
-                            ExpireTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MealBoxName = "box2",
-                            PickupDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Price = 5.45m,
-                            Type = 0
-                        });
                 });
 
             modelBuilder.Entity("Domain.Product", b =>
@@ -190,22 +148,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ContainsAlcohol = true,
-                            Name = "Broodje",
-                            Photo = "test"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ContainsAlcohol = true,
-                            Name = "Heiniken",
-                            Photo = "BIER"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Student", b =>
@@ -244,30 +186,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Students");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Jaron",
-                            LastName = "lastname",
-                            PhoneNumber = "12345",
-                            StudentNumber = 12345,
-                            StudyCity = 2,
-                            email = "mai@mail.com"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "henk",
-                            LastName = "vries",
-                            PhoneNumber = "54321",
-                            StudentNumber = 12345,
-                            StudyCity = 0,
-                            email = "mai@mail.com"
-                        });
                 });
 
             modelBuilder.Entity("MealBoxProduct", b =>

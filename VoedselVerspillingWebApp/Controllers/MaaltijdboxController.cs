@@ -7,16 +7,19 @@ namespace VoedselVerspillingWebApp.Controllers;
 public class MaaltijdboxController : Controller
 {
     private readonly IMealBoxRepository _mealBoxRepository;
+    private readonly ICanteenRepository _canteenRepository;
 
-    public MaaltijdboxController(IMealBoxRepository repository)
+    public MaaltijdboxController(IMealBoxRepository mealBoxRepository, ICanteenRepository canteenRepository )
     {
-        _mealBoxRepository = repository;
+        _mealBoxRepository = mealBoxRepository;
+        _canteenRepository = canteenRepository;
+
     }
 
     [HttpGet]
     public IActionResult Index()
     {
-        return View(_mealBoxRepository.GetMealBoxes());
+        return View(_mealBoxRepository.GetMealBoxes().ToList());
         // .Where(m => m.StudentId == null));
     }
 
@@ -35,6 +38,7 @@ public class MaaltijdboxController : Controller
     [HttpPost]
     public IActionResult Aanpassen(MealBox mealBox)
     {
+        
         return View("Index");
     }
 
@@ -47,12 +51,20 @@ public class MaaltijdboxController : Controller
     [HttpGet]
     public IActionResult Aanmaken()
     {
+        ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
         return View();
     }
-    
+
+    public IActionResult Verwijder(int id)
+    {
+        _mealBoxRepository.DeleteMealBox(_mealBoxRepository.GetMealBoxById(id));
+        return Index();
+    }
+
     [HttpPost]
     public IActionResult Aanmaken(MealBox mealBox)
     {
-        return View();
+        _mealBoxRepository.AddMealBox(mealBox);
+        return View("BoxDetails",mealBox);
     }
 }

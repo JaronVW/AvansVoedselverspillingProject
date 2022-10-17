@@ -1,0 +1,25 @@
+﻿@model Domain.MealBox
+
+<div class="card ">
+    <img src="images/box.jpg" class="card-img-top " alt="...">
+    <div class="card-body">
+        <h3>@Model.MealBoxName</h3>
+        <ul class="list-unstyled">
+            <li >@Model.PickupDateTime.Date</li>
+            <li >€@Model.Price</li>
+            <li >@Model.City , @Model.Canteen</li>
+        </ul>
+        <a asp-controller="Maaltijdbox" asp-action="BoxDetails" asp-route-id="@Model.Id">
+            <button class="btn btn btn-outline-success">Details</button>
+        </a>
+        <a asp-controller="Maaltijdbox" asp-action="Aanmaken">
+            <button class="btn btn-outline-info">Wijzigen</button>
+        </a>
+        
+        <a asp-controller="Maaltijdbox" asp-action="Verwijder" asp-route-id="@Model.Id" >
+            <button class="btn btn-outline-danger">Verwijderen</button>
+        </a>
+    </div>
+
+
+</div>
