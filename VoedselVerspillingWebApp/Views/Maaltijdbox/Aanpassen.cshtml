@@ -1,39 +1,72 @@
-﻿@model Domain.MealBox
+﻿@using Domain
+@model Domain.MealBox
 
-<h2 class="text-center">Wijzig Maaltijdbox @Model.MealBoxName</h2>
- <form method="post" asp-action="Aanmaken">
+@{
+    ViewBag.Title = @Model.MealBoxName + " Aanpassen";
+}
+
+<h2 class="text-center">Wijzig Maaltijdbox: @Model.MealBoxName</h2>
+<div class="w-75 mx-auto">
+    <form method="post" asp-action="Aanpassen">
+        <div asp-validation-summary="All"></div>
         <div class="mb-3">
-            <label for="mealBoxNameInput" class="form-label">Naam</label>
-            <input type="email" class="form-control" id="mealBoxNameInput" name="mealBoxNameInput" aria-describedby="emailHelp">
+            <label asp-for="MealBoxName" class="form-label">Naam</label>
+            <input asp-for="MealBoxName" type="text" class="form-control" id="mealBoxNameInput">
             <div id="mealBoxNameInputHint" class="form-text">Een unieke omschrijvende naam voor de maaltijdbox.</div>
         </div>
+
         <div class="mb-3">
-            <label for="SelectCity" class="form-label">Stad</label>
-            <select name="SelectCity" class="form-select" id="SelectCity">
-                <option value="Breda">Breda</option>
-                <option value="Tilburg">Tilburg</option>
-                <option value="Den_Bosch">Den Bosch</option>
+            <label asp-for="City" class="form-label">Stad</label>
+            <select asp-for="City"
+                    class="form-control"
+                    asp-items="Html.GetEnumSelectList<City>()">
+                <option>Stad ...</option>
             </select>
         </div>
+
         <div class="mb-3">
-            <label for="mealBoxNameInput" class="form-label">Ophaaldatum</label>
-            <input type="date" class="form-control" id="PickupDateInput" name="PickupDateInput" aria-describedby="emailHelp">
+            <label asp-for="PickupDateTime" class="form-label">Ophaaldatum</label>
+            <input asp-for="PickupDateTime" type="date" class="form-control" id="PickupDateTime">
         </div>
 
         <div class="mb-3">
-            <label for="mealBoxNameInput" class="form-label">Ophaalverloopdatum</label>
-            <input type="date" class="form-control" id="MaxPickupDateInput" name="MaxPickupDateInput" aria-describedby="emailHelp">
+            <label asp-for="ExpireTime" class="form-label">Verloopdatum</label>
+            <input asp-for="ExpireTime" type="date" class="form-control" id="mealBoxNameInput">
         </div>
-
-        <div class="mb-3">
-            <label for="PriceInput" class="form-label">Prijs</label>
-            <input type="number" class="form-control"  id="PriceInput" name="PriceInput" min="0.00" max="10000.00" step="0.01"/>
-        </div>
-
 
         <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="EighteenPlus">
-            <label class="form-check-label" for="EighteenPlus">Bevat producten die 18+ zijn.</label>
+            <input asp-for="EighteenPlus" type="checkbox" class="form-check-input" id="mealBoxNameInput">
+            <label asp-for="EighteenPlus"  value="true" class="form-check-label">Bevat producten die 18+ zijn</label>
+            <input type="hidden" value="false" asp-for="EighteenPlus" >
         </div>
-        <button type="submit" class=" btn btn-outline-success">Aanmaken</button>
+
+        <div class="mb-3">
+            <label asp-for="Price" class="form-label">Prijs</label>
+            <input asp-for="Price" type="number" class="form-control" id="PriceInput" name="PriceInput" min="0.00" max="10000.00" step="0.01"/>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="City" class="form-label">Type</label>
+            <select asp-for="City"
+                    class="form-control"
+                    asp-items="Html.GetEnumSelectList<MealType>()">
+                <option>Type maaltijdbox ...</option>
+            </select>
+        </div>
+
+
+        <div class="mb-3">
+            <label asp-for="Canteen" class="form-label">Kantine</label>
+            <select asp-for="CanteenId" class="form-control">
+                @foreach (var c in @ViewBag.Canteens)
+                {
+                    <option value="@c.Id">@c.Address</option>
+                }
+                <option >Kantine ...</option>
+            </select>
+        </div>
+
+
+        <button type="submit" class=" btn btn-outline-success">Aanpassen</button>
     </form>
+</div>

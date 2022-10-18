@@ -7,7 +7,7 @@ namespace Infrastructure;
 
 public class MealBoxEFRepository : IMealBoxRepository
 {
-    private ApplicationDBContext _context;
+    private readonly ApplicationDBContext _context;
 
 
     public MealBoxEFRepository(ApplicationDBContext context)
@@ -36,12 +36,12 @@ public class MealBoxEFRepository : IMealBoxRepository
     }
 
 
-    public async Task AddMealBox(MealBox mealBox)
+    public void AddMealBox(MealBox mealBox)
     {
         try
         {
             _context.MealBoxes.Add(mealBox);
-            await _context.SaveChangesAsync();
+             _context.SaveChanges();
         }
         catch (SqlException ex)
         {
@@ -54,19 +54,17 @@ public class MealBoxEFRepository : IMealBoxRepository
     }
 
 
-    public async void UpdateMealBox(MealBox mealBox)
+    public  void UpdateMealBox(MealBox mealBox)
     {
-        var recordToUpdate = _context.MealBoxes.FirstOrDefault(m => m.Id == mealBox.Id);
-        recordToUpdate = mealBox;
-        _context.MealBoxes.Update(recordToUpdate);
-        await _context.SaveChangesAsync();
+        _context.MealBoxes.Update(mealBox);
+       _context.SaveChanges();
     }
 
 
-    public async void DeleteMealBox(MealBox mealBox)
+    public  void DeleteMealBox(MealBox mealBox)
     {
         _context.MealBoxes.Remove(mealBox);
-        await _context.SaveChangesAsync();
+         _context.SaveChanges();
     }
 
     public ICollection<Product> GetMealBoxProducts(int id)
@@ -74,11 +72,11 @@ public class MealBoxEFRepository : IMealBoxRepository
         return _context.MealBoxes.First(m => m.Id == id).Products;
     }
 
-    public async void ReserveMealBox(int mealBoxId, int studentId)
+    public  void ReserveMealBox(int mealBoxId, int studentId)
     {
         var recordToUpdate = _context.MealBoxes.FirstOrDefault(m => m.Id == mealBoxId);
         recordToUpdate.Student = _context.Students.FirstOrDefault(m => m.Id == studentId);
         _context.MealBoxes.Update(recordToUpdate);
-        await _context.SaveChangesAsync();
+        _context.SaveChanges();
     }
 }

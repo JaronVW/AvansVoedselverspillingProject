@@ -1,7 +1,7 @@
 ﻿@model Domain.MealBox
 
 <div class="card ">
-    <img src="images/box.jpg" class="card-img-top " alt="...">
+    <img src="/images/box.jpg" class="card-img-top " alt="...">
     <div class="card-body">
         <h3>@Model.MealBoxName</h3>
         <ul class="list-unstyled">
@@ -12,13 +12,31 @@
         <a asp-controller="Maaltijdbox" asp-action="BoxDetails" asp-route-id="@Model.Id">
             <button class="btn btn btn-outline-success">Details</button>
         </a>
-        <a asp-controller="Maaltijdbox" asp-action="Aanmaken">
+        <a asp-controller="Maaltijdbox" asp-action="Aanpassen" asp-route-id="@Model.Id">
             <button class="btn btn-outline-info">Wijzigen</button>
         </a>
-        
-        <a asp-controller="Maaltijdbox" asp-action="Verwijder" asp-route-id="@Model.Id" >
-            <button class="btn btn-outline-danger">Verwijderen</button>
-        </a>
+        <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmationModal">Verwijderen</button>
+    </div>
+
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Verwijder</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                   Weet u het zeker?
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Annuleren</button>
+                    <a asp-controller="Maaltijdbox" asp-action="Verwijder" asp-route-id="@Model.Id">
+                        <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Bevestigen</button>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
 
