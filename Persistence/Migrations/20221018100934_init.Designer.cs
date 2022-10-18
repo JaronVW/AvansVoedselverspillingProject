@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20221012072548_init")]
+    [Migration("20221018100934_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -44,12 +44,30 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("WarmMealsprovided")
+                    b.Property<bool?>("WarmMealsprovided")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
 
                     b.ToTable("Canteens");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "straat 2",
+                            City = 2,
+                            PostalCode = "12345",
+                            WarmMealsprovided = true
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "straat 5",
+                            City = 0,
+                            PostalCode = "54321",
+                            WarmMealsprovided = false
+                        });
                 });
 
             modelBuilder.Entity("Domain.Employee", b =>
@@ -101,6 +119,10 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("ExpireTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("MealBoxName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("PickupDateTime")
                         .HasColumnType("datetime2");
 
@@ -120,6 +142,33 @@ namespace Infrastructure.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("MealBoxes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CanteenId = 1,
+                            City = 2,
+                            EighteenPlus = true,
+                            ExpireTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MealBoxName = "box1",
+                            PickupDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Price = 5.45m,
+                            StudentId = 1,
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CanteenId = 1,
+                            City = 1,
+                            EighteenPlus = false,
+                            ExpireTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MealBoxName = "box2",
+                            PickupDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Price = 5.45m,
+                            Type = 0
+                        });
                 });
 
             modelBuilder.Entity("Domain.Product", b =>
@@ -144,6 +193,22 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ContainsAlcohol = true,
+                            Name = "Broodje",
+                            Photo = "test"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ContainsAlcohol = true,
+                            Name = "Heiniken",
+                            Photo = "BIER"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Student", b =>
@@ -182,21 +247,62 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Students");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Jaron",
+                            LastName = "lastname",
+                            PhoneNumber = "12345",
+                            StudentNumber = 12345,
+                            StudyCity = 2,
+                            email = "mai@mail.com"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "henk",
+                            LastName = "vries",
+                            PhoneNumber = "54321",
+                            StudentNumber = 12345,
+                            StudyCity = 0,
+                            email = "mai@mail.com"
+                        });
                 });
 
             modelBuilder.Entity("MealBoxProduct", b =>
                 {
-                    b.Property<int>("MealBoxesId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ProductsId")
                         .HasColumnType("int");
 
-                    b.HasKey("MealBoxesId", "ProductsId");
+                    b.Property<int>("MealBoxesId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("ProductsId");
+                    b.HasKey("ProductsId", "MealBoxesId");
+
+                    b.HasIndex("MealBoxesId");
 
                     b.ToTable("MealBoxProduct");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductsId = 1,
+                            MealBoxesId = 1
+                        },
+                        new
+                        {
+                            ProductsId = 1,
+                            MealBoxesId = 2
+                        },
+                        new
+                        {
+                            ProductsId = 2,
+                            MealBoxesId = 1
+                        });
                 });
 
             modelBuilder.Entity("Domain.Employee", b =>

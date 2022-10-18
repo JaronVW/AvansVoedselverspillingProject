@@ -14,6 +14,21 @@
         <div class="col">
             <img src="/images/box.jpg" class="img-thumbnail" style="width: 20rem" alt="">
         </div>
+        
+        <div class="col">
+            @if (@Model.Products != null)
+            {
+                <h3>Bevat de volgende producten:</h3>
+                <ul>
+                    @foreach (var m in @Model.Products)
+                    {
+                        <li>@m.Name</li>
+                    }
+                </ul>
+            }
+
+
+        </div>
     </div>
     <div class="row my-2">
         <div class="col">
@@ -24,18 +39,14 @@
         <div class="col">
             <p>Op te halen van @Model.PickupDateTime tot @Model.ExpireTime</p>
         </div>
+
     </div>
+
     <div class="row my-2">
-        <div class="col">
-            <ul class="list-inline">
-                <li class="list-inline-item">
-                    <button class="btn btn-outline-dark">Producten</button>
-                </li>
-                <li class="list-inline-item">
-                    <button class="btn btn-outline-danger">Reservatie annuleren</button>
-                </li>
-            </ul>
-        </div>
+        <li class="list-inline-item">
+            <button class="btn btn-outline-danger">Reservatie annuleren</button>
+        </li>
     </div>
+
 </div>
 <hr>

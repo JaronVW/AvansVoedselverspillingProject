@@ -272,17 +272,34 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("MealBoxProduct", b =>
                 {
-                    b.Property<int>("MealBoxesId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ProductsId")
                         .HasColumnType("int");
 
-                    b.HasKey("MealBoxesId", "ProductsId");
+                    b.Property<int>("MealBoxesId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("ProductsId");
+                    b.HasKey("ProductsId", "MealBoxesId");
+
+                    b.HasIndex("MealBoxesId");
 
                     b.ToTable("MealBoxProduct");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductsId = 1,
+                            MealBoxesId = 1
+                        },
+                        new
+                        {
+                            ProductsId = 1,
+                            MealBoxesId = 2
+                        },
+                        new
+                        {
+                            ProductsId = 2,
+                            MealBoxesId = 1
+                        });
                 });
 
             modelBuilder.Entity("Domain.Employee", b =>

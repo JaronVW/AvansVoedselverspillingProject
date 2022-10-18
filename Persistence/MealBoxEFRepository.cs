@@ -17,7 +17,7 @@ public class MealBoxEFRepository : IMealBoxRepository
 
     public IEnumerable<MealBox> GetMealBoxes()
     {
-        return _context.MealBoxes.ToList();
+        return _context.MealBoxes.Include(m => m.Products).ToList();
     }
 
     public async Task<List<MealBox>> GetMealBoxesAsync()
@@ -41,30 +41,29 @@ public class MealBoxEFRepository : IMealBoxRepository
         try
         {
             _context.MealBoxes.Add(mealBox);
-             _context.SaveChanges();
+            _context.SaveChanges();
         }
         catch (SqlException ex)
         {
-    
             foreach (SqlError error in ex.Errors)
             {
-               Console.WriteLine(error);
+                Console.WriteLine(error);
             }
         }
     }
 
 
-    public  void UpdateMealBox(MealBox mealBox)
+    public void UpdateMealBox(MealBox mealBox)
     {
         _context.MealBoxes.Update(mealBox);
-       _context.SaveChanges();
+        _context.SaveChanges();
     }
 
 
-    public  void DeleteMealBox(MealBox mealBox)
+    public void DeleteMealBox(MealBox mealBox)
     {
         _context.MealBoxes.Remove(mealBox);
-         _context.SaveChanges();
+        _context.SaveChanges();
     }
 
     public ICollection<Product> GetMealBoxProducts(int id)
@@ -72,7 +71,7 @@ public class MealBoxEFRepository : IMealBoxRepository
         return _context.MealBoxes.First(m => m.Id == id).Products;
     }
 
-    public  void ReserveMealBox(int mealBoxId, int studentId)
+    public void ReserveMealBox(int mealBoxId, int studentId)
     {
         var recordToUpdate = _context.MealBoxes.FirstOrDefault(m => m.Id == mealBoxId);
         recordToUpdate.Student = _context.Students.FirstOrDefault(m => m.Id == studentId);

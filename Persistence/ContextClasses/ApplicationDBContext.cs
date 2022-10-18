@@ -24,7 +24,7 @@ public class ApplicationDBContext : DbContext
     public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
     {
     }
-    
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -50,19 +50,18 @@ public class ApplicationDBContext : DbContext
             StudyCity = City.Tilburg,
             PhoneNumber = "54321"
         };
-    
-    
-        var broodje = new Product() { Id = 1, Name = "Broodje", ContainsAlcohol = true, Photo = "test" };
-        var heineken = new Product() { Id = 2, Name = "Heiniken", ContainsAlcohol = true, Photo = "BIER" };
-    
-    
+
+
         var LD = new Canteen()
             { Id = 1, City = City.Breda, Address = "straat 2", PostalCode = "12345", WarmMealsprovided = true };
         var KantineTilburg = new Canteen()
             { Id = 2, City = City.Tilburg, Address = "straat 5", PostalCode = "54321", WarmMealsprovided = false };
-        
-       
-    
+
+        var broodje = new Product()
+            { Id = 1, Name = "Broodje", ContainsAlcohol = true, Photo = "test", MealBoxes = new List<MealBox>() };
+        var heineken = new Product()
+            { Id = 2, Name = "Heiniken", ContainsAlcohol = true, Photo = "BIER", MealBoxes = new List<MealBox>() };
+
         var box1 = new MealBox()
         {
             Id = 1,
@@ -77,8 +76,8 @@ public class ApplicationDBContext : DbContext
             Products = new List<Product>(),
             CanteenId = 1
         };
-    
-    
+
+
         var box2 = new MealBox()
         {
             Id = 2,
@@ -91,35 +90,49 @@ public class ApplicationDBContext : DbContext
             Type = MealType.Box,
             Products = new List<Product>(),
             CanteenId = 1
-    
         };
-        
-    
-    
+
+
         base.OnModelCreating(modelBuilder);
-    
+
         modelBuilder.Entity<Student>().HasData(
             student1, student2
         );
-    
+
         modelBuilder.Entity<Product>().HasData(
             broodje, heineken
         );
-    
-    
+
+
         modelBuilder.Entity<Canteen>().HasData(
             LD, KantineTilburg
         );
-    
+
         modelBuilder.Entity<MealBox>().HasData(
             box1, box2
         );
+
+        modelBuilder.Entity<MealBox>()
+            .HasMany(p => p.Products)
+            .WithMany(t => t.MealBoxes)
+            .UsingEntity<Dictionary<string, object>>(
+                "MealBoxProduct",
+                r => r.HasOne<Product>().WithMany().HasForeignKey("ProductsId"),
+                l => l.HasOne<MealBox>().WithMany().HasForeignKey("MealBoxesId"),
+                je =>
+                {
+                    je.HasKey("ProductsId", "MealBoxesId");
+                    je.HasData(
+                        new { ProductsId = 1, MealBoxesId = 1 },
+                        new { ProductsId = 1, MealBoxesId = 2 },
+                        new { ProductsId = 2, MealBoxesId = 1 });
+                });
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
         // options.EnableSensitiveDataLogging();
-        options.EnableDetailedErrors();
+        options.EnableSensitiveDataLogging();
         options.UseSqlServer(
             "Server=tcp:avansvoedselverspillingdb.database.windows.net,1433;Initial Catalog=AvoedselverspillingDB;Persist Security Info=False;User ID=avansvoedselverspillingdb;Password=yac7PJqE@X95!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
     }
