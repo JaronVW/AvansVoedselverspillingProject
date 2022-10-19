@@ -1,7 +1,7 @@
 ﻿@model Domain.MealBox
 
 @{
-    ViewBag.Title = @Model.MealBoxName + ": details";
+    ViewBag.Title = @Model.MealBoxName + " Details";
 }
 
 <div class=" container mt-5 mb-3">
@@ -20,14 +20,12 @@
             {
                 <h3>Bevat de volgende producten:</h3>
                 <ul>
-                    @foreach (var m in @Model.Products)
+                    @foreach (var p in @Model.Products)
                     {
-                        <li>@m.Name</li>
+                        <li>@p.Name</li>
                     }
                 </ul>
             }
-
-
         </div>
     </div>
     <div class="row my-2">

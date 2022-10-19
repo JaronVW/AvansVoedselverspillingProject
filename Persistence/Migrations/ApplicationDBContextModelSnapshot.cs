@@ -203,7 +203,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = 2,
                             ContainsAlcohol = true,
-                            Name = "Heiniken",
+                            Name = "Heineken",
                             Photo = "BIER"
                         });
                 });

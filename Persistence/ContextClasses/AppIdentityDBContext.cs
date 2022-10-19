@@ -9,7 +9,7 @@ public class AppIdentityDBContext : IdentityDbContext
     {
     }
 
-    public AppIdentityDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
+    public AppIdentityDBContext( DbContextOptions<AppIdentityDBContext> options) : base(options)
     {
     }
     
@@ -17,6 +17,12 @@ public class AppIdentityDBContext : IdentityDbContext
     {
         options.EnableSensitiveDataLogging();
         options.UseSqlServer(
-            "Server=tcp:avansvoedselverspillingdb.database.windows.net,1433;Initial Catalog=Identity;Persist Security Info=False;User ID=avansvoedselverspillingdb;Password=yac7PJqE@X95!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            "data source=LAPTOP-60VI45O7;initial catalog=voedselverspillingtestId;trusted_connection=true;TrustServerCertificate=True;");
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+       base.OnModelCreating(modelBuilder);
+       
     }
 }

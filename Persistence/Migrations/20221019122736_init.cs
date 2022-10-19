@@ -156,7 +156,7 @@ namespace Infrastructure.Migrations
                 values: new object[,]
                 {
                     { 1, true, "Broodje", "test" },
-                    { 2, true, "Heiniken", "BIER" }
+                    { 2, true, "Heineken", "BIER" }
                 });
 
             migrationBuilder.InsertData(

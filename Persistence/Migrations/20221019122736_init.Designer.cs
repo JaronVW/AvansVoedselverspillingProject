@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20221018100934_init")]
+    [Migration("20221019122736_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -206,7 +206,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = 2,
                             ContainsAlcohol = true,
-                            Name = "Heiniken",
+                            Name = "Heineken",
                             Photo = "BIER"
                         });
                 });

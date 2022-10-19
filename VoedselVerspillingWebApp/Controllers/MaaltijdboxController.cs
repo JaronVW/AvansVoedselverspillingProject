@@ -1,9 +1,11 @@
 ﻿using Core.DomainServices;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace VoedselVerspillingWebApp.Controllers;
 
+[Authorize]
 public class MaaltijdboxController : Controller
 {
     private readonly IMealBoxRepository _mealBoxRepository;
@@ -14,14 +16,16 @@ public class MaaltijdboxController : Controller
         _mealBoxRepository = mealBoxRepository;
         _canteenRepository = canteenRepository;
     }
-
+    
+    [AllowAnonymous]
     [HttpGet]
     public IActionResult Index()
     {
         return View(_mealBoxRepository.GetMealBoxes()
             .Where(m => m.StudentId == null).ToList());
     }
-
+    
+    [AllowAnonymous]
     public IActionResult BoxDetails(int id)
     {
         return View(_mealBoxRepository.GetMealBoxes()
