@@ -114,5 +114,5 @@ public class ApplicationDBContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
         => options.UseSqlServer(
-            "data source=LAPTOP-60VI45O7;initial catalog=voedselverspillingtest;trusted_connection=true;TrustServerCertificate=True");
+            "");
 }
