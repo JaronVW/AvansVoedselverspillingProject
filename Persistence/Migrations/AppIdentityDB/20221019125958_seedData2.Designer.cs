@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations.AppIdentityDB
 {
     [DbContext(typeof(AppIdentityDBContext))]
-    partial class AppIdentityDBContextModelSnapshot : ModelSnapshot
+    [Migration("20221019125958_seedData2")]
+    partial class seedData2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,16 +55,9 @@ namespace Infrastructure.Migrations.AppIdentityDB
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "af8f4eac-9893-4d47-80d3-6195ad548fbb",
+                            ConcurrencyStamp = "fd15bd2d-1e1d-472a-abad-20ba1b5cba0d",
                             Name = "employee",
                             NormalizedName = "EMPLOYEE"
-                        },
-                        new
-                        {
-                            Id = "4c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "01835eea-e1ae-42f2-ac51-794fe1d135fb",
-                            Name = "student",
-                            NormalizedName = "STUDENT"
                         });
                 });
 
@@ -159,13 +155,13 @@ namespace Infrastructure.Migrations.AppIdentityDB
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8d321519-7ae3-46a8-950a-e0d5bb553357",
+                            ConcurrencyStamp = "99d1e398-0d7a-4a72-8d4f-98f4235ba3a9",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "EMAIL@EMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECkVRfcwphEBKI+vZ8OKL7MTqvwGWNlDrlU4RBeKGDJAmoFNksCOwp8GUpLuItn+jQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIwqhLwlgvUhU/6mhlgLPIno7uQ75y7MK9jEWUYITH9Y5jqomlzX10HPUxURWfUamA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cd5fc7c5-7658-4263-89a8-b89924596705",
+                            SecurityStamp = "f86c6385-86b1-43f9-bb46-080b171eb5d5",
                             TwoFactorEnabled = false,
                             UserName = "email@email.com"
                         },
@@ -173,13 +169,13 @@ namespace Infrastructure.Migrations.AppIdentityDB
                         {
                             Id = "9e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8cc2989b-61e1-47ce-a0d8-4eff58c219d6",
+                            ConcurrencyStamp = "e710148f-0141-4ab3-a573-f030f6c304d1",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "STUDENT@EMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEB8KHu2HmavjEJPNs2fsXpvF1S3zwW3KHjKVgQdzHNPWskEUrh+5I6W7FQl1ooLUMA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMVvYPJY/dOXfgT811MiRTBXBEmAHIMv/uAUKeYj3EjGVMXOoolGESmNtKXqd5RF6w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "588ca3d9-a79d-4d54-a9c6-598e577728d9",
+                            SecurityStamp = "e3915428-968a-43af-baad-8d34be404453",
                             TwoFactorEnabled = false,
                             UserName = "student@email.com"
                         });
@@ -251,11 +247,6 @@ namespace Infrastructure.Migrations.AppIdentityDB
                         {
                             UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210"
-                        },
-                        new
-                        {
-                            UserId = "9e445865-a24d-4543-a6c6-9443d048cdb9",
-                            RoleId = "4c5e174e-3b0e-446f-86af-483d56fd7210"
                         });
                 });
 

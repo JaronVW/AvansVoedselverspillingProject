@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using VoedselVerspillingWebApp.Models;
 
 namespace VoedselVerspillingWebApp.Controllers;
-[AllowAnonymous]
+
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;

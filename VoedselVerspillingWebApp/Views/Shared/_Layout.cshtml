@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/VoedselVerspillingWebApp.styles.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/fonts/bootstrap-icons.css" asp-append-version="true"/>
-    @RenderSection("styles", false)
+    @await RenderSectionAsync("styles", false)
 </head>
 <body class="">
 <header>
@@ -32,14 +32,19 @@
                 <li class="nav-item">
                     <a class="nav-link " asp-controller="Maaltijdbox" asp-action="Index">Maaltijdboxen</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link " asp-controller="Maaltijdbox" asp-action="Gereserveerd">Mijn Reserveringen</a>
-                </li>
 
-                <li class="nav-item">
-                    <a class="nav-link " asp-controller="Maaltijdbox" asp-action="Aanmaken">Maaltijdbox Maken</a>
-                </li>
-
+                @if (User.IsInRole("student"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link " asp-controller="Maaltijdbox" asp-action="Gereserveerd">Mijn Reserveringen</a>
+                    </li>
+                }
+                else if (User.IsInRole("employee"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link " asp-controller="Maaltijdbox" asp-action="Aanmaken">Maaltijdbox Maken</a>
+                    </li>
+                }
             </ul>
 
             <ul class="nav navbar-nav ms-auto mb-2 mb-lg-0">
@@ -47,12 +52,12 @@
                 {
                     <li>
                         <a asp-controller="Account" asp-action="Profile" class="nav-link  ">
-                            <i class="bi bi-person-circle" ></i>
+                            <i class="bi bi-person-circle"></i>
                         </a>
                     </li>
                     <li>
                         <a href="#" class="nav-link ">
-                            <i class="bi bi-gear-fill" ></i>
+                            <i class="bi bi-gear-fill"></i>
                         </a>
                     </li>
                     <li>

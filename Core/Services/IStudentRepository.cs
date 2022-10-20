@@ -14,4 +14,6 @@ public interface IStudentRepository
 
     void AddStudent(Student student);
 
+    Student GetStudentByEmail(string email);
+
 }

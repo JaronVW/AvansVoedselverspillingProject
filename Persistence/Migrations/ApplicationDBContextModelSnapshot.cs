@@ -75,6 +75,13 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CanteenId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("EmployeeNumber")
                         .HasColumnType("int");
 
@@ -86,14 +93,22 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("WorkPlaceId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("WorkPlaceId");
+                    b.HasIndex("CanteenId");
 
                     b.ToTable("Employees");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CanteenId = 1,
+                            Email = "email@email.com",
+                            EmployeeNumber = 1,
+                            FirstName = "mede",
+                            LastName = "werker"
+                        });
                 });
 
             modelBuilder.Entity("Domain.MealBox", b =>
@@ -147,9 +162,9 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 2,
                             EighteenPlus = true,
-                            ExpireTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "box1",
-                            PickupDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 5.45m,
                             StudentId = 1,
                             Type = 0
@@ -160,10 +175,58 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 1,
                             EighteenPlus = false,
-                            ExpireTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ExpireTime = new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "box2",
-                            PickupDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PickupDateTime = new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 5.45m,
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CanteenId = 1,
+                            City = 2,
+                            EighteenPlus = false,
+                            ExpireTime = new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local),
+                            MealBoxName = "verse producten",
+                            PickupDateTime = new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local),
+                            Price = 6.50m,
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CanteenId = 2,
+                            City = 2,
+                            EighteenPlus = false,
+                            ExpireTime = new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local),
+                            MealBoxName = "verse producten",
+                            PickupDateTime = new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local),
+                            Price = 6.50m,
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CanteenId = 2,
+                            City = 0,
+                            EighteenPlus = false,
+                            ExpireTime = new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local),
+                            MealBoxName = "nog versere producten",
+                            PickupDateTime = new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local),
+                            Price = 6.50m,
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CanteenId = 1,
+                            City = 1,
+                            EighteenPlus = true,
+                            ExpireTime = new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local),
+                            MealBoxName = "oude producten",
+                            PickupDateTime = new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local),
+                            Price = 6.50m,
                             Type = 0
                         });
                 });
@@ -197,14 +260,56 @@ namespace Infrastructure.Migrations
                             Id = 1,
                             ContainsAlcohol = true,
                             Name = "Broodje",
+                            Photo = "https://gezinoverdekook.nl/wp-content/uploads/Broodje-gezond-recept.jpeg"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ContainsAlcohol = true,
+                            Name = "Heineken",
+                            Photo = "test"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ContainsAlcohol = false,
+                            Name = "broodje ei",
+                            Photo = "https://www.acouplecooks.com/wp-content/uploads/2020/07/Egg-Salad-Sandwich-001.jpg"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ContainsAlcohol = false,
+                            Name = "kaasplankje",
+                            Photo = "test"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ContainsAlcohol = true,
+                            Name = "Hertog Jan",
                             Photo = "test"
                         },
                         new
                         {
                             Id = 2,
-                            ContainsAlcohol = true,
-                            Name = "Heineken",
-                            Photo = "BIER"
+                            ContainsAlcohol = false,
+                            Name = "broodje mozzarella",
+                            Photo = "https://www.modernhoney.com/wp-content/uploads/2019/01/Pesto-Panini-with-Fresh-Mozzarella-and-Tomato-1-crop.jpg"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ContainsAlcohol = false,
+                            Name = "verse salade",
+                            Photo = "https://www.thespruceeats.com/thmb/Z6IWF7c9zywuU9maSIimGLbHoI4=/3000x2000/filters:fill(auto,1)/classic-caesar-salad-recipe-996054-Hero_01-33c94cc8b8e841ee8f2a815816a0af95.jpg"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ContainsAlcohol = false,
+                            Name = "fanta",
+                            Photo = "https://cdn11.bigcommerce.com/s-2fq65jrvsu/images/stencil/1280x1280/products/528/7297/fanta_orange-1__30340.1664974218.jpg?c=1"
                         });
                 });
 
@@ -249,7 +354,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BirthDate = new DateTime(2002, 1, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Jaron",
                             LastName = "lastname",
                             PhoneNumber = "12345",
@@ -260,13 +365,46 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BirthDate = new DateTime(2010, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "henk",
                             LastName = "vries",
                             PhoneNumber = "54321",
                             StudentNumber = 12345,
                             StudyCity = 0,
-                            email = "mai@mail.com"
+                            email = "henk@mail.com"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            BirthDate = new DateTime(1970, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Meneer",
+                            LastName = "student",
+                            PhoneNumber = "54321",
+                            StudentNumber = 12345,
+                            StudyCity = 0,
+                            email = "studentmeneer@mail.com"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            BirthDate = new DateTime(2001, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Lucas",
+                            LastName = "naam",
+                            PhoneNumber = "54321",
+                            StudentNumber = 12345,
+                            StudyCity = 0,
+                            email = "denaam@mail.com"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BirthDate = new DateTime(2010, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "henk",
+                            LastName = "das",
+                            PhoneNumber = "54321",
+                            StudentNumber = 12345,
+                            StudyCity = 0,
+                            email = "henkd@mail.com"
                         });
                 });
 
@@ -287,8 +425,13 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            ProductsId = 1,
+                            ProductsId = 7,
                             MealBoxesId = 1
+                        },
+                        new
+                        {
+                            ProductsId = 7,
+                            MealBoxesId = 5
                         },
                         new
                         {
@@ -298,19 +441,34 @@ namespace Infrastructure.Migrations
                         new
                         {
                             ProductsId = 2,
-                            MealBoxesId = 1
+                            MealBoxesId = 2
+                        },
+                        new
+                        {
+                            ProductsId = 5,
+                            MealBoxesId = 2
+                        },
+                        new
+                        {
+                            ProductsId = 6,
+                            MealBoxesId = 2
+                        },
+                        new
+                        {
+                            ProductsId = 2,
+                            MealBoxesId = 6
                         });
                 });
 
             modelBuilder.Entity("Domain.Employee", b =>
                 {
-                    b.HasOne("Domain.Canteen", "WorkPlace")
+                    b.HasOne("Domain.Canteen", "Canteen")
                         .WithMany()
-                        .HasForeignKey("WorkPlaceId")
+                        .HasForeignKey("CanteenId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("WorkPlace");
+                    b.Navigation("Canteen");
                 });
 
             modelBuilder.Entity("Domain.MealBox", b =>

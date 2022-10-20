@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations.AppIdentityDB
 {
     [DbContext(typeof(AppIdentityDBContext))]
-    partial class AppIdentityDBContextModelSnapshot : ModelSnapshot
+    [Migration("20221019125551_seedData")]
+    partial class seedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,16 +55,9 @@ namespace Infrastructure.Migrations.AppIdentityDB
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "af8f4eac-9893-4d47-80d3-6195ad548fbb",
+                            ConcurrencyStamp = "dcb063b5-e1a1-442f-b653-8a9d5caf9d9c",
                             Name = "employee",
                             NormalizedName = "EMPLOYEE"
-                        },
-                        new
-                        {
-                            Id = "4c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "01835eea-e1ae-42f2-ac51-794fe1d135fb",
-                            Name = "student",
-                            NormalizedName = "STUDENT"
                         });
                 });
 
@@ -159,29 +155,15 @@ namespace Infrastructure.Migrations.AppIdentityDB
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8d321519-7ae3-46a8-950a-e0d5bb553357",
+                            ConcurrencyStamp = "a4f970eb-3c63-41ec-8687-db1801eb8550",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedUserName = "EMAIL@EMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECkVRfcwphEBKI+vZ8OKL7MTqvwGWNlDrlU4RBeKGDJAmoFNksCOwp8GUpLuItn+jQ==",
+                            NormalizedUserName = "MYUSER",
+                            PasswordHash = "AQAAAAEAACcQAAAAEO7uQhIbRlNU04NUfOALEcvPoK+EEbgcwOU7YwZ7z7FUA7MqS4nJ4UXWc6femcfmKw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cd5fc7c5-7658-4263-89a8-b89924596705",
+                            SecurityStamp = "ba0958d4-5f43-454d-a833-111f3af4fa4b",
                             TwoFactorEnabled = false,
                             UserName = "email@email.com"
-                        },
-                        new
-                        {
-                            Id = "9e445865-a24d-4543-a6c6-9443d048cdb9",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "8cc2989b-61e1-47ce-a0d8-4eff58c219d6",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedUserName = "STUDENT@EMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEB8KHu2HmavjEJPNs2fsXpvF1S3zwW3KHjKVgQdzHNPWskEUrh+5I6W7FQl1ooLUMA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "588ca3d9-a79d-4d54-a9c6-598e577728d9",
-                            TwoFactorEnabled = false,
-                            UserName = "student@email.com"
                         });
                 });
 
@@ -251,11 +233,6 @@ namespace Infrastructure.Migrations.AppIdentityDB
                         {
                             UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210"
-                        },
-                        new
-                        {
-                            UserId = "9e445865-a24d-4543-a6c6-9443d048cdb9",
-                            RoleId = "4c5e174e-3b0e-446f-86af-483d56fd7210"
                         });
                 });
 
