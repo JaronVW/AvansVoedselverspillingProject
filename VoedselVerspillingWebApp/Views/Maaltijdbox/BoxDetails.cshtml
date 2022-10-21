@@ -2,15 +2,24 @@
 
 @{
     ViewBag.Title = Model.MealBoxName + " Details";
-    
+
 }
 
 <div class=" container mt-5 mb-3">
+
     <div class="row my-2">
         <div class="col">
             <h2 class="display-4">@Model.MealBoxName</h2>
         </div>
     </div>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="row my-2">
+            <div class="col text-danger">
+               @TempData["ErrorMessage"]
+            </div>
+        </div>
+    }
     <div class="row my-2">
         <div class="col">
             <img src="/images/box.jpg" class="img-thumbnail" style="width: 20rem" alt="">
@@ -19,7 +28,7 @@
         <div class="col">
             @if (@Model.Products != null)
             {
-                <h3>Bevat de volgende producten:</h3>
+                <h3>Kan producten bevatten zoals:</h3>
                 <ul>
                     @foreach (var p in @Model.Products)
                     {

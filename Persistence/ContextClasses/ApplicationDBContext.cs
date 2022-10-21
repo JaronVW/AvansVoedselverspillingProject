@@ -1,5 +1,4 @@
 ﻿using Domain;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
@@ -28,6 +27,10 @@ public class ApplicationDBContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        
+        base.OnModelCreating(modelBuilder);
+        
+        
         var student1 = new Student()
         {
             Id = 1,
@@ -35,7 +38,7 @@ public class ApplicationDBContext : DbContext
             LastName = "lastname",
             BirthDate = new DateTime(2002, 1, 19),
             StudentNumber = 12345,
-            email = "mai@mail.com",
+            email = "student@email.com",
             StudyCity = City.Breda,
             PhoneNumber = "12345"
         };
@@ -109,13 +112,13 @@ public class ApplicationDBContext : DbContext
             { Id = 5, Name = "fanta", ContainsAlcohol = false, Photo = "https://cdn11.bigcommerce.com/s-2fq65jrvsu/images/stencil/1280x1280/products/528/7297/fanta_orange-1__30340.1664974218.jpg?c=1", MealBoxes = new List<MealBox>() };
 
         var kaasplankje = new Product()
-            { Id = 6, Name = "kaasplankje", ContainsAlcohol = false, Photo = "test", MealBoxes = new List<MealBox>() };
+            { Id = 6, Name = "kaasplankje", ContainsAlcohol = false, Photo = "https://bettyskitchen.nl/wp-content/uploads/2013/12/zelf_kaasplankje_samenstellen_shutterstock_749650144.jpg", MealBoxes = new List<MealBox>() };
 
         var HertogJan = new Product()
-            { Id = 7, Name = "Hertog Jan", ContainsAlcohol = true, Photo = "test", MealBoxes = new List<MealBox>() };
+            { Id = 7, Name = "Hertog Jan", ContainsAlcohol = true, Photo = "https://www.drankuwel.nl/media/catalog/product/cache/d6a5bc6be806788c48ed774973599767/h/e/hertogjan-8packjpg.jpg", MealBoxes = new List<MealBox>() };
 
         var heineken = new Product()
-            { Id = 8, Name = "Heineken", ContainsAlcohol = true, Photo = "test", MealBoxes = new List<MealBox>() };
+            { Id = 8, Name = "Heineken", ContainsAlcohol = true, Photo = "https://static.ah.nl/dam/product/AHI_43545239383731303039?revLabel=1&rendition=800x800_JPG_Q90&fileType=binary", MealBoxes = new List<MealBox>() };
 
 
         var employee1 = new Employee()
@@ -216,7 +219,7 @@ public class ApplicationDBContext : DbContext
         };
 
 
-        base.OnModelCreating(modelBuilder);
+        
 
         modelBuilder.Entity<Student>().HasData(
             student1, student2, student3, student4, student5

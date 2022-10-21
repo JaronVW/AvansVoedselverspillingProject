@@ -31,6 +31,8 @@ namespace Domain
         public Canteen? Canteen { get; set; }= null!;
         [Required(ErrorMessage = "Kantine verplicht")]
         public int CanteenId { get; set; }
-        
+
+        public bool WarmMeals { get; set; } = true;
+
     }
 }

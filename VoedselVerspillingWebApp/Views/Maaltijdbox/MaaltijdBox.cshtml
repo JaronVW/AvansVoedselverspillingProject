@@ -1,7 +1,17 @@
 ﻿@model Domain.MealBox
-
+@{
+    var id = $"confirmationModal{Model.Id}";
+    var target ="#" + id;
+}
 <div class="card ">
-    <img src="/images/box.jpg" class="card-img-top " alt="...">
+    @if (Model.Products.Count > 0)
+    {
+        <img src="@Model.Products.First().Photo" class="card-img-top " style="height: 20em; object-fit: cover" alt="...">
+    }
+    else
+    {
+        <img src="/images/box.jpg" class="card-img-top " style="height: 20em; object-fit: cover" alt="...">
+    }
     <div class="card-body">
         <h3>@Model.MealBoxName</h3>
         <ul class="list-unstyled">
@@ -17,13 +27,13 @@
             <a asp-controller="Maaltijdbox" asp-action="Aanpassen" asp-route-id="@Model.Id">
                 <button class="btn btn-outline-info">Wijzigen</button>
             </a>
-            <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmationModal">Verwijderen</button>
+            <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="@target">Verwijderen</button>
         }
 
     </div>
     @if (@User.IsInRole("employee"))
     {
-        <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="@id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">

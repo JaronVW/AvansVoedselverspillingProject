@@ -1,11 +1,18 @@
-﻿using Core.DomainServices;
+﻿using System.Globalization;
+using Core.DomainServices;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
 
 public class EmployeeEFRepository : IEmployeeRepository
 {
-    private ApplicationDBContext _context;
+    private readonly ApplicationDBContext _context;
+
+    public EmployeeEFRepository(ApplicationDBContext context)
+    {
+        _context = context;
+    }
 
     public IEnumerable<Employee> GetEmployees()
     {
@@ -34,6 +41,6 @@ public class EmployeeEFRepository : IEmployeeRepository
 
     public Employee GetEmployeeByEmail(string email)
     {
-        return _context.Employees.First(e => e.Email == email);
+        return _context.Employees.Include(e=> e.Canteen).First(e => e.Email == email);
     }
 }

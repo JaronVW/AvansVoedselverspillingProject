@@ -17,6 +17,14 @@ public class MealBoxEFRepository : IMealBoxRepository
 
     public IEnumerable<MealBox> GetMealBoxes()
     {
+        return _context.MealBoxes
+            .OrderBy(box => box.PickupDateTime)
+            .Include(m => m.Products)
+            .ToList();
+    }
+
+    public IEnumerable<MealBox> GetMealBoxesDateAscending()
+    {
         return _context.MealBoxes.Include(m => m.Products).ToList();
     }
 
@@ -66,9 +74,10 @@ public class MealBoxEFRepository : IMealBoxRepository
         _context.SaveChanges();
     }
 
-    public ICollection<Product> GetMealBoxProducts(int id)
+    public MealBox? GetReservedMealBoxToday(int studentId, DateTime date)
     {
-        return _context.MealBoxes.First(m => m.Id == id).Products;
+        return _context.MealBoxes
+            .FirstOrDefault(box => box.StudentId == studentId && box.PickupDateTime.Date == date.Date);
     }
 
     public void ReserveMealBox(int mealBoxId, int studentId)

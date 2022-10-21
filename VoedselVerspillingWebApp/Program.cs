@@ -18,8 +18,6 @@ builder.Services.AddDbContext<AppIdentityDBContext>(options =>
 builder.Services.AddIdentity<IdentityUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<AppIdentityDBContext>();
 
-builder.Services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login" );
-
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IMealBoxRepository, MealBoxEFRepository>();

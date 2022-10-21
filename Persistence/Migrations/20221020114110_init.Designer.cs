@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20221020114110_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -147,9 +150,6 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.Property<bool>("WarmMeals")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CanteenId");
@@ -165,13 +165,12 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 2,
                             EighteenPlus = true,
-                            ExpireTime = new DateTime(2022, 10, 24, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "box1",
-                            PickupDateTime = new DateTime(2022, 10, 24, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 5.45m,
                             StudentId = 1,
-                            Type = 0,
-                            WarmMeals = true
+                            Type = 0
                         },
                         new
                         {
@@ -179,12 +178,11 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 1,
                             EighteenPlus = false,
-                            ExpireTime = new DateTime(2022, 10, 21, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "box2",
-                            PickupDateTime = new DateTime(2022, 10, 21, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 5.45m,
-                            Type = 0,
-                            WarmMeals = true
+                            Type = 0
                         },
                         new
                         {
@@ -192,12 +190,11 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 2,
                             EighteenPlus = false,
-                            ExpireTime = new DateTime(2022, 10, 21, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "verse producten",
-                            PickupDateTime = new DateTime(2022, 10, 21, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 6.50m,
-                            Type = 0,
-                            WarmMeals = true
+                            Type = 0
                         },
                         new
                         {
@@ -205,12 +202,11 @@ namespace Infrastructure.Migrations
                             CanteenId = 2,
                             City = 2,
                             EighteenPlus = false,
-                            ExpireTime = new DateTime(2022, 10, 21, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "verse producten",
-                            PickupDateTime = new DateTime(2022, 10, 21, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 6.50m,
-                            Type = 0,
-                            WarmMeals = true
+                            Type = 0
                         },
                         new
                         {
@@ -218,12 +214,11 @@ namespace Infrastructure.Migrations
                             CanteenId = 2,
                             City = 0,
                             EighteenPlus = false,
-                            ExpireTime = new DateTime(2022, 10, 21, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "nog versere producten",
-                            PickupDateTime = new DateTime(2022, 10, 21, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 6.50m,
-                            Type = 0,
-                            WarmMeals = true
+                            Type = 0
                         },
                         new
                         {
@@ -231,12 +226,11 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 1,
                             EighteenPlus = true,
-                            ExpireTime = new DateTime(2022, 10, 21, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "oude producten",
-                            PickupDateTime = new DateTime(2022, 10, 21, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 6.50m,
-                            Type = 0,
-                            WarmMeals = true
+                            Type = 0
                         });
                 });
 
@@ -276,7 +270,7 @@ namespace Infrastructure.Migrations
                             Id = 8,
                             ContainsAlcohol = true,
                             Name = "Heineken",
-                            Photo = "https://static.ah.nl/dam/product/AHI_43545239383731303039?revLabel=1&rendition=800x800_JPG_Q90&fileType=binary"
+                            Photo = "test"
                         },
                         new
                         {
@@ -290,14 +284,14 @@ namespace Infrastructure.Migrations
                             Id = 6,
                             ContainsAlcohol = false,
                             Name = "kaasplankje",
-                            Photo = "https://bettyskitchen.nl/wp-content/uploads/2013/12/zelf_kaasplankje_samenstellen_shutterstock_749650144.jpg"
+                            Photo = "test"
                         },
                         new
                         {
                             Id = 7,
                             ContainsAlcohol = true,
                             Name = "Hertog Jan",
-                            Photo = "https://www.drankuwel.nl/media/catalog/product/cache/d6a5bc6be806788c48ed774973599767/h/e/hertogjan-8packjpg.jpg"
+                            Photo = "test"
                         },
                         new
                         {
@@ -369,7 +363,7 @@ namespace Infrastructure.Migrations
                             PhoneNumber = "12345",
                             StudentNumber = 12345,
                             StudyCity = 2,
-                            email = "student@email.com"
+                            email = "mai@mail.com"
                         },
                         new
                         {

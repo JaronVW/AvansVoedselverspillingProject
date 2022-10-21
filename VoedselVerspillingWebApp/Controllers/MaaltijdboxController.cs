@@ -27,6 +27,7 @@ public class MaaltijdboxController : Controller
     {
         if (User.IsInRole("employee"))
         {
+            Console.WriteLine(User.Identity.Name);
             ViewBag.cantine = _employeeRepository.GetEmployeeByEmail(User.Identity.Name).Canteen.Id;
         }
 
@@ -37,7 +38,11 @@ public class MaaltijdboxController : Controller
     [AllowAnonymous]
     public IActionResult BoxDetails(int id)
     {
-        ViewBag.studentId = _studentRepository.GetStudentByEmail(User.Identity.Name).Id;
+        if (User.IsInRole("student"))
+        {
+            ViewBag.studentId = _studentRepository.GetStudentByEmail(User.Identity.Name).Id;
+        }
+
         return View(_mealBoxRepository.GetMealBoxes()
             .First(m => m.Id == id));
     }
@@ -55,13 +60,10 @@ public class MaaltijdboxController : Controller
     [Authorize(Roles = "employee")]
     public IActionResult Aanpassen(MealBox mealBox)
     {
-        if (mealBox.StudentId != null)
-        {
-            _mealBoxRepository.UpdateMealBox(mealBox);
-            return RedirectToAction("Index");
-        }
-
+        if (mealBox.StudentId != null) return RedirectToAction("Index");
+        _mealBoxRepository.UpdateMealBox(mealBox);
         return RedirectToAction("Index");
+
     }
 
     [Authorize(Roles = "student")]
@@ -69,6 +71,7 @@ public class MaaltijdboxController : Controller
     {
         try
         {
+            Console.WriteLine(User.Identity.Name);
             var studentId = _studentRepository.GetStudentByEmail(User.Identity.Name).Id;
             return View(_mealBoxRepository.GetMealBoxes()
                 .Where(m => m.Student != null && m.Student.Id == studentId));
@@ -99,7 +102,7 @@ public class MaaltijdboxController : Controller
     public IActionResult Verwijder(int id)
     {
         var m = _mealBoxRepository.GetMealBoxById(id);
-        if (m.StudentId == null) return RedirectToAction("Index");
+        if (m.StudentId != null) return RedirectToAction("Index");
         _mealBoxRepository.DeleteMealBox(m);
         return RedirectToAction("Index");
     }
@@ -107,8 +110,22 @@ public class MaaltijdboxController : Controller
     [Authorize(Roles = "student")]
     public IActionResult Reserveer(int mealBoxId, int studentId)
     {
+        TempData["ErrorMessage"] = null;
+        
         var m = _mealBoxRepository.GetMealBoxById(mealBoxId);
-        m.StudentId = studentId;
+        var s = _studentRepository.GetStudentById(studentId);
+        var age = m.PickupDateTime.Year - s.BirthDate.Year;
+        if (s.BirthDate.Date > m.PickupDateTime.AddYears(-18) && m.EighteenPlus)
+        {
+            TempData["ErrorMessage"] = "U moet achttien zijn om deze maaltijdbox te reserveren";
+            return RedirectToAction("BoxDetails", "Maaltijdbox", new { id = mealBoxId });
+        }
+        if (_mealBoxRepository.GetReservedMealBoxToday(studentId, m.PickupDateTime) != null)
+        {
+            TempData["ErrorMessage"] = "U heeft al een maaltijdbox voor deze dag gereserveerd";
+            return RedirectToAction("BoxDetails", "Maaltijdbox", new { id = mealBoxId });
+        }
+        m.StudentId = s.Id;
         _mealBoxRepository.UpdateMealBox(m);
         return RedirectToAction("BoxDetails", "Maaltijdbox", new { id = mealBoxId });
     }
