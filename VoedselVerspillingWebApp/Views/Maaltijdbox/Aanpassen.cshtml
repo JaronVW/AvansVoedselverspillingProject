@@ -1,5 +1,5 @@
 ﻿@using Domain
-@model Domain.MealBox
+@model MealBoxViewModel
 
 @{
     ViewBag.Title = @Model.MealBoxName + " Aanpassen";
@@ -36,8 +36,8 @@
 
         <div class="mb-3 form-check">
             <input asp-for="EighteenPlus" type="checkbox" class="form-check-input" id="mealBoxNameInput">
-            <label asp-for="EighteenPlus"  value="true" class="form-check-label">Bevat producten die 18+ zijn</label>
-            <input type="hidden" value="false" asp-for="EighteenPlus" >
+            <label asp-for="EighteenPlus" value="true" class="form-check-label">Bevat producten die 18+ zijn</label>
+            <input type="hidden" value="false" asp-for="EighteenPlus">
         </div>
 
         <div class="mb-3">
@@ -66,6 +66,18 @@
             </select>
         </div>
 
+        <div class="mb-3">
+            Beschikbare voorbeeldproducten:
+            @foreach (var p in Model.ProductCheckBoxes)
+            {
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" checked="@p.IsChecked" name="selectedProducts" value="@p.Id" id="@p.Id">
+                    <label class="form-check-label" for="@p.Id">
+                        @p.Name
+                    </label>
+                </div>
+            }
+        </div>
 
         <button type="submit" class=" btn btn-outline-success">Aanpassen</button>
     </form>

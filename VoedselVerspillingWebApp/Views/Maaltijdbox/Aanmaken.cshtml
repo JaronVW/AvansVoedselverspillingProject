@@ -1,5 +1,5 @@
 ﻿@using Domain
-@model Domain.MealBox
+@model MealBoxViewModel
 
 @{
     ViewBag.Title = "Maaltijdbox Aanmaken";
@@ -32,7 +32,7 @@
 
         <div class="mb-3">
             <label asp-for="ExpireTime" class="form-label">Verloopdatum</label>
-            <input asp-for="ExpireTime" type="datetime-local" class="form-control"  min=@DateTime.Now.ToString("yyyy-MM-ddTHH:mm") max=@DateTime.Now.AddDays(2).ToString("yyyy-MM-ddTHH:mm") id="mealBoxNameInput">
+            <input asp-for="ExpireTime" type="datetime-local" class="form-control" min=@DateTime.Now.ToString("yyyy-MM-ddTHH:mm") max=@DateTime.Now.AddDays(2).ToString("yyyy-MM-ddTHH:mm") id="mealBoxNameInput">
         </div>
 
         <div class="mb-3 form-check">
@@ -57,7 +57,7 @@
 
 
         <div class="mb-3">
-            <label asp-for="Canteen" class="form-label">Kantine</label>
+            <label asp-for="CanteenId" class="form-label">Kantine</label>
             <select asp-for="CanteenId" class="form-control">
                 @foreach (var c in @ViewBag.Canteens)
                 {
@@ -67,6 +67,19 @@
             </select>
         </div>
 
+        <div class="mb-3">
+            Beschikbare voorbeeldproducten:
+            @foreach (var p in Model.ProductCheckBoxes)
+            {
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" checked="@p.IsChecked" name="selectedProducts" value="@p.Id" id="@p.Id">
+                    <label class="form-check-label" for="@p.Id">
+                        @p.Name
+                    </label>
+                </div>
+            }
+        </div>
+ 
 
         <button type="submit" class=" btn btn-outline-success">Aanmaken</button>
     </form>

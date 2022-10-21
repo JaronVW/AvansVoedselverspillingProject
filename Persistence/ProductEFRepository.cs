@@ -20,7 +20,7 @@ public class ProductEFRepository : IProductRepository
 
     public Product GetProductById(int id)
     {
-        throw new NotImplementedException();
+        return _context.Products.First(product => product.Id == id );
     }
 
     public void UpdateProduct(Product product)
@@ -32,10 +32,12 @@ public class ProductEFRepository : IProductRepository
     public void RemoveProduct(Product product)
     {
         _context.Products.Remove(product);
+        _context.SaveChanges();
     }
 
     public void AddProduct(Product product)
     {
-        
+        _context.Products.Add(product);
+        _context.SaveChanges();
     }
 }
