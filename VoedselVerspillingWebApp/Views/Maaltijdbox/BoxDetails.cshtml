@@ -16,13 +16,23 @@
     {
         <div class="row my-2">
             <div class="col text-danger">
-               @TempData["ErrorMessage"]
+                @TempData["ErrorMessage"]
             </div>
         </div>
     }
     <div class="row my-2">
         <div class="col">
-            <img src="/images/box.jpg" class="img-thumbnail" style="width: 20rem" alt="">
+            @if (Model.Products.Count > 0)
+            {
+                var r = new Random().Next(Model.Products.Count);
+                <img src="@Model.Products.ToList()[r].Photo" class="img-thumbnail" style="width: 20rem" alt="">
+            }
+            else
+            {
+                <img src="/images/box.jpg" class="card-img-top " style="height: 20em; object-fit: cover" alt="...">
+            }
+    
+
         </div>
 
         <div class="col">

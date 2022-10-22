@@ -1,12 +1,15 @@
-﻿@model Domain.MealBox
+﻿@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Domain.MealBox
 @{
     var id = $"confirmationModal{Model.Id}";
-    var target ="#" + id;
+    var target = "#" + id;
 }
 <div class="card ">
     @if (Model.Products.Count > 0)
     {
-        <img src="@Model.Products.First().Photo" class="card-img-top " style="height: 20em; object-fit: cover" alt="...">
+        var r = new Random().Next(Model.Products.Count);
+        <img src="@Model.Products.ToList()[r].Photo" class="card-img-top " style="height: 20em; object-fit: cover" alt="...">
     }
     else
     {
@@ -17,7 +20,9 @@
         <ul class="list-unstyled">
             <li >@Model.PickupDateTime.Date</li>
             <li >€@Model.Price</li>
-            <li >@Model.City , @Model.Canteen</li>
+            <li >@Model.City</li>
+            <li >@(Model.EighteenPlus ? @"18+" : "16+") producten</li>
+
         </ul>
         <a asp-controller="Maaltijdbox" asp-action="BoxDetails" asp-route-id="@Model.Id">
             <button class="btn btn btn-outline-success">Details</button>

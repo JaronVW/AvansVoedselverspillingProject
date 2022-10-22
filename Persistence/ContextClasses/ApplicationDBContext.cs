@@ -97,7 +97,7 @@ public class ApplicationDBContext : DbContext
             { Id = 2, City = City.Tilburg, Address = "straat 5", PostalCode = "54321", WarmMealsprovided = false };
 
         var broodje = new Product()
-            { Id = 1, Name = "Broodje", ContainsAlcohol = true, Photo = "https://gezinoverdekook.nl/wp-content/uploads/Broodje-gezond-recept.jpeg", MealBoxes = new List<MealBox>() };
+            { Id = 1, Name = "Broodje", ContainsAlcohol = false, Photo = "https://gezinoverdekook.nl/wp-content/uploads/Broodje-gezond-recept.jpeg", MealBoxes = new List<MealBox>() };
         
         var broodjeMozzarella = new Product()
             { Id = 2, Name = "broodje mozzarella", ContainsAlcohol = false, Photo = "https://www.modernhoney.com/wp-content/uploads/2019/01/Pesto-Panini-with-Fresh-Mozzarella-and-Tomato-1-crop.jpg", MealBoxes = new List<MealBox>() };

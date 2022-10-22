@@ -30,7 +30,10 @@ public class MealBoxEFRepository : IMealBoxRepository
 
     public async Task<List<MealBox>> GetMealBoxesAsync()
     {
-        return await _context.MealBoxes.ToListAsync();
+        return await _context.MealBoxes
+            .Include(m => m.Student)
+            .Include(m => m.Products)
+            .ToListAsync();
     }
 
     public IEnumerable<MealBox> GetMealBoxesEighteenPlus()
@@ -40,7 +43,10 @@ public class MealBoxEFRepository : IMealBoxRepository
 
     public MealBox GetMealBoxById(int id)
     {
-        return _context.MealBoxes.First(b => b.Id == id);
+        return _context.MealBoxes
+            .Include(m => m.Student)
+            .Include(m => m.Products)
+            .First(b => b.Id == id);
     }
 
 
@@ -73,6 +79,20 @@ public class MealBoxEFRepository : IMealBoxRepository
         _context.MealBoxes.Remove(mealBox);
         _context.SaveChanges();
     }
+
+    public void DeleteMealBoxProducts(MealBox mealBox)
+    {
+        _context.MealBoxes.First(m => m.Id == mealBox.Id).Products = null;
+        _context.SaveChanges();
+    }
+
+    public void DeleteMealBoxById(int id)
+    {
+        _context.MealBoxes.Remove(_context.MealBoxes.Find(id));
+        _context.SaveChanges();
+    }
+
+    
 
     public MealBox? GetReservedMealBoxToday(int studentId, DateTime date)
     {

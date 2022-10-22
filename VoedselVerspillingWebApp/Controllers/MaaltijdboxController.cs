@@ -56,8 +56,7 @@ public class MaaltijdboxController : Controller
     public IActionResult Aanpassen(int id)
     {
         ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
-        var m = _mealBoxRepository.GetMealBoxes()
-            .First(m => m.Id == id);
+        var m = _mealBoxRepository.GetMealBoxById(id);
 
         var vm = new MealBoxViewModel
         {
@@ -100,7 +99,6 @@ public class MaaltijdboxController : Controller
     [Authorize(Roles = "employee")]
     public IActionResult Aanpassen(MealBoxViewModel mealBoxVm)
     {
-        
         if (mealBoxVm.StudentId != null) return RedirectToAction("Index");
         MealBox mealBox = new MealBox()
         {
@@ -119,6 +117,10 @@ public class MaaltijdboxController : Controller
         {
             mealBox.Products.Add(_productRepository.GetProductById(sp));
         }
+
+
+        _mealBoxRepository.DeleteMealBox(_mealBoxRepository.GetMealBoxById(mealBoxVm.Id));
+        mealBox.EighteenPlus = mealBox.Products.Any(m => m.ContainsAlcohol);
         _mealBoxRepository.UpdateMealBox(mealBox);
         return RedirectToAction("Index");
     }
@@ -144,7 +146,11 @@ public class MaaltijdboxController : Controller
     public IActionResult Aanmaken()
     {
         ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
-        var vm = new MealBoxViewModel();
+        var vm = new MealBoxViewModel()
+        {
+            PickupDateTime = DateTime.Now,
+            ExpireTime = DateTime.Now.AddHours(2)
+        };
         vm.ProductCheckBoxes = new List<CheckBoxItem>();
         foreach (var p in _productRepository.GetProducts())
         {
@@ -178,7 +184,12 @@ public class MaaltijdboxController : Controller
 
         foreach (var sp in mealBoxVm.selectedProducts)
         {
-            mealBox.Products.Add(_productRepository.GetProductById(sp));
+            var mb = _productRepository.GetProductById(sp);
+            mealBox.Products.Add(mb);
+            if (mb.ContainsAlcohol)
+            {
+                mealBox.EighteenPlus = true;
+            }
         }
 
         _mealBoxRepository.AddMealBox(mealBox);

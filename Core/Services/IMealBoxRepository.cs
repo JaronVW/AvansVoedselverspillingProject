@@ -17,5 +17,9 @@ public interface IMealBoxRepository
 
     MealBox? GetReservedMealBoxToday(int studentId , DateTime date);
 
+    void DeleteMealBoxProducts(MealBox mealBox);
 
+
+    void DeleteMealBoxById(int id);
+    void ReserveMealBox(int mealBoxId, int studentId);
 }

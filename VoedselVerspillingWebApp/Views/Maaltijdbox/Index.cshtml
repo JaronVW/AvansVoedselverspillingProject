@@ -4,29 +4,32 @@
 @model IEnumerable<Domain.MealBox>
 
 
-
 <h1 class="text-center">Beschikbare Maaltijdboxen</h1>
 
-<div class="w-75 mx-auto  mt-5 grid-container mb-5 ">
-    @if (User.IsInRole("employee") && ViewBag.cantine != null)
-    {
-        <h3>Maaltijdboxen van uw kantine</h3>
-        foreach (var m in Model.Where(m => m.CanteenId == ViewBag.cantine))
-        {
-            <partial name="MaaltijdBox" model="m"/>
-        }
-        <h3>Maaltijdboxen van andere kantines</h3>
-        foreach (var m in Model.Where(m => m.CanteenId != ViewBag.cantine))
-        {
-            <partial name="MaaltijdBox" model="m"/>
-        }
-    }
-    else
-    {
-        foreach (var m in Model)
-        {
-            <partial name="MaaltijdBox" model="m"/>
-        }
-    }
 
-</div>
+@if (User.IsInRole("employee") && ViewBag.cantine != null)
+{
+    <h3>Maaltijdboxen van uw kantine</h3>
+    <div class="w-75 mx-auto  mt-5 grid-container mb-5 ">
+        @foreach (var m in Model.Where(m => m.CanteenId == ViewBag.cantine))
+        {
+        <partial name="MaaltijdBox" model="m"/>
+        }
+    </div>
+    <h3>Maaltijdboxen van andere kantines</h3>
+    <div class="w-75 mx-auto  mt-5 grid-container mb-5 ">
+        @foreach (var m in Model.Where(m => m.CanteenId != ViewBag.cantine))
+        {
+        <partial name="MaaltijdBox" model="m"/>
+        }
+    </div>
+}
+else
+{
+    <div class="w-75 mx-auto  mt-5 grid-container mb-5 ">
+        @foreach (var m in Model)
+        {
+            <partial name="MaaltijdBox" model="m"/>
+        }
+    </div>
+}
