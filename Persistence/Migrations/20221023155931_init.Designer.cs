@@ -12,18 +12,17 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20221020114110_init")]
+    [Migration("20221023155931_init")]
     partial class init
     {
-        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0-rc.1.22426.7")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("Domain.Canteen", b =>
                 {
@@ -31,7 +30,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -76,7 +75,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CanteenId")
                         .HasColumnType("int");
@@ -120,7 +119,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CanteenId")
                         .HasColumnType("int");
@@ -150,6 +149,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
+                    b.Property<bool>("WarmMeals")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CanteenId");
@@ -165,12 +167,13 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 2,
                             EighteenPlus = true,
-                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2022, 10, 26, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "box1",
-                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2022, 10, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 5.45m,
                             StudentId = 1,
-                            Type = 0
+                            Type = 0,
+                            WarmMeals = true
                         },
                         new
                         {
@@ -178,11 +181,12 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 1,
                             EighteenPlus = false,
-                            ExpireTime = new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "box2",
-                            PickupDateTime = new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 5.45m,
-                            Type = 0
+                            Type = 0,
+                            WarmMeals = true
                         },
                         new
                         {
@@ -190,11 +194,12 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 2,
                             EighteenPlus = false,
-                            ExpireTime = new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "verse producten",
-                            PickupDateTime = new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 6.50m,
-                            Type = 0
+                            Type = 0,
+                            WarmMeals = true
                         },
                         new
                         {
@@ -202,11 +207,12 @@ namespace Infrastructure.Migrations
                             CanteenId = 2,
                             City = 2,
                             EighteenPlus = false,
-                            ExpireTime = new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "verse producten",
-                            PickupDateTime = new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 6.50m,
-                            Type = 0
+                            Type = 0,
+                            WarmMeals = true
                         },
                         new
                         {
@@ -214,11 +220,12 @@ namespace Infrastructure.Migrations
                             CanteenId = 2,
                             City = 0,
                             EighteenPlus = false,
-                            ExpireTime = new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "nog versere producten",
-                            PickupDateTime = new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 6.50m,
-                            Type = 0
+                            Type = 0,
+                            WarmMeals = true
                         },
                         new
                         {
@@ -226,11 +233,12 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 1,
                             EighteenPlus = true,
-                            ExpireTime = new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "oude producten",
-                            PickupDateTime = new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 6.50m,
-                            Type = 0
+                            Type = 0,
+                            WarmMeals = true
                         });
                 });
 
@@ -240,7 +248,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("ContainsAlcohol")
                         .HasColumnType("bit");
@@ -261,7 +269,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            ContainsAlcohol = true,
+                            ContainsAlcohol = false,
                             Name = "Broodje",
                             Photo = "https://gezinoverdekook.nl/wp-content/uploads/Broodje-gezond-recept.jpeg"
                         },
@@ -270,7 +278,7 @@ namespace Infrastructure.Migrations
                             Id = 8,
                             ContainsAlcohol = true,
                             Name = "Heineken",
-                            Photo = "test"
+                            Photo = "https://static.ah.nl/dam/product/AHI_43545239383731303039?revLabel=1&rendition=800x800_JPG_Q90&fileType=binary"
                         },
                         new
                         {
@@ -284,14 +292,14 @@ namespace Infrastructure.Migrations
                             Id = 6,
                             ContainsAlcohol = false,
                             Name = "kaasplankje",
-                            Photo = "test"
+                            Photo = "https://bettyskitchen.nl/wp-content/uploads/2013/12/zelf_kaasplankje_samenstellen_shutterstock_749650144.jpg"
                         },
                         new
                         {
                             Id = 7,
                             ContainsAlcohol = true,
                             Name = "Hertog Jan",
-                            Photo = "test"
+                            Photo = "https://www.drankuwel.nl/media/catalog/product/cache/d6a5bc6be806788c48ed774973599767/h/e/hertogjan-8packjpg.jpg"
                         },
                         new
                         {
@@ -322,7 +330,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
@@ -363,7 +371,7 @@ namespace Infrastructure.Migrations
                             PhoneNumber = "12345",
                             StudentNumber = 12345,
                             StudyCity = 2,
-                            email = "mai@mail.com"
+                            email = "student@email.com"
                         },
                         new
                         {

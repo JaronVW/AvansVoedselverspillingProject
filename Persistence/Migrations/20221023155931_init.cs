@@ -3,14 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace Infrastructure.Migrations
 {
-    /// <inheritdoc />
     public partial class init : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -100,7 +96,8 @@ namespace Infrastructure.Migrations
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     StudentId = table.Column<int>(type: "int", nullable: true),
-                    CanteenId = table.Column<int>(type: "int", nullable: false)
+                    CanteenId = table.Column<int>(type: "int", nullable: false),
+                    WarmMeals = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -156,14 +153,14 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "ContainsAlcohol", "Name", "Photo" },
                 values: new object[,]
                 {
-                    { 1, true, "Broodje", "https://gezinoverdekook.nl/wp-content/uploads/Broodje-gezond-recept.jpeg" },
+                    { 1, false, "Broodje", "https://gezinoverdekook.nl/wp-content/uploads/Broodje-gezond-recept.jpeg" },
                     { 2, false, "broodje mozzarella", "https://www.modernhoney.com/wp-content/uploads/2019/01/Pesto-Panini-with-Fresh-Mozzarella-and-Tomato-1-crop.jpg" },
                     { 3, false, "verse salade", "https://www.thespruceeats.com/thmb/Z6IWF7c9zywuU9maSIimGLbHoI4=/3000x2000/filters:fill(auto,1)/classic-caesar-salad-recipe-996054-Hero_01-33c94cc8b8e841ee8f2a815816a0af95.jpg" },
                     { 4, false, "broodje ei", "https://www.acouplecooks.com/wp-content/uploads/2020/07/Egg-Salad-Sandwich-001.jpg" },
                     { 5, false, "fanta", "https://cdn11.bigcommerce.com/s-2fq65jrvsu/images/stencil/1280x1280/products/528/7297/fanta_orange-1__30340.1664974218.jpg?c=1" },
-                    { 6, false, "kaasplankje", "test" },
-                    { 7, true, "Hertog Jan", "test" },
-                    { 8, true, "Heineken", "test" }
+                    { 6, false, "kaasplankje", "https://bettyskitchen.nl/wp-content/uploads/2013/12/zelf_kaasplankje_samenstellen_shutterstock_749650144.jpg" },
+                    { 7, true, "Hertog Jan", "https://www.drankuwel.nl/media/catalog/product/cache/d6a5bc6be806788c48ed774973599767/h/e/hertogjan-8packjpg.jpg" },
+                    { 8, true, "Heineken", "https://static.ah.nl/dam/product/AHI_43545239383731303039?revLabel=1&rendition=800x800_JPG_Q90&fileType=binary" }
                 });
 
             migrationBuilder.InsertData(
@@ -171,7 +168,7 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "BirthDate", "FirstName", "LastName", "PhoneNumber", "StudentNumber", "StudyCity", "email" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2002, 1, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jaron", "lastname", "12345", 12345, 2, "mai@mail.com" },
+                    { 1, new DateTime(2002, 1, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jaron", "lastname", "12345", 12345, 2, "student@email.com" },
                     { 2, new DateTime(2010, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "henk", "vries", "54321", 12345, 0, "henk@mail.com" },
                     { 3, new DateTime(2010, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "henk", "das", "54321", 12345, 0, "henkd@mail.com" },
                     { 4, new DateTime(1970, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Meneer", "student", "54321", 12345, 0, "studentmeneer@mail.com" },
@@ -185,15 +182,15 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "MealBoxes",
-                columns: new[] { "Id", "CanteenId", "City", "EighteenPlus", "ExpireTime", "MealBoxName", "PickupDateTime", "Price", "StudentId", "Type" },
+                columns: new[] { "Id", "CanteenId", "City", "EighteenPlus", "ExpireTime", "MealBoxName", "PickupDateTime", "Price", "StudentId", "Type", "WarmMeals" },
                 values: new object[,]
                 {
-                    { 1, 1, 2, true, new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local), "box1", new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local), 5.45m, 1, 0 },
-                    { 2, 1, 1, false, new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local), "box2", new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local), 5.45m, null, 0 },
-                    { 3, 1, 2, false, new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local), "verse producten", new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local), 6.50m, null, 0 },
-                    { 4, 2, 2, false, new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local), "verse producten", new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local), 6.50m, null, 0 },
-                    { 5, 2, 0, false, new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local), "nog versere producten", new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local), 6.50m, null, 0 },
-                    { 6, 1, 1, true, new DateTime(2022, 10, 20, 2, 0, 0, 0, DateTimeKind.Local), "oude producten", new DateTime(2022, 10, 20, 0, 0, 0, 0, DateTimeKind.Local), 6.50m, null, 0 }
+                    { 1, 1, 2, true, new DateTime(2022, 10, 26, 2, 0, 0, 0, DateTimeKind.Local), "box1", new DateTime(2022, 10, 26, 0, 0, 0, 0, DateTimeKind.Local), 5.45m, 1, 0, true },
+                    { 2, 1, 1, false, new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local), "box2", new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local), 5.45m, null, 0, true },
+                    { 3, 1, 2, false, new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local), "verse producten", new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local), 6.50m, null, 0, true },
+                    { 4, 2, 2, false, new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local), "verse producten", new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local), 6.50m, null, 0, true },
+                    { 5, 2, 0, false, new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local), "nog versere producten", new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local), 6.50m, null, 0, true },
+                    { 6, 1, 1, true, new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local), "oude producten", new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local), 6.50m, null, 0, true }
                 });
 
             migrationBuilder.InsertData(
@@ -231,7 +228,6 @@ namespace Infrastructure.Migrations
                 column: "MealBoxesId");
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

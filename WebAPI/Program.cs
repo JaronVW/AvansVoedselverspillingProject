@@ -1,6 +1,9 @@
+using System.Text;
 using Core.DomainServices;
 using Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using WebAPI.GraphQl;
 
 var builder = WebApplication.CreateBuilder(args);

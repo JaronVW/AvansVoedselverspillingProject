@@ -29,7 +29,8 @@ public class MaaltijdboxController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        if (User.IsInRole("employee"))
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+        if (User != null && User.IsInRole("employee"))
         {
             Console.WriteLine(User.Identity.Name);
             ViewBag.cantine = _employeeRepository.GetEmployeeByEmail(User.Identity.Name).Canteen.Id;
@@ -128,17 +129,12 @@ public class MaaltijdboxController : Controller
     [Authorize(Roles = "student")]
     public IActionResult Gereserveerd()
     {
-        try
-        {
-            Console.WriteLine(User.Identity.Name);
-            var studentId = _studentRepository.GetStudentByEmail(User.Identity.Name).Id;
-            return View(_mealBoxRepository.GetMealBoxes()
-                .Where(m => m.Student != null && m.Student.Id == studentId));
-        }
-        catch
-        {
-            return RedirectToAction("Index", "Maaltijdbox");
-        }
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+        if (User == null) return RedirectToAction("Index", "Maaltijdbox");
+        
+        var studentId = _studentRepository.GetStudentByEmail(User.Identity.Name).Id;
+        return View(_mealBoxRepository.GetMealBoxes()
+            .Where(m => m.Student != null && m.Student.Id == studentId));
     }
 
     [HttpGet]
@@ -169,6 +165,8 @@ public class MaaltijdboxController : Controller
     [Authorize(Roles = "employee")]
     public IActionResult Aanmaken(MealBoxViewModel mealBoxVm)
     {
+        TempData["ErrorMessage"] = null;
+        
         MealBox mealBox = new MealBox()
         {
             MealBoxName = mealBoxVm.MealBoxName,
@@ -179,9 +177,18 @@ public class MaaltijdboxController : Controller
             Price = mealBoxVm.Price,
             Type = mealBoxVm.Type,
             CanteenId = mealBoxVm.CanteenId,
-            Products = new List<Product>()
+            Products = new List<Product>(),
+            WarmMeals = mealBoxVm.WarmMeals
+            
         };
 
+        if (mealBox.WarmMeals && _canteenRepository.GetCanteenById(mealBoxVm.CanteenId).WarmMealsprovided != true)
+        {
+            TempData["ErrorMessage"] = "Warme maaltijden zijn niet beschikbaar in deze kantine";
+             return RedirectToAction("Aanmaken");
+        }
+           
+        
         foreach (var sp in mealBoxVm.selectedProducts)
         {
             var mb = _productRepository.GetProductById(sp);

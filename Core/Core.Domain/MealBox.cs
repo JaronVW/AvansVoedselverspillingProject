@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace Domain
 {
@@ -29,9 +30,11 @@ namespace Domain
         public ICollection<Product>? Products { get; set; }= null!;
         
         public Canteen? Canteen { get; set; }= null!;
+        
         [Required(ErrorMessage = "Kantine verplicht")]
         public int CanteenId { get; set; }
-
+        
+        [Compare("Canteen.WarmMealsprovided",ErrorMessage = "Wachtwoorden komen niet overeen")]
         public bool WarmMeals { get; set; } = true;
 
     }

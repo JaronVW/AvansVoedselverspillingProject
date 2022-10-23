@@ -27,10 +27,9 @@ public class ApplicationDBContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
         base.OnModelCreating(modelBuilder);
-        
-        
+
+
         var student1 = new Student()
         {
             Id = 1,
@@ -97,28 +96,66 @@ public class ApplicationDBContext : DbContext
             { Id = 2, City = City.Tilburg, Address = "straat 5", PostalCode = "54321", WarmMealsprovided = false };
 
         var broodje = new Product()
-            { Id = 1, Name = "Broodje", ContainsAlcohol = false, Photo = "https://gezinoverdekook.nl/wp-content/uploads/Broodje-gezond-recept.jpeg", MealBoxes = new List<MealBox>() };
-        
+        {
+            Id = 1, Name = "Broodje", ContainsAlcohol = false,
+            Photo = "https://gezinoverdekook.nl/wp-content/uploads/Broodje-gezond-recept.jpeg",
+            MealBoxes = new List<MealBox>()
+        };
+
         var broodjeMozzarella = new Product()
-            { Id = 2, Name = "broodje mozzarella", ContainsAlcohol = false, Photo = "https://www.modernhoney.com/wp-content/uploads/2019/01/Pesto-Panini-with-Fresh-Mozzarella-and-Tomato-1-crop.jpg", MealBoxes = new List<MealBox>() };
+        {
+            Id = 2, Name = "broodje mozzarella", ContainsAlcohol = false,
+            Photo =
+                "https://www.modernhoney.com/wp-content/uploads/2019/01/Pesto-Panini-with-Fresh-Mozzarella-and-Tomato-1-crop.jpg",
+            MealBoxes = new List<MealBox>()
+        };
 
         var salade = new Product()
-            { Id = 3, Name = "verse salade", ContainsAlcohol = false, Photo = "https://www.thespruceeats.com/thmb/Z6IWF7c9zywuU9maSIimGLbHoI4=/3000x2000/filters:fill(auto,1)/classic-caesar-salad-recipe-996054-Hero_01-33c94cc8b8e841ee8f2a815816a0af95.jpg", MealBoxes = new List<MealBox>() };
+        {
+            Id = 3, Name = "verse salade", ContainsAlcohol = false,
+            Photo =
+                "https://www.thespruceeats.com/thmb/Z6IWF7c9zywuU9maSIimGLbHoI4=/3000x2000/filters:fill(auto,1)/classic-caesar-salad-recipe-996054-Hero_01-33c94cc8b8e841ee8f2a815816a0af95.jpg",
+            MealBoxes = new List<MealBox>()
+        };
 
         var broodjeEi = new Product()
-            { Id = 4, Name = "broodje ei", ContainsAlcohol = false, Photo = "https://www.acouplecooks.com/wp-content/uploads/2020/07/Egg-Salad-Sandwich-001.jpg", MealBoxes = new List<MealBox>() };
+        {
+            Id = 4, Name = "broodje ei", ContainsAlcohol = false,
+            Photo = "https://www.acouplecooks.com/wp-content/uploads/2020/07/Egg-Salad-Sandwich-001.jpg",
+            MealBoxes = new List<MealBox>()
+        };
 
         var fanta = new Product()
-            { Id = 5, Name = "fanta", ContainsAlcohol = false, Photo = "https://cdn11.bigcommerce.com/s-2fq65jrvsu/images/stencil/1280x1280/products/528/7297/fanta_orange-1__30340.1664974218.jpg?c=1", MealBoxes = new List<MealBox>() };
+        {
+            Id = 5, Name = "fanta", ContainsAlcohol = false,
+            Photo =
+                "https://cdn11.bigcommerce.com/s-2fq65jrvsu/images/stencil/1280x1280/products/528/7297/fanta_orange-1__30340.1664974218.jpg?c=1",
+            MealBoxes = new List<MealBox>()
+        };
 
         var kaasplankje = new Product()
-            { Id = 6, Name = "kaasplankje", ContainsAlcohol = false, Photo = "https://bettyskitchen.nl/wp-content/uploads/2013/12/zelf_kaasplankje_samenstellen_shutterstock_749650144.jpg", MealBoxes = new List<MealBox>() };
+        {
+            Id = 6, Name = "kaasplankje", ContainsAlcohol = false,
+            Photo =
+                "https://bettyskitchen.nl/wp-content/uploads/2013/12/zelf_kaasplankje_samenstellen_shutterstock_749650144.jpg",
+            MealBoxes = new List<MealBox>()
+        };
 
         var HertogJan = new Product()
-            { Id = 7, Name = "Hertog Jan", ContainsAlcohol = true, Photo = "https://www.drankuwel.nl/media/catalog/product/cache/d6a5bc6be806788c48ed774973599767/h/e/hertogjan-8packjpg.jpg", MealBoxes = new List<MealBox>() };
+        {
+            Id = 7, Name = "Hertog Jan", ContainsAlcohol = true,
+            Photo =
+                "https://www.drankuwel.nl/media/catalog/product/cache/d6a5bc6be806788c48ed774973599767/h/e/hertogjan-8packjpg.jpg",
+            MealBoxes = new List<MealBox>()
+        };
 
         var heineken = new Product()
-            { Id = 8, Name = "Heineken", ContainsAlcohol = true, Photo = "https://static.ah.nl/dam/product/AHI_43545239383731303039?revLabel=1&rendition=800x800_JPG_Q90&fileType=binary", MealBoxes = new List<MealBox>() };
+        {
+            Id = 8, Name = "Heineken", ContainsAlcohol = true,
+            Photo =
+                "https://static.ah.nl/dam/product/AHI_43545239383731303039?revLabel=1&rendition=800x800_JPG_Q90&fileType=binary",
+            MealBoxes = new List<MealBox>()
+        };
 
 
         var employee1 = new Employee()
@@ -219,21 +256,19 @@ public class ApplicationDBContext : DbContext
         };
 
 
-        
-
         modelBuilder.Entity<Student>().HasData(
             student1, student2, student3, student4, student5
         );
 
         modelBuilder.Entity<Product>().HasData(
-            broodje, heineken,broodjeEi,kaasplankje,HertogJan,broodjeMozzarella,salade,fanta
+            broodje, heineken, broodjeEi, kaasplankje, HertogJan, broodjeMozzarella, salade, fanta
         );
 
 
         modelBuilder.Entity<Canteen>().HasData(
             LD, KantineTilburg
         );
-        
+
         modelBuilder.Entity<Employee>().HasData(
             employee1
         );
@@ -260,7 +295,6 @@ public class ApplicationDBContext : DbContext
                         new { ProductsId = 5, MealBoxesId = 2 },
                         new { ProductsId = 6, MealBoxesId = 2 },
                         new { ProductsId = 2, MealBoxesId = 6 });
-                    
                 });
     }
 
@@ -269,6 +303,6 @@ public class ApplicationDBContext : DbContext
         // options.EnableSensitiveDataLogging();
         options.EnableSensitiveDataLogging();
         options.UseSqlServer(
-            "data source=LAPTOP-60VI45O7;initial catalog=voedselverspillingtest;trusted_connection=true;TrustServerCertificate=True;");
+            "Server=tcp:avansvoedselverspillingdb.database.windows.net,1433;Initial Catalog=AvoedselverspillingIdentity;Persist Security Info=False;User ID=avansvoedselverspillingdb;Password=yac7PJqE@X95!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
     }
 }

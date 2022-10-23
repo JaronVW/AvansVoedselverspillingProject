@@ -17,10 +17,10 @@ namespace Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0-rc.1.22426.7")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("Domain.Canteen", b =>
                 {
@@ -28,7 +28,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -73,7 +73,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CanteenId")
                         .HasColumnType("int");
@@ -117,7 +117,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CanteenId")
                         .HasColumnType("int");
@@ -165,9 +165,9 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 2,
                             EighteenPlus = true,
-                            ExpireTime = new DateTime(2022, 10, 24, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2022, 10, 26, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "box1",
-                            PickupDateTime = new DateTime(2022, 10, 24, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2022, 10, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 5.45m,
                             StudentId = 1,
                             Type = 0,
@@ -179,9 +179,9 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 1,
                             EighteenPlus = false,
-                            ExpireTime = new DateTime(2022, 10, 21, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "box2",
-                            PickupDateTime = new DateTime(2022, 10, 21, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 5.45m,
                             Type = 0,
                             WarmMeals = true
@@ -192,9 +192,9 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 2,
                             EighteenPlus = false,
-                            ExpireTime = new DateTime(2022, 10, 21, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "verse producten",
-                            PickupDateTime = new DateTime(2022, 10, 21, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 6.50m,
                             Type = 0,
                             WarmMeals = true
@@ -205,9 +205,9 @@ namespace Infrastructure.Migrations
                             CanteenId = 2,
                             City = 2,
                             EighteenPlus = false,
-                            ExpireTime = new DateTime(2022, 10, 21, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "verse producten",
-                            PickupDateTime = new DateTime(2022, 10, 21, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 6.50m,
                             Type = 0,
                             WarmMeals = true
@@ -218,9 +218,9 @@ namespace Infrastructure.Migrations
                             CanteenId = 2,
                             City = 0,
                             EighteenPlus = false,
-                            ExpireTime = new DateTime(2022, 10, 21, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "nog versere producten",
-                            PickupDateTime = new DateTime(2022, 10, 21, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 6.50m,
                             Type = 0,
                             WarmMeals = true
@@ -231,9 +231,9 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 1,
                             EighteenPlus = true,
-                            ExpireTime = new DateTime(2022, 10, 21, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "oude producten",
-                            PickupDateTime = new DateTime(2022, 10, 21, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 6.50m,
                             Type = 0,
                             WarmMeals = true
@@ -246,7 +246,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("ContainsAlcohol")
                         .HasColumnType("bit");
@@ -267,7 +267,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            ContainsAlcohol = true,
+                            ContainsAlcohol = false,
                             Name = "Broodje",
                             Photo = "https://gezinoverdekook.nl/wp-content/uploads/Broodje-gezond-recept.jpeg"
                         },
@@ -328,7 +328,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
