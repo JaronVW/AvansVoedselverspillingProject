@@ -17,10 +17,10 @@ namespace Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0-rc.1.22426.7")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("Domain.Canteen", b =>
                 {
@@ -28,7 +28,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -73,7 +73,14 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CanteenId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("EmployeeNumber")
                         .HasColumnType("int");
@@ -86,14 +93,22 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("WorkPlaceId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("WorkPlaceId");
+                    b.HasIndex("CanteenId");
 
                     b.ToTable("Employees");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CanteenId = 1,
+                            Email = "email@email.com",
+                            EmployeeNumber = 1,
+                            FirstName = "mede",
+                            LastName = "werker"
+                        });
                 });
 
             modelBuilder.Entity("Domain.MealBox", b =>
@@ -102,7 +117,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CanteenId")
                         .HasColumnType("int");
@@ -132,6 +147,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
+                    b.Property<bool>("WarmMeals")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CanteenId");
@@ -147,12 +165,13 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 2,
                             EighteenPlus = true,
-                            ExpireTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ExpireTime = new DateTime(2022, 10, 26, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "box1",
-                            PickupDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PickupDateTime = new DateTime(2022, 10, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 5.45m,
                             StudentId = 1,
-                            Type = 0
+                            Type = 0,
+                            WarmMeals = true
                         },
                         new
                         {
@@ -160,11 +179,64 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 1,
                             EighteenPlus = false,
-                            ExpireTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "box2",
-                            PickupDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 5.45m,
-                            Type = 0
+                            Type = 0,
+                            WarmMeals = true
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CanteenId = 1,
+                            City = 2,
+                            EighteenPlus = false,
+                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
+                            MealBoxName = "verse producten",
+                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            Price = 6.50m,
+                            Type = 0,
+                            WarmMeals = true
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CanteenId = 2,
+                            City = 2,
+                            EighteenPlus = false,
+                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
+                            MealBoxName = "verse producten",
+                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            Price = 6.50m,
+                            Type = 0,
+                            WarmMeals = true
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CanteenId = 2,
+                            City = 0,
+                            EighteenPlus = false,
+                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
+                            MealBoxName = "nog versere producten",
+                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            Price = 6.50m,
+                            Type = 0,
+                            WarmMeals = true
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CanteenId = 1,
+                            City = 1,
+                            EighteenPlus = true,
+                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
+                            MealBoxName = "oude producten",
+                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            Price = 6.50m,
+                            Type = 0,
+                            WarmMeals = true
                         });
                 });
 
@@ -174,7 +246,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("ContainsAlcohol")
                         .HasColumnType("bit");
@@ -195,16 +267,58 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            ContainsAlcohol = true,
+                            ContainsAlcohol = false,
                             Name = "Broodje",
-                            Photo = "test"
+                            Photo = "https://gezinoverdekook.nl/wp-content/uploads/Broodje-gezond-recept.jpeg"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ContainsAlcohol = true,
+                            Name = "Heineken",
+                            Photo = "https://static.ah.nl/dam/product/AHI_43545239383731303039?revLabel=1&rendition=800x800_JPG_Q90&fileType=binary"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ContainsAlcohol = false,
+                            Name = "broodje ei",
+                            Photo = "https://www.acouplecooks.com/wp-content/uploads/2020/07/Egg-Salad-Sandwich-001.jpg"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ContainsAlcohol = false,
+                            Name = "kaasplankje",
+                            Photo = "https://bettyskitchen.nl/wp-content/uploads/2013/12/zelf_kaasplankje_samenstellen_shutterstock_749650144.jpg"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ContainsAlcohol = true,
+                            Name = "Hertog Jan",
+                            Photo = "https://www.drankuwel.nl/media/catalog/product/cache/d6a5bc6be806788c48ed774973599767/h/e/hertogjan-8packjpg.jpg"
                         },
                         new
                         {
                             Id = 2,
-                            ContainsAlcohol = true,
-                            Name = "Heiniken",
-                            Photo = "BIER"
+                            ContainsAlcohol = false,
+                            Name = "broodje mozzarella",
+                            Photo = "https://www.modernhoney.com/wp-content/uploads/2019/01/Pesto-Panini-with-Fresh-Mozzarella-and-Tomato-1-crop.jpg"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ContainsAlcohol = false,
+                            Name = "verse salade",
+                            Photo = "https://www.thespruceeats.com/thmb/Z6IWF7c9zywuU9maSIimGLbHoI4=/3000x2000/filters:fill(auto,1)/classic-caesar-salad-recipe-996054-Hero_01-33c94cc8b8e841ee8f2a815816a0af95.jpg"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ContainsAlcohol = false,
+                            Name = "fanta",
+                            Photo = "https://cdn11.bigcommerce.com/s-2fq65jrvsu/images/stencil/1280x1280/products/528/7297/fanta_orange-1__30340.1664974218.jpg?c=1"
                         });
                 });
 
@@ -214,7 +328,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
@@ -249,249 +363,121 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BirthDate = new DateTime(2002, 1, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Jaron",
                             LastName = "lastname",
                             PhoneNumber = "12345",
                             StudentNumber = 12345,
                             StudyCity = 2,
-                            email = "mai@mail.com"
+                            email = "student@email.com"
                         },
                         new
                         {
                             Id = 2,
-                            BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BirthDate = new DateTime(2010, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "henk",
                             LastName = "vries",
                             PhoneNumber = "54321",
                             StudentNumber = 12345,
                             StudyCity = 0,
-                            email = "mai@mail.com"
+                            email = "henk@mail.com"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            BirthDate = new DateTime(1970, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Meneer",
+                            LastName = "student",
+                            PhoneNumber = "54321",
+                            StudentNumber = 12345,
+                            StudyCity = 0,
+                            email = "studentmeneer@mail.com"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            BirthDate = new DateTime(2001, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Lucas",
+                            LastName = "naam",
+                            PhoneNumber = "54321",
+                            StudentNumber = 12345,
+                            StudyCity = 0,
+                            email = "denaam@mail.com"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BirthDate = new DateTime(2010, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "henk",
+                            LastName = "das",
+                            PhoneNumber = "54321",
+                            StudentNumber = 12345,
+                            StudyCity = 0,
+                            email = "henkd@mail.com"
                         });
                 });
 
             modelBuilder.Entity("MealBoxProduct", b =>
                 {
-                    b.Property<int>("MealBoxesId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ProductsId")
                         .HasColumnType("int");
 
-                    b.HasKey("MealBoxesId", "ProductsId");
+                    b.Property<int>("MealBoxesId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("ProductsId");
+                    b.HasKey("ProductsId", "MealBoxesId");
+
+                    b.HasIndex("MealBoxesId");
 
                     b.ToTable("MealBoxProduct");
-                });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserLogins", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("AspNetUserTokens", (string)null);
+                    b.HasData(
+                        new
+                        {
+                            ProductsId = 7,
+                            MealBoxesId = 1
+                        },
+                        new
+                        {
+                            ProductsId = 7,
+                            MealBoxesId = 5
+                        },
+                        new
+                        {
+                            ProductsId = 1,
+                            MealBoxesId = 2
+                        },
+                        new
+                        {
+                            ProductsId = 2,
+                            MealBoxesId = 2
+                        },
+                        new
+                        {
+                            ProductsId = 5,
+                            MealBoxesId = 2
+                        },
+                        new
+                        {
+                            ProductsId = 6,
+                            MealBoxesId = 2
+                        },
+                        new
+                        {
+                            ProductsId = 2,
+                            MealBoxesId = 6
+                        });
                 });
 
             modelBuilder.Entity("Domain.Employee", b =>
                 {
-                    b.HasOne("Domain.Canteen", "WorkPlace")
+                    b.HasOne("Domain.Canteen", "Canteen")
                         .WithMany()
-                        .HasForeignKey("WorkPlaceId")
+                        .HasForeignKey("CanteenId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("WorkPlace");
+                    b.Navigation("Canteen");
                 });
 
             modelBuilder.Entity("Domain.MealBox", b =>
@@ -522,57 +508,6 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Product", null)
                         .WithMany()
                         .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

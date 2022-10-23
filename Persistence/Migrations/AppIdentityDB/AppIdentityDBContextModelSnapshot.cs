@@ -47,6 +47,22 @@ namespace Infrastructure.Migrations.AppIdentityDB
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
+                            ConcurrencyStamp = "af8f4eac-9893-4d47-80d3-6195ad548fbb",
+                            Name = "employee",
+                            NormalizedName = "EMPLOYEE"
+                        },
+                        new
+                        {
+                            Id = "4c5e174e-3b0e-446f-86af-483d56fd7210",
+                            ConcurrencyStamp = "01835eea-e1ae-42f2-ac51-794fe1d135fb",
+                            Name = "student",
+                            NormalizedName = "STUDENT"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -137,6 +153,36 @@ namespace Infrastructure.Migrations.AppIdentityDB
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "8d321519-7ae3-46a8-950a-e0d5bb553357",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "EMAIL@EMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAECkVRfcwphEBKI+vZ8OKL7MTqvwGWNlDrlU4RBeKGDJAmoFNksCOwp8GUpLuItn+jQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "cd5fc7c5-7658-4263-89a8-b89924596705",
+                            TwoFactorEnabled = false,
+                            UserName = "email@email.com"
+                        },
+                        new
+                        {
+                            Id = "9e445865-a24d-4543-a6c6-9443d048cdb9",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "8cc2989b-61e1-47ce-a0d8-4eff58c219d6",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "STUDENT@EMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEB8KHu2HmavjEJPNs2fsXpvF1S3zwW3KHjKVgQdzHNPWskEUrh+5I6W7FQl1ooLUMA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "588ca3d9-a79d-4d54-a9c6-598e577728d9",
+                            TwoFactorEnabled = false,
+                            UserName = "student@email.com"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -199,6 +245,18 @@ namespace Infrastructure.Migrations.AppIdentityDB
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                            RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210"
+                        },
+                        new
+                        {
+                            UserId = "9e445865-a24d-4543-a6c6-9443d048cdb9",
+                            RoleId = "4c5e174e-3b0e-446f-86af-483d56fd7210"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

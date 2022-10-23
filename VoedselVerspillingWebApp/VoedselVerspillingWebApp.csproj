@@ -9,7 +9,6 @@
     <ItemGroup>
       <Folder Include="Pages" />
       <Folder Include="ViewModels" />
-      <Folder Include="wwwroot\images" />
     </ItemGroup>
 
     <ItemGroup>
@@ -21,6 +20,7 @@
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.10" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0-rc.1.22426.7" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="6.0.10" />
     </ItemGroup>
 
 </Project>

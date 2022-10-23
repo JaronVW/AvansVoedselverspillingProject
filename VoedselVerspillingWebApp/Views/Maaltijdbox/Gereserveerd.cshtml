@@ -4,11 +4,11 @@
 @model IEnumerable<Domain.MealBox>
 
 
-<h1>Aanbod</h1>
+<h1 class="text-center" >Gereserveerd</h1>
 
-@foreach (var m in Model)
-{
-    <p>@m.Id</p>
-    
-
-}
+<div class="w-75 mx-auto  mt-5 grid-container mb-5 ">
+    @foreach (var m in Model)
+    {
+        <partial name="MaaltijdBox" model="m" />
+    }
+</div>

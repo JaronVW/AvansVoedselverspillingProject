@@ -4,18 +4,32 @@
 @model IEnumerable<Domain.MealBox>
 
 
-<h1>Beschikbare maaltijdboxen</h1>
+<h1 class="text-center">Beschikbare Maaltijdboxen</h1>
 
-@foreach (var m in Model)
+
+@if (User.IsInRole("employee") && ViewBag.cantine != null)
 {
-    <div>
-        <h3>@m.MealBoxName</h3>
-        <ul>
-            <li>@m.City , @m.Canteen</li>
-            <li>@m.PickupDateTime</li>
-            <li>@m.Price</li>
-        </ul>
-        <a asp-controller="Maaltijdbox" asp-action="BoxDetails" asp-route-id="@m.Id"><button >Details</button></a>
-        
+    <h3>Maaltijdboxen van uw kantine</h3>
+    <div class="w-75 mx-auto  mt-5 grid-container mb-5 ">
+        @foreach (var m in Model.Where(m => m.CanteenId == ViewBag.cantine))
+        {
+        <partial name="MaaltijdBox" model="m"/>
+        }
+    </div>
+    <h3>Maaltijdboxen van andere kantines</h3>
+    <div class="w-75 mx-auto  mt-5 grid-container mb-5 ">
+        @foreach (var m in Model.Where(m => m.CanteenId != ViewBag.cantine))
+        {
+        <partial name="MaaltijdBox" model="m"/>
+        }
+    </div>
+}
+else
+{
+    <div class="w-75 mx-auto  mt-5 grid-container mb-5 ">
+        @foreach (var m in Model)
+        {
+            <partial name="MaaltijdBox" model="m"/>
+        }
     </div>
 }

@@ -6,7 +6,7 @@ namespace Infrastructure;
 public class StudentEFRepository :IStudentRepository
 {
 
-    private ApplicationDBContext _context;
+    private readonly ApplicationDBContext _context;
     
     public StudentEFRepository(ApplicationDBContext context)
     {
@@ -21,6 +21,11 @@ public class StudentEFRepository :IStudentRepository
     public Student GetStudentById(int id)
     {
          return _context.Students.First(s => s.Id == id);
+    }
+    
+    public Student GetStudentByEmail(string email)
+    {
+        return  _context.Students.FirstOrDefault(s => s.email == email);
     }
 
     public void UpdateStudent(Student student)

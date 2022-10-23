@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<IdentityUser> _signInManager;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -8,51 +10,87 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/VoedselVerspillingWebApp.styles.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/fonts/bootstrap-icons.css" asp-append-version="true"/>
+    @await RenderSectionAsync("styles", false)
 </head>
-<body>
+<body class="">
 <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-4">
+    <nav class="navbar navbar-expand-lg navbar-light   p-4 mb-4">
 
-            <a class="navbar-brand" href="#">Voedselverspilling</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active " aria-current="page" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Maaltijdbox" asp-action="Index">Maaltijdboxen</a>
-                    </li>
+        <a class="navbar-brand " asp-controller="Home" asp-action="Index">
+            <img src="/images/logo.png" alt="Website logo" width="40" style="border-radius: 4px" height="" class="">
+            Voedselverspilling
+        </a>
+        <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                @* <li class="nav-item"> *@
+                @*     <a class="nav-link active  " aria-current="page" asp-controller="Home" asp-action="Index">Home</a> *@
+                @* </li> *@
+                <li class="nav-item">
+                    <a class="nav-link " asp-controller="Maaltijdbox" asp-action="Index">Maaltijdboxen</a>
+                </li>
+
+                @if (User.IsInRole("student"))
+                {
                     <li class="nav-item">
                         <a class="nav-link " asp-controller="Maaltijdbox" asp-action="Gereserveerd">Mijn Reserveringen</a>
                     </li>
+                }
+                else if (User.IsInRole("employee"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link " asp-controller="Maaltijdbox" asp-action="Aanmaken">Maaltijdbox Maken</a>
+                    </li>
+                }
+            </ul>
 
-                </ul>
-
-                <ul class="nav navbar-nav ms-auto mb-2 mb-lg-0">
+            <ul class="nav navbar-nav ms-auto mb-2 mb-lg-0">
+                @if (_signInManager.IsSignedIn(User))
+                {
                     <li>
-                        <a asp-controller="Profile" class="nav-link "><i class="bi bi-person-circle"></i></a>
+                        <a asp-controller="Account" asp-action="Profile" class="nav-link  ">
+                            <i class="bi bi-person-circle"></i>
+                        </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link "><i class="bi bi-gear-fill"></i></a>
+                        <a href="#" class="nav-link ">
+                            <i class="bi bi-gear-fill"></i>
+                        </a>
                     </li>
-                </ul>
-            </div>
+                    <li>
+                        <form id="logoutForm" asp-controller="Account" asp-action="Logout">
+                            <a href="#" aria-labelledby="account/logout" class="nav-link" onclick="document.getElementById('logoutForm').submit()">
+                                Uitloggen
+                            </a>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a asp-controller="Account" asp-action="Login" class="nav-link  ">
+                            Inloggen
+                        </a>
+                    </li>
+                }
 
-        </nav>
+            </ul>
+        </div>
+
+    </nav>
 </header>
-<div class="container">
+<div class="container ">
     <main role="main" class="pb-3">
         @RenderBody()
     </main>
 </div>
 
-<footer class="border-top footer text-muted">
+<footer class="border-top footer  navbar-light bg-light">
     <div class="container">
-        &copy; 2022 - VoedselVerspillingWebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        &copy; 2022 - VoedselVerspillingWebApp - <a asp-area="" class="" asp-controller="Home" asp-action="Privacy">Privacy</a>
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

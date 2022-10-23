@@ -1,9 +1,144 @@
 ﻿@model Domain.MealBox
 
 @{
-    ViewBag.Title = "Maaltijdbox details";
+    ViewBag.Title = Model.MealBoxName + " Details";
+
 }
 
-<h2>@Model.MealBoxName</h2>
+<div class=" container mt-5 mb-3">
 
-<p>€@Model.Price</p>
+    <div class="row my-2">
+        <div class="col">
+            <h2 class="display-4">@Model.MealBoxName</h2>
+        </div>
+    </div>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="row my-2">
+            <div class="col text-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        </div>
+    }
+    <div class="row my-2">
+        <div class="col">
+            @if (Model.Products.Count > 0)
+            {
+                var r = new Random().Next(Model.Products.Count);
+                <img src="@Model.Products.ToList()[r].Photo" class="img-thumbnail" style="width: 20rem" alt="">
+            }
+            else
+            {
+                <img src="/images/box.jpg" class="card-img-top " style="height: 20em; object-fit: cover" alt="...">
+            }
+    
+
+        </div>
+
+        <div class="col">
+            @if (@Model.Products != null)
+            {
+                <h3>Kan producten bevatten zoals:</h3>
+                <ul>
+                    @foreach (var p in @Model.Products)
+                    {
+                        <li>@p.Name</li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+    <div class="row my-2">
+        <div class="col">
+            <h3>€@Model.Price</h3>
+        </div>
+    </div>
+    <div class="row my-2">
+        <div class="col">
+            <p>Op te halen van @Model.PickupDateTime tot @Model.ExpireTime</p>
+        </div>
+
+    </div>
+    @if (@User.IsInRole("student"))
+    {
+        @if (@Model.StudentId != null)
+        {
+            <div class="row my-2">
+                <li class="list-inline-item">
+                    <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#ReserveModal">Reservatie annuleren</button>
+                </li>
+            </div>
+
+            <div class="modal fade" id="ReserveModal" tabindex="-1" aria-labelledby="ReserveerModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Wilt u dit pakket reserveren?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Annuleren</button>
+                            <a asp-controller="Maaltijdbox" asp-action="ReserveerAnnuleer" asp-route-mealBoxId="@Model.Id" asp-route-studentId="@ViewBag.studentId">
+                                <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Reservering annuleren</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row my-2">
+                <li class="list-inline-item">
+                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#ReserveModal">Reserveren</button>
+                </li>
+            </div>
+
+            <div class="modal fade" id="ReserveModal" tabindex="-1" aria-labelledby="ReserveerModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Wilt u dit pakket reserveren?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Annuleren</button>
+                            <a asp-controller="Maaltijdbox" asp-action="Reserveer" asp-route-mealBoxId="@Model.Id" asp-route-studentId="@ViewBag.studentId">
+                                <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Bevestigen</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+    else if (@User.IsInRole("employee"))
+    {
+        <a asp-controller="Maaltijdbox" asp-action="Aanpassen" asp-route-id="@Model.Id">
+            <button class="btn btn-outline-info">Wijzigen</button>
+        </a>
+        <div class="modal fade" id="ReserveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Wilt u dit pakket reserveren?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Annuleren</button>
+                        <a asp-controller="Maaltijdbox" asp-action="Reserveer" asp-route-id="@Model.Id">
+                            <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Bevestigen</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+<hr>

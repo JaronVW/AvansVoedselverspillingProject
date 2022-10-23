@@ -5,14 +5,21 @@ namespace Core.DomainServices;
 public interface IMealBoxRepository
 {
     IEnumerable<MealBox> GetMealBoxes();
+    Task<List<MealBox>> GetMealBoxesAsync();
 
     MealBox GetMealBoxById(int id);
 
-    void AddMealBox(MealBox mealBox);
+    void  AddMealBox(MealBox mealBox);
 
     void UpdateMealBox(MealBox mealBox);
 
     void DeleteMealBox(MealBox mealBox);
 
+    MealBox? GetReservedMealBoxToday(int studentId , DateTime date);
 
+    void DeleteMealBoxProducts(MealBox mealBox);
+
+
+    void DeleteMealBoxById(int id);
+    void ReserveMealBox(int mealBoxId, int studentId);
 }

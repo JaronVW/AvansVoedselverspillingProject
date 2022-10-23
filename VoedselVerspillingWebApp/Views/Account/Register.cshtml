@@ -1,0 +1,31 @@
+﻿@model registerViewModel
+
+@{
+    Layout = "_LoginLayout";
+}
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="login-form-wrapper">
+    <h1 class="text-center">Voedselverspilling</h1>
+
+    <div class="  form-container p-3">
+        <h3>Maak een account aan</h3>
+        <form asp-action="Register" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="mb-3">
+                <input type="email" class="form-control" placeholder="Email" asp-for="Email" id="email">
+            </div>
+            <div class="mb-3">
+                <input type="password" class="form-control" placeholder="Wachtwoord" asp-for="Password" id="password">
+            </div>
+            <div class="mb-3">
+                <input type="password" class="form-control" asp-for="PasswordConfirm" placeholder="Wachtwoord Herhalen" id="PasswordConfirm">
+            </div>
+            <input type="submit" class="btn btn-outline-success" value="Registreren">
+
+        </form>
+    </div>
+</div>

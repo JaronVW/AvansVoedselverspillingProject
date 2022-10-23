@@ -1,48 +1,78 @@
 ﻿using Core.DomainServices;
 using Domain;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
 
 public class MealBoxEFRepository : IMealBoxRepository
 {
+    private readonly ApplicationDBContext _context;
 
-    private ApplicationDBContext _context;
-    
-    
+
     public MealBoxEFRepository(ApplicationDBContext context)
     {
         _context = context;
     }
+
     public IEnumerable<MealBox> GetMealBoxes()
     {
-        return _context.MealBoxes.ToList();
+        return _context.MealBoxes
+            .OrderBy(box => box.PickupDateTime)
+            .Include(m => m.Products)
+            .ToList();
     }
-    
+
+    public IEnumerable<MealBox> GetMealBoxesDateAscending()
+    {
+        return _context.MealBoxes.Include(m => m.Products).ToList();
+    }
+
+    public async Task<List<MealBox>> GetMealBoxesAsync()
+    {
+        return await _context.MealBoxes
+            .Include(m => m.Student)
+            .Include(m => m.Products)
+            .ToListAsync();
+    }
+
     public IEnumerable<MealBox> GetMealBoxesEighteenPlus()
     {
-        return _context.MealBoxes.Where(b => b.EighteenPlus  ).ToList();
+        return _context.MealBoxes.Where(b => b.EighteenPlus).ToList();
     }
 
     public MealBox GetMealBoxById(int id)
     {
-        return _context.MealBoxes.First(b => b.Id == id);
+        return _context.MealBoxes
+            .Include(m => m.Student)
+            .Include(m => m.Products)
+            .First(b => b.Id == id);
     }
 
-    public async void AddMealBox(MealBox mealBox)
+
+    public void AddMealBox(MealBox mealBox)
     {
-        _context.MealBoxes.Add(mealBox);
-        await _context.SaveChangesAsync();
+        try
+        {
+            _context.MealBoxes.Add(mealBox);
+            _context.SaveChanges();
+        }
+        catch (SqlException ex)
+        {
+            foreach (SqlError error in ex.Errors)
+            {
+                Console.WriteLine(error);
+            }
+        }
     }
-    
+
 
     public void UpdateMealBox(MealBox mealBox)
     {
-        var recordToUpdate = _context.MealBoxes.FirstOrDefault(m => m.Id == mealBox.Id);
-        recordToUpdate = mealBox;
-        _context.MealBoxes.Update(recordToUpdate);
+        _context.MealBoxes.Update(mealBox);
         _context.SaveChanges();
     }
-    
+
 
     public void DeleteMealBox(MealBox mealBox)
     {
@@ -50,17 +80,31 @@ public class MealBoxEFRepository : IMealBoxRepository
         _context.SaveChanges();
     }
 
-    public ICollection<Product> GetMealBoxProducts(int id)
+    public void DeleteMealBoxProducts(MealBox mealBox)
     {
-        return _context.MealBoxes.First(m => m.Id == id).Products;
+        _context.MealBoxes.First(m => m.Id == mealBox.Id).Products = null;
+        _context.SaveChanges();
+    }
+
+    public void DeleteMealBoxById(int id)
+    {
+        _context.MealBoxes.Remove(_context.MealBoxes.Find(id));
+        _context.SaveChanges();
+    }
+
+    
+
+    public MealBox? GetReservedMealBoxToday(int studentId, DateTime date)
+    {
+        return _context.MealBoxes
+            .FirstOrDefault(box => box.StudentId == studentId && box.PickupDateTime.Date == date.Date);
     }
 
     public void ReserveMealBox(int mealBoxId, int studentId)
-    { 
+    {
         var recordToUpdate = _context.MealBoxes.FirstOrDefault(m => m.Id == mealBoxId);
         recordToUpdate.Student = _context.Students.FirstOrDefault(m => m.Id == studentId);
         _context.MealBoxes.Update(recordToUpdate);
         _context.SaveChanges();
     }
-    
 }

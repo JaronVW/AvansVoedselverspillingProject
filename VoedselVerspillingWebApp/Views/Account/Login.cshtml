@@ -1,0 +1,30 @@
+﻿@model loginViewModel
+
+@{
+    Layout = "_LoginLayout";
+    ViewData["Title"] = "Login";
+    var returnUrl = Context.Request.Query["ReturnUrl"];
+}
+
+<div class="login-form-wrapper">
+    <h1 class="text-center">Voedselverspilling</h1>
+
+    <div class="  form-container p-3">
+        <h3>Login</h3>
+        <form asp-action="Login" asp-route-returnurl = "@returnUrl" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="mb-3">
+                <input type="email" class="form-control" placeholder="Email" asp-for="Email" id="email">
+            </div>
+            <div class="mb-3">
+                <input type="password" class="form-control" placeholder="Wachtwoord" asp-for="Password" id="password">
+            </div>
+            <div class="form-check">
+                <input asp-for="RememberUser" class="form-check-input">
+                <label asp-for="RememberUser" class="form-check-label" for="rememberUserCheck">Onthoud mij</label>
+            </div>
+            <input type="submit" class="btn btn-outline-success" value="Login">
+
+        </form>
+    </div>
+</div>
