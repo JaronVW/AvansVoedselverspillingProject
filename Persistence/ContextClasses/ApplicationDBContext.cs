@@ -303,6 +303,6 @@ public class ApplicationDBContext : DbContext
         // options.EnableSensitiveDataLogging();
         options.EnableSensitiveDataLogging();
         options.UseSqlServer(
-            "Server=tcp:avansvoedselverspillingdb.database.windows.net,1433;Initial Catalog=AvoedselverspillingIdentity;Persist Security Info=False;User ID=avansvoedselverspillingdb;Password=yac7PJqE@X95!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            "data source=LAPTOP-60VI45O7;initial catalog=voedselverspillingtest;trusted_connection=true;TrustServerCertificate=true;");
     }
 }

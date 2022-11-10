@@ -30,6 +30,8 @@ builder.Services.AddScoped<IProductRepository, ProductEFRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentEFRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeEFRepository>();
 
+builder.Services.AddScoped<IMealBoxUpdateMethods, MealBoxupdateMethods>();
+
 
 var app = builder.Build();
 

@@ -17,7 +17,7 @@ public class AppIdentityDBContext : IdentityDbContext
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
         options.UseSqlServer(
-            "Server=tcp:avansvoedselverspillingdb.database.windows.net,1433;Initial Catalog=Server=tcp:avansvoedselverspillingdb.database.windows.net,1433;Initial Catalog=AvoedselverspillingIdentity;Persist Security Info=False;User ID=avansvoedselverspillingdb;Password=yac7PJqE@X95!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            "data source=LAPTOP-60VI45O7;initial catalog=voedselverspillingtestId;trusted_connection=true;TrustServerCertificate=true;");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
