@@ -48,6 +48,7 @@ public class MaaltijdboxController : Controller
         {
             ViewBag.studentId = _studentRepository.GetStudentByEmail(User.Identity.Name).Id;
         }
+
         return View(_mealBoxRepository.GetMealBoxes()
             .First(m => m.Id == id));
     }
@@ -110,40 +111,12 @@ public class MaaltijdboxController : Controller
     public IActionResult Aanmaken(MealBoxViewModel mealBoxVm)
     {
         TempData["ErrorMessage"] = null;
-
-        MealBox mealBox = new MealBox()
-        {
-            MealBoxName = mealBoxVm.MealBoxName,
-            City = mealBoxVm.City,
-            PickupDateTime = mealBoxVm.PickupDateTime,
-            ExpireTime = mealBoxVm.ExpireTime,
-            EighteenPlus = mealBoxVm.EighteenPlus,
-            Price = mealBoxVm.Price,
-            Type = mealBoxVm.Type,
-            CanteenId = mealBoxVm.CanteenId,
-            Products = new List<Product>(),
-            WarmMeals = mealBoxVm.WarmMeals
-        };
-
-        if (mealBox.WarmMeals && _canteenRepository.GetCanteenById(mealBoxVm.CanteenId).WarmMealsprovided != true)
+        if (mealBoxVm.WarmMeals && _canteenRepository.GetCanteenById(mealBoxVm.CanteenId).WarmMealsprovided != true)
         {
             TempData["ErrorMessage"] = "Warme maaltijden zijn niet beschikbaar in deze kantine";
             return RedirectToAction("Aanmaken");
         }
-
-
-        foreach (var sp in mealBoxVm.selectedProducts)
-        {
-            var mb = _productRepository.GetProductById(sp);
-            mealBox.Products.Add(mb);
-            if (mb.ContainsAlcohol)
-            {
-                mealBox.EighteenPlus = true;
-            }
-        }
-
-        _mealBoxRepository.AddMealBox(mealBox);
-        return View("BoxDetails", mealBox);
+        return View("BoxDetails", _mealBoxRepository.AddMealBox(mealBoxVm));
     }
 
     [Authorize(Roles = "employee")]

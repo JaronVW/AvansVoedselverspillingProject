@@ -1,4 +1,5 @@
 ﻿using Domain;
+using VoedselVerspillingWebApp.Models;
 
 namespace Core.DomainServices;
 
@@ -9,7 +10,7 @@ public interface IMealBoxRepository
 
     MealBox GetMealBoxById(int id);
 
-    void  AddMealBox(MealBox mealBox);
+    MealBox  AddMealBox(MealBoxViewModel mealBoxVm);
 
     void UpdateMealBox(MealBox mealBox);
 

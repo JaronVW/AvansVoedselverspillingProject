@@ -7,13 +7,11 @@ namespace Infrastructure;
 public class MealBoxupdateMethods : IMealBoxUpdateMethods
 {
     private readonly IMealBoxRepository _mealBoxRepository;
-
     private readonly IProductRepository _productRepository;
 
     public MealBoxupdateMethods(IMealBoxRepository mealBoxRepository,  IProductRepository productRepository)
     {
         _mealBoxRepository = mealBoxRepository;
-
         _productRepository = productRepository;
     }
 
@@ -83,6 +81,11 @@ public class MealBoxupdateMethods : IMealBoxUpdateMethods
         _mealBoxRepository.DeleteMealBox(_mealBoxRepository.GetMealBoxById(mealBoxVm.Id));
         mealBox.EighteenPlus = mealBox.Products.Any(m => m.ContainsAlcohol);
         _mealBoxRepository.UpdateMealBox(mealBox);
+        return true;
+    }
+    
+    public bool reserveMealBox(int mealBoxId, int studentId)
+    {
         return true;
     }
 }

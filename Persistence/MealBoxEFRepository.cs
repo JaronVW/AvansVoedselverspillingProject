@@ -2,6 +2,7 @@
 using Domain;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using VoedselVerspillingWebApp.Models;
 
 namespace Infrastructure;
 
@@ -49,20 +50,40 @@ public class MealBoxEFRepository : IMealBoxRepository
             .First(b => b.Id == id);
     }
 
-
-    public void AddMealBox(MealBox mealBox)
+    public MealBox AddMealBox(MealBoxViewModel mealBoxVm)
     {
         try
         {
+            MealBox mealBox = new MealBox()
+            {
+                MealBoxName = mealBoxVm.MealBoxName,
+                City = mealBoxVm.City,
+                PickupDateTime = mealBoxVm.PickupDateTime,
+                ExpireTime = mealBoxVm.ExpireTime,
+                EighteenPlus = mealBoxVm.EighteenPlus,
+                Price = mealBoxVm.Price,
+                Type = mealBoxVm.Type,
+                CanteenId = mealBoxVm.CanteenId,
+                Products = new List<Product>(),
+                WarmMeals = mealBoxVm.WarmMeals
+            };
+            
+            foreach (var sp in mealBoxVm.selectedProducts)
+            {
+                var mb = _context.Products.Find(sp);
+                mealBox.Products.Add(mb);
+                if (mb.ContainsAlcohol)
+                {
+                    mealBox.EighteenPlus = true;
+                }
+            }
             _context.MealBoxes.Add(mealBox);
             _context.SaveChanges();
+            return mealBox;
         }
-        catch (SqlException ex)
+        catch
         {
-            foreach (SqlError error in ex.Errors)
-            {
-                Console.WriteLine(error);
-            }
+            return null;
         }
     }
 
@@ -92,7 +113,6 @@ public class MealBoxEFRepository : IMealBoxRepository
         _context.SaveChanges();
     }
 
-    
 
     public MealBox? GetReservedMealBoxToday(int studentId, DateTime date)
     {
