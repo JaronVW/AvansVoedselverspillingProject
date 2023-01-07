@@ -18,7 +18,8 @@ namespace Infrastructure.Migrations
                     City = table.Column<int>(type: "int", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WarmMealsprovided = table.Column<bool>(type: "bit", nullable: true)
+                    WarmMealsprovided = table.Column<bool>(type: "bit", nullable: true),
+                    CanteenName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -141,11 +142,11 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Canteens",
-                columns: new[] { "Id", "Address", "City", "PostalCode", "WarmMealsprovided" },
+                columns: new[] { "Id", "Address", "CanteenName", "City", "PostalCode", "WarmMealsprovided" },
                 values: new object[,]
                 {
-                    { 1, "straat 2", 2, "12345", true },
-                    { 2, "straat 5", 0, "54321", false }
+                    { 1, "straat 2", "LD", 2, "12345", true },
+                    { 2, "straat 5", "KantineTilburg", 0, "54321", false }
                 });
 
             migrationBuilder.InsertData(
@@ -185,12 +186,12 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "CanteenId", "City", "EighteenPlus", "ExpireTime", "MealBoxName", "PickupDateTime", "Price", "StudentId", "Type", "WarmMeals" },
                 values: new object[,]
                 {
-                    { 1, 1, 2, true, new DateTime(2022, 10, 26, 2, 0, 0, 0, DateTimeKind.Local), "box1", new DateTime(2022, 10, 26, 0, 0, 0, 0, DateTimeKind.Local), 5.45m, 1, 0, true },
-                    { 2, 1, 1, false, new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local), "box2", new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local), 5.45m, null, 0, true },
-                    { 3, 1, 2, false, new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local), "verse producten", new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local), 6.50m, null, 0, true },
-                    { 4, 2, 2, false, new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local), "verse producten", new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local), 6.50m, null, 0, true },
-                    { 5, 2, 0, false, new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local), "nog versere producten", new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local), 6.50m, null, 0, true },
-                    { 6, 1, 1, true, new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local), "oude producten", new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local), 6.50m, null, 0, true }
+                    { 1, 1, 2, true, new DateTime(2023, 1, 10, 2, 0, 0, 0, DateTimeKind.Local), "box1", new DateTime(2023, 1, 10, 0, 0, 0, 0, DateTimeKind.Local), 5.45m, 1, 0, true },
+                    { 2, 1, 1, false, new DateTime(2023, 1, 7, 2, 0, 0, 0, DateTimeKind.Local), "box2", new DateTime(2023, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), 5.45m, null, 0, true },
+                    { 3, 1, 2, false, new DateTime(2023, 1, 7, 2, 0, 0, 0, DateTimeKind.Local), "verse producten", new DateTime(2023, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), 6.50m, null, 0, true },
+                    { 4, 2, 2, false, new DateTime(2023, 1, 7, 2, 0, 0, 0, DateTimeKind.Local), "verse producten", new DateTime(2023, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), 6.50m, null, 0, true },
+                    { 5, 2, 0, false, new DateTime(2023, 1, 7, 2, 0, 0, 0, DateTimeKind.Local), "nog versere producten", new DateTime(2023, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), 6.50m, null, 0, true },
+                    { 6, 1, 1, true, new DateTime(2023, 1, 7, 2, 0, 0, 0, DateTimeKind.Local), "oude producten", new DateTime(2023, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), 6.50m, null, 0, true }
                 });
 
             migrationBuilder.InsertData(

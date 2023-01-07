@@ -1,26 +1,31 @@
-﻿using Core.DomainServices;
+﻿using Core.Domain;
+using Core.DomainServices;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 using VoedselVerspillingWebApp.Models;
 
 namespace Infrastructure;
 
-public class MealBoxupdateMethods : IMealBoxUpdateMethods
+public class MealBoxUpdateMethodsRepository : IMealBoxUpdateMethods
 {
-    private readonly IMealBoxRepository _mealBoxRepository;
-    private readonly IProductRepository _productRepository;
+    private readonly ApplicationDBContext _context;
 
-    public MealBoxupdateMethods(IMealBoxRepository mealBoxRepository,  IProductRepository productRepository)
+    public MealBoxUpdateMethodsRepository(
+        ApplicationDBContext context)
     {
-        _mealBoxRepository = mealBoxRepository;
-        _productRepository = productRepository;
+        _context = context;
     }
 
     public MealBoxViewModel updateMealBoxGet(int id)
     {
-        var m = _mealBoxRepository.GetMealBoxById(id);
+        var m = _context.MealBoxes
+            .Include(m => m.Student)
+            .Include(m => m.Products)
+            .First(b => b.Id == id);
 
         var vm = new MealBoxViewModel
         {
+            Id = m.Id,
             MealBoxName = m.MealBoxName,
             City = m.City,
             PickupDateTime = m.PickupDateTime,
@@ -31,7 +36,7 @@ public class MealBoxupdateMethods : IMealBoxUpdateMethods
             StudentId = m.StudentId,
             ProductCheckBoxes = new List<CheckBoxItem>()
         };
-        foreach (var p in _productRepository.GetProducts())
+        foreach (var p in _context.Products)
         {
             if (m.Products.Contains(p))
             {
@@ -59,7 +64,7 @@ public class MealBoxupdateMethods : IMealBoxUpdateMethods
     public bool updateMealBoxPost(MealBoxViewModel mealBoxVm)
     {
         if (mealBoxVm.StudentId != null) return false;
-        MealBox mealBox = new MealBox()
+        var mealBox = new MealBox()
         {
             MealBoxName = mealBoxVm.MealBoxName,
             City = mealBoxVm.City,
@@ -72,20 +77,39 @@ public class MealBoxupdateMethods : IMealBoxUpdateMethods
             Products = new List<Product>()
         };
 
-        foreach (var sp in mealBoxVm.selectedProducts)
+        if (mealBoxVm.SelectedProducts != null)
         {
-            mealBox.Products.Add(_productRepository.GetProductById(sp));
+            foreach (var sp in mealBoxVm.SelectedProducts)
+            {
+                mealBox.Products.Add(_context.Products.Find(sp));
+            }
+            mealBox.EighteenPlus = mealBox.Products.Any(m => m.ContainsAlcohol);
         }
-
-
-        _mealBoxRepository.DeleteMealBox(_mealBoxRepository.GetMealBoxById(mealBoxVm.Id));
-        mealBox.EighteenPlus = mealBox.Products.Any(m => m.ContainsAlcohol);
-        _mealBoxRepository.UpdateMealBox(mealBox);
+        
+        _context.Remove(_context.MealBoxes.Find(mealBoxVm.Id));
+        _context.MealBoxes.Update(mealBox);
+        _context.SaveChanges();
         return true;
     }
     
-    public bool reserveMealBox(int mealBoxId, int studentId)
+    public MealBoxViewModel formCreateViewModel()
     {
-        return true;
+        var vm = new MealBoxViewModel
+        {
+            PickupDateTime = DateTime.Now,
+            ExpireTime = DateTime.Now.AddHours(2).AddDays(1),
+            ProductCheckBoxes = new List<CheckBoxItem>()
+        };
+        foreach (var p in _context.Products)
+        {
+            vm.ProductCheckBoxes.Add(new CheckBoxItem()
+            {
+                Id = p.Id,
+                Name = p.Name,
+                IsChecked = false
+            });
+        }
+
+        return vm;
     }
 }

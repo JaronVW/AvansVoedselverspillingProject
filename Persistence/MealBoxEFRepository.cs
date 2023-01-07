@@ -1,4 +1,5 @@
-﻿using Core.DomainServices;
+﻿using Core.Domain;
+using Core.DomainServices;
 using Domain;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -52,39 +53,38 @@ public class MealBoxEFRepository : IMealBoxRepository
 
     public MealBox AddMealBox(MealBoxViewModel mealBoxVm)
     {
-        try
+        
+        
+        var mealBox = new MealBox()
         {
-            MealBox mealBox = new MealBox()
+            MealBoxName = mealBoxVm.MealBoxName,
+            City = mealBoxVm.City,
+            PickupDateTime = mealBoxVm.PickupDateTime,
+            ExpireTime = mealBoxVm.ExpireTime,
+            EighteenPlus = false,
+            Price = mealBoxVm.Price,
+            Type = mealBoxVm.Type,
+            CanteenId = mealBoxVm.CanteenId,
+            Products = new List<Product>(),
+            WarmMeals = mealBoxVm.WarmMeals
+        };
+
+        if (mealBoxVm.SelectedProducts != null)
+        {
+            foreach (var mb in mealBoxVm.SelectedProducts.Select(sp => _context.Products.Find(sp)))
             {
-                MealBoxName = mealBoxVm.MealBoxName,
-                City = mealBoxVm.City,
-                PickupDateTime = mealBoxVm.PickupDateTime,
-                ExpireTime = mealBoxVm.ExpireTime,
-                EighteenPlus = mealBoxVm.EighteenPlus,
-                Price = mealBoxVm.Price,
-                Type = mealBoxVm.Type,
-                CanteenId = mealBoxVm.CanteenId,
-                Products = new List<Product>(),
-                WarmMeals = mealBoxVm.WarmMeals
-            };
-            
-            foreach (var sp in mealBoxVm.selectedProducts)
-            {
-                var mb = _context.Products.Find(sp);
+                if (mb == null) continue;
                 mealBox.Products.Add(mb);
                 if (mb.ContainsAlcohol)
                 {
                     mealBox.EighteenPlus = true;
                 }
             }
-            _context.MealBoxes.Add(mealBox);
-            _context.SaveChanges();
-            return mealBox;
         }
-        catch
-        {
-            return null;
-        }
+
+        _context.MealBoxes.Add(mealBox);
+        _context.SaveChanges();
+        return mealBox;
     }
 
 

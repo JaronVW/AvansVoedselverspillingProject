@@ -48,7 +48,7 @@ public class ApplicationDBContext : DbContext
             LastName = "vries",
             BirthDate = new DateTime(2010, 5, 20),
             StudentNumber = 12345,
-            email = "henk@mail.com",
+            email = "henkvries@mail.com",
             StudyCity = City.Tilburg,
             PhoneNumber = "54321"
         };
@@ -84,16 +84,33 @@ public class ApplicationDBContext : DbContext
             LastName = "naam",
             BirthDate = new DateTime(2001, 5, 20),
             StudentNumber = 12345,
-            email = "denaam@mail.com",
+            email = "adres@mail.com",
             StudyCity = City.Tilburg,
-            PhoneNumber = "54321"
+            PhoneNumber = "54321",
         };
 
 
         var LD = new Canteen()
-            { Id = 1, City = City.Breda, Address = "straat 2", PostalCode = "12345", WarmMealsprovided = true };
+        {
+            Id = 1, City = City.Breda, Address = "straat 2", PostalCode = "12345", WarmMealsprovided = true,
+            CanteenName = "LD"
+        };
         var KantineTilburg = new Canteen()
-            { Id = 2, City = City.Tilburg, Address = "straat 5", PostalCode = "54321", WarmMealsprovided = false };
+        {
+            Id = 2, City = City.Tilburg, Address = "straat 5", PostalCode = "54321", WarmMealsprovided = false,
+            CanteenName = "Kantine Tilburg"
+        };
+
+        var LA = new Canteen()
+        {
+            Id = 3, City = City.Breda, Address = "Lovensdijkstraat 35", PostalCode = "98765", WarmMealsprovided = true,
+            CanteenName = "LA"
+        };
+        var HA = new Canteen()
+        {
+            Id = 4, City = City.Den_Bosch, Address = "laan 120", PostalCode = "01023", WarmMealsprovided = true,
+            CanteenName = "HA"
+        };
 
         var broodje = new Product()
         {
@@ -104,7 +121,7 @@ public class ApplicationDBContext : DbContext
 
         var broodjeMozzarella = new Product()
         {
-            Id = 2, Name = "broodje mozzarella", ContainsAlcohol = false,
+            Id = 2, Name = "Broodje mozzarella", ContainsAlcohol = false,
             Photo =
                 "https://www.modernhoney.com/wp-content/uploads/2019/01/Pesto-Panini-with-Fresh-Mozzarella-and-Tomato-1-crop.jpg",
             MealBoxes = new List<MealBox>()
@@ -112,7 +129,7 @@ public class ApplicationDBContext : DbContext
 
         var salade = new Product()
         {
-            Id = 3, Name = "verse salade", ContainsAlcohol = false,
+            Id = 3, Name = "Verse salade", ContainsAlcohol = false,
             Photo =
                 "https://www.thespruceeats.com/thmb/Z6IWF7c9zywuU9maSIimGLbHoI4=/3000x2000/filters:fill(auto,1)/classic-caesar-salad-recipe-996054-Hero_01-33c94cc8b8e841ee8f2a815816a0af95.jpg",
             MealBoxes = new List<MealBox>()
@@ -120,14 +137,14 @@ public class ApplicationDBContext : DbContext
 
         var broodjeEi = new Product()
         {
-            Id = 4, Name = "broodje ei", ContainsAlcohol = false,
+            Id = 4, Name = "Broodje ei", ContainsAlcohol = false,
             Photo = "https://www.acouplecooks.com/wp-content/uploads/2020/07/Egg-Salad-Sandwich-001.jpg",
             MealBoxes = new List<MealBox>()
         };
 
         var fanta = new Product()
         {
-            Id = 5, Name = "fanta", ContainsAlcohol = false,
+            Id = 5, Name = "Fanta", ContainsAlcohol = false,
             Photo =
                 "https://cdn11.bigcommerce.com/s-2fq65jrvsu/images/stencil/1280x1280/products/528/7297/fanta_orange-1__30340.1664974218.jpg?c=1",
             MealBoxes = new List<MealBox>()
@@ -135,7 +152,7 @@ public class ApplicationDBContext : DbContext
 
         var kaasplankje = new Product()
         {
-            Id = 6, Name = "kaasplankje", ContainsAlcohol = false,
+            Id = 6, Name = "Kaasplankje", ContainsAlcohol = false,
             Photo =
                 "https://bettyskitchen.nl/wp-content/uploads/2013/12/zelf_kaasplankje_samenstellen_shutterstock_749650144.jpg",
             MealBoxes = new List<MealBox>()
@@ -172,7 +189,7 @@ public class ApplicationDBContext : DbContext
         var box1 = new MealBox()
         {
             Id = 1,
-            MealBoxName = "box1",
+            MealBoxName = "Pilsener verzameling",
             City = City.Breda,
             PickupDateTime = DateTime.Today.AddDays(3),
             ExpireTime = DateTime.Today.AddDays(3).AddHours(2),
@@ -181,14 +198,15 @@ public class ApplicationDBContext : DbContext
             Type = MealType.Box,
             StudentId = 1,
             Products = new List<Product>(),
-            CanteenId = 1
+            CanteenId = 1,
+            WarmMeals = false
         };
 
 
         var box2 = new MealBox()
         {
             Id = 2,
-            MealBoxName = "box2",
+            MealBoxName = "Een beetje van alles!",
             City = City.Den_Bosch,
             PickupDateTime = DateTime.Today,
             ExpireTime = DateTime.Today.AddHours(2),
@@ -196,13 +214,14 @@ public class ApplicationDBContext : DbContext
             Price = 5.45m,
             Type = MealType.Box,
             Products = new List<Product>(),
-            CanteenId = 1
+            CanteenId = 4,
+            WarmMeals = true
         };
 
         var box3 = new MealBox()
         {
             Id = 3,
-            MealBoxName = "verse producten",
+            MealBoxName = "verse producten week 10",
             City = City.Breda,
             PickupDateTime = DateTime.Today,
             ExpireTime = DateTime.Today.AddHours(2),
@@ -216,7 +235,7 @@ public class ApplicationDBContext : DbContext
         var box4 = new MealBox()
         {
             Id = 4,
-            MealBoxName = "verse producten",
+            MealBoxName = "verse producten week 15",
             City = City.Breda,
             PickupDateTime = DateTime.Today,
             ExpireTime = DateTime.Today.AddHours(2),
@@ -224,7 +243,8 @@ public class ApplicationDBContext : DbContext
             Price = 6.50m,
             Type = MealType.Box,
             Products = new List<Product>(),
-            CanteenId = 2
+            CanteenId = 3,
+            WarmMeals = false
         };
 
         var box5 = new MealBox()
@@ -234,11 +254,12 @@ public class ApplicationDBContext : DbContext
             City = City.Tilburg,
             PickupDateTime = DateTime.Today,
             ExpireTime = DateTime.Today.AddHours(2),
-            EighteenPlus = false,
+            EighteenPlus = true,
             Price = 6.50m,
             Type = MealType.Box,
             Products = new List<Product>(),
-            CanteenId = 2
+            CanteenId = 2,
+            WarmMeals = false
         };
 
         var box6 = new MealBox()
@@ -248,11 +269,12 @@ public class ApplicationDBContext : DbContext
             City = City.Den_Bosch,
             PickupDateTime = DateTime.Today,
             ExpireTime = DateTime.Today.AddHours(2),
-            EighteenPlus = true,
+            EighteenPlus = false,
             Price = 6.50m,
             Type = MealType.Box,
             Products = new List<Product>(),
-            CanteenId = 1
+            CanteenId = 4,
+            WarmMeals = true
         };
 
 
@@ -266,7 +288,7 @@ public class ApplicationDBContext : DbContext
 
 
         modelBuilder.Entity<Canteen>().HasData(
-            LD, KantineTilburg
+            LD, KantineTilburg, LA, HA
         );
 
         modelBuilder.Entity<Employee>().HasData(
@@ -294,7 +316,10 @@ public class ApplicationDBContext : DbContext
                         new { ProductsId = 2, MealBoxesId = 2 },
                         new { ProductsId = 5, MealBoxesId = 2 },
                         new { ProductsId = 6, MealBoxesId = 2 },
-                        new { ProductsId = 2, MealBoxesId = 6 });
+                        new { ProductsId = 2, MealBoxesId = 6 },
+                        new { ProductsId = 1, MealBoxesId = 5 },
+                        new { ProductsId = 3, MealBoxesId = 5 },
+                        new { ProductsId = 3, MealBoxesId = 4 });
                 });
     }
 

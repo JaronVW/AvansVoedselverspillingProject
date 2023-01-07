@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20221023155931_init")]
+    [Migration("20230107113543_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,9 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CanteenName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("City")
                         .HasColumnType("int");
 
@@ -55,6 +58,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1,
                             Address = "straat 2",
+                            CanteenName = "LD",
                             City = 2,
                             PostalCode = "12345",
                             WarmMealsprovided = true
@@ -63,6 +67,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = 2,
                             Address = "straat 5",
+                            CanteenName = "KantineTilburg",
                             City = 0,
                             PostalCode = "54321",
                             WarmMealsprovided = false
@@ -167,9 +172,9 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 2,
                             EighteenPlus = true,
-                            ExpireTime = new DateTime(2022, 10, 26, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2023, 1, 10, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "box1",
-                            PickupDateTime = new DateTime(2022, 10, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2023, 1, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 5.45m,
                             StudentId = 1,
                             Type = 0,
@@ -181,9 +186,9 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 1,
                             EighteenPlus = false,
-                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2023, 1, 7, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "box2",
-                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2023, 1, 7, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 5.45m,
                             Type = 0,
                             WarmMeals = true
@@ -194,9 +199,9 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 2,
                             EighteenPlus = false,
-                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2023, 1, 7, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "verse producten",
-                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2023, 1, 7, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 6.50m,
                             Type = 0,
                             WarmMeals = true
@@ -207,9 +212,9 @@ namespace Infrastructure.Migrations
                             CanteenId = 2,
                             City = 2,
                             EighteenPlus = false,
-                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2023, 1, 7, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "verse producten",
-                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2023, 1, 7, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 6.50m,
                             Type = 0,
                             WarmMeals = true
@@ -220,9 +225,9 @@ namespace Infrastructure.Migrations
                             CanteenId = 2,
                             City = 0,
                             EighteenPlus = false,
-                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2023, 1, 7, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "nog versere producten",
-                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2023, 1, 7, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 6.50m,
                             Type = 0,
                             WarmMeals = true
@@ -233,9 +238,9 @@ namespace Infrastructure.Migrations
                             CanteenId = 1,
                             City = 1,
                             EighteenPlus = true,
-                            ExpireTime = new DateTime(2022, 10, 23, 2, 0, 0, 0, DateTimeKind.Local),
+                            ExpireTime = new DateTime(2023, 1, 7, 2, 0, 0, 0, DateTimeKind.Local),
                             MealBoxName = "oude producten",
-                            PickupDateTime = new DateTime(2022, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            PickupDateTime = new DateTime(2023, 1, 7, 0, 0, 0, 0, DateTimeKind.Local),
                             Price = 6.50m,
                             Type = 0,
                             WarmMeals = true
