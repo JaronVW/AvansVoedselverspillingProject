@@ -11,17 +11,19 @@ public interface IMealBoxRepository
 
     MealBox GetMealBoxById(int id);
 
-    MealBox  AddMealBox(MealBoxViewModel mealBoxVm);
+    MealBox AddMealBox(MealBoxViewModel mealBoxVm);
 
     void UpdateMealBox(MealBox mealBox);
 
     void DeleteMealBox(MealBox mealBox);
 
-    MealBox? GetReservedMealBoxToday(int studentId , DateTime date);
+    MealBox? GetReservedMealBoxToday(int studentId, DateTime date);
 
     void DeleteMealBoxProducts(MealBox mealBox);
 
 
     void DeleteMealBoxById(int id);
     void ReserveMealBox(int mealBoxId, int studentId);
+
+    public bool ReserveMealBoxCancel(int mealBoxId);
 }

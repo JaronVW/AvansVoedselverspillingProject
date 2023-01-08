@@ -71,12 +71,10 @@ public class MaaltijdBoxController : Controller
                 return View(_mealBoxUpdateMethods.updateMealBoxGet(mealBoxViewModel.Id));
             }
 
-            TempData["ErrorMessage"] = null;
             if (_mealBoxUpdateMethods.updateMealBoxPost(mealBoxViewModel))
-            {
                 return RedirectToAction("Index");
-            }
 
+            ModelState.AddModelError("CustomError", "Deze maaltijdbox is al gereserveerd");
             ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
             return View(_mealBoxUpdateMethods.updateMealBoxGet(mealBoxViewModel.Id));
         }
@@ -148,34 +146,36 @@ public class MaaltijdBoxController : Controller
     [Authorize(Roles = "student")]
     public IActionResult Reserveer(int mealBoxId, int studentId)
     {
-        TempData["ErrorMessage"] = null;
-        var m = _mealBoxRepository.GetMealBoxById(mealBoxId);
-        var s = _studentRepository.GetStudentById(studentId);
-
-        Console.WriteLine(s.BirthDate.Date > m.PickupDateTime.AddYears(-18) && m.EighteenPlus);
-        if (s.BirthDate.Date > m.PickupDateTime.AddYears(-18) && m.EighteenPlus)
+        try
         {
-            TempData["ErrorMessage"] = "U moet achttien zijn om deze maaltijdbox te reserveren";
+            _mealBoxRepository.ReserveMealBox(mealBoxId, studentId);
             return RedirectToAction("BoxDetails", "MaaltijdBox", new { id = mealBoxId });
         }
-
-        if (_mealBoxRepository.GetReservedMealBoxToday(studentId, m.PickupDateTime) != null)
+        catch (InvalidReservationException e)
         {
-            TempData["ErrorMessage"] = "U heeft al een maaltijdbox voor deze dag gereserveerd";
-            return RedirectToAction("BoxDetails", "MaaltijdBox", new { id = mealBoxId });
-        }
+            if (User.IsInRole("student"))
+            {
+                ViewBag.studentId = _studentRepository.GetStudentByEmail(User.Identity.Name).Id;
+            }
 
-        m.StudentId = s.Id;
-        _mealBoxRepository.UpdateMealBox(m);
-        return RedirectToAction("BoxDetails", "MaaltijdBox", new { id = mealBoxId });
+            ModelState.AddModelError("CustomError", e.Message);
+            return View("BoxDetails", _mealBoxRepository.GetMealBoxes()
+                .First(m => m.Id == mealBoxId));
+        }
     }
 
     [Authorize(Roles = "student")]
-    public IActionResult ReserveerAnnuleer(int mealBoxId, int studentId)
+    public IActionResult ReserveerAnnuleer(int mealBoxId)
     {
-        var m = _mealBoxRepository.GetMealBoxById(mealBoxId);
-        m.StudentId = null;
-        _mealBoxRepository.UpdateMealBox(m);
-        return RedirectToAction("BoxDetails", "MaaltijdBox", new { id = mealBoxId });
+        if (_mealBoxRepository.ReserveMealBoxCancel(mealBoxId))
+            return RedirectToAction("BoxDetails", "MaaltijdBox", new { id = mealBoxId });
+
+        ModelState.AddModelError("CustomError", "Er is iets mis gegaan met de reservering annuleren");
+        if (User.IsInRole("student"))
+        {
+            ViewBag.studentId = _studentRepository.GetStudentByEmail(User.Identity.Name).Id;
+        }
+        return View("BoxDetails", _mealBoxRepository.GetMealBoxes()
+            .First(m => m.Id == mealBoxId));
     }
 }

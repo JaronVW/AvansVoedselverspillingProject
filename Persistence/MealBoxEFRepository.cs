@@ -57,17 +57,18 @@ public class MealBoxEFRepository : IMealBoxRepository
         if (mealBoxVm.WarmMeals && _context.Canteens.Find(mealBoxVm.CanteenId).WarmMealsprovided != true)
         {
             throw new InvalidFormdataException("Warme maaltijden zijn niet beschikbaar in deze kantine");
-
         }
+
         if (mealBoxVm.PickupDateTime > DateTime.Now.AddDays(2).AddTicks(-1))
         {
             throw new InvalidFormdataException("De ophaal datum moet binnen nu en twee dagen liggen");
         }
-        
+
         if (mealBoxVm.PickupDateTime > mealBoxVm.ExpireTime)
         {
             throw new InvalidFormdataException("De ophaal datum moet voor de verloopdatum liggen");
         }
+
         var mealBox = new MealBox()
         {
             MealBoxName = mealBoxVm.MealBoxName,
@@ -135,9 +136,38 @@ public class MealBoxEFRepository : IMealBoxRepository
 
     public void ReserveMealBox(int mealBoxId, int studentId)
     {
-        var recordToUpdate = _context.MealBoxes.FirstOrDefault(m => m.Id == mealBoxId);
-        recordToUpdate.Student = _context.Students.FirstOrDefault(m => m.Id == studentId);
-        _context.MealBoxes.Update(recordToUpdate);
+        var m = _context.MealBoxes.Find(mealBoxId);
+        var s = _context.Students.Find(studentId);
+
+        if (s.BirthDate.Date > m.PickupDateTime.AddYears(-18) && m.EighteenPlus)
+        {
+            throw new InvalidReservationException("U moet achttien zijn om deze maaltijdbox te reserveren");
+        }
+
+        if (GetReservedMealBoxToday(studentId, m.PickupDateTime) != null)
+        {
+            throw new InvalidReservationException("U heeft al een maaltijdbox voor deze dag gereserveerd");
+        }
+
+        m.StudentId = s.Id;
+        _context.MealBoxes.Update(m);
         _context.SaveChanges();
+    }
+
+    public bool ReserveMealBoxCancel(int mealBoxId)
+    {
+        try
+        {
+            var m = _context.MealBoxes.Find(mealBoxId);
+            m.StudentId = null;
+            _context.Update(m);
+            _context.SaveChanges();
+            return true;
+        }
+        catch 
+        {
+            return false;
+        }
+     
     }
 }
