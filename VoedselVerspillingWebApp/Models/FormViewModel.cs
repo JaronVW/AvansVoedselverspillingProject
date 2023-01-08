@@ -3,9 +3,9 @@ using Domain;
 
 namespace VoedselVerspillingWebApp.Models;
 
-public class AanpassenViewModel
+public class FormViewModel
 {
     public List<Canteen> Canteens = new List<Canteen>();
 
-    public MealBoxViewModel MealBox;
+    public MealBoxViewModel MealBoxViewModel;
 }

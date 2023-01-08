@@ -1,6 +1,5 @@
 ﻿@using Domain
-@model MealBoxViewModel
-
+@model Core.Domain.MealBoxViewModel
 @{
     ViewBag.Title = @Model.MealBoxName + " Aanpassen";
 }
@@ -8,9 +7,9 @@
 <h2 class="text-center">Wijzig Maaltijdbox: @Model.MealBoxName</h2>
 <div class="w-75 mx-auto">
     <form method="post" asp-action="Aanpassen">
-        <div asp-validation-summary="All"></div>
+        <div asp-validation-summary="All" class="text-danger"></div>
         <div class="mb-3">
-            <label asp-for="MealBoxName" class="form-label">Naam</label>
+            <label asp-for="@Model.MealBoxName" class="form-label">Naam</label>
             <input asp-for="MealBoxName" type="text" class="form-control" id="mealBoxNameInput">
             <div id="mealBoxNameInputHint" class="form-text">Een unieke omschrijvende naam voor de maaltijdbox.</div>
         </div>
@@ -26,19 +25,19 @@
 
         <div class="mb-3">
             <label asp-for="PickupDateTime" class="form-label">Ophaaldatum</label>
-            <input asp-for="PickupDateTime" type="datetime-local" class="form-control" id="PickupDateTime">
+            <input asp-for="PickupDateTime" asp-format="{0:yyyy-MM-ddTHH:mm}" type="datetime-local" class="form-control" id="PickupDateTime">
         </div>
 
         <div class="mb-3">
             <label asp-for="ExpireTime" class="form-label">Verloopdatum</label>
-            <input asp-for="ExpireTime" type="datetime-local" class="form-control" id="mealBoxNameInput">
+            <input asp-for="ExpireTime" asp-format="{0:yyyy-MM-ddTHH:mm}" type="datetime-local" class="form-control" id="mealBoxNameInput">
         </div>
 
-        <div class="mb-3 form-check">
+        @*<div class="mb-3 form-check">
             <input asp-for="EighteenPlus" type="checkbox" class="form-check-input" id="mealBoxNameInput">
             <label asp-for="EighteenPlus" value="true" class="form-check-label">Bevat producten die 18+ zijn</label>
             <input type="hidden" value="false" asp-for="EighteenPlus">
-        </div>
+        </div>*@
 
         <div class="mb-3">
             <label asp-for="Price" class="form-label">Prijs</label>

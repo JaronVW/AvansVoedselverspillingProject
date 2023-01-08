@@ -2,7 +2,8 @@
 
 @{
     ViewBag.Title = Model.MealBoxName + " Details";
-
+    var id = $"confirmationModal{Model.Id}";
+    var target = "#" + id;
 }
 
 <div class=" container mt-5 mb-3">
@@ -31,7 +32,7 @@
             {
                 <img src="/images/box.jpg" class="card-img-top " style="height: 20em; object-fit: cover" alt="...">
             }
-    
+
 
         </div>
 
@@ -79,7 +80,7 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Annuleren</button>
-                            <a asp-controller="Maaltijdbox" asp-action="ReserveerAnnuleer" asp-route-mealBoxId="@Model.Id" asp-route-studentId="@ViewBag.studentId">
+                            <a asp-controller="MaaltijdBox" asp-action="ReserveerAnnuleer" asp-route-mealBoxId="@Model.Id" asp-route-studentId="@ViewBag.studentId">
                                 <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Reservering annuleren</button>
                             </a>
                         </div>
@@ -105,7 +106,7 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Annuleren</button>
-                            <a asp-controller="Maaltijdbox" asp-action="Reserveer" asp-route-mealBoxId="@Model.Id" asp-route-studentId="@ViewBag.studentId">
+                            <a asp-controller="MaaltijdBox" asp-action="Reserveer" asp-route-mealBoxId="@Model.Id" asp-route-studentId="@ViewBag.studentId">
                                 <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Bevestigen</button>
                             </a>
                         </div>
@@ -115,11 +116,16 @@
         }
     }
 
-    else if (@User.IsInRole("employee"))
+    else if (@User.IsInRole("employee") && @ViewBag.studentId == null)
     {
-        <a asp-controller="Maaltijdbox" asp-action="Aanpassen" asp-route-id="@Model.Id">
+        <a asp-controller="MaaltijdBox" asp-action="Aanpassen" asp-route-id="@Model.Id">
             <button class="btn btn-outline-info">Wijzigen</button>
+
         </a>
+
+        <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Verwijderen</button>
+
+
         <div class="modal fade" id="ReserveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -131,8 +137,32 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Annuleren</button>
-                        <a asp-controller="Maaltijdbox" asp-action="Reserveer" asp-route-id="@Model.Id">
+                        <a asp-controller="MaaltijdBox" asp-action="Reserveer" asp-route-id="@Model.Id">
                             <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Bevestigen</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (@User.IsInRole("employee"))
+    {
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Verwijder</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Weet u het zeker?
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Annuleren</button>
+                        <a asp-controller="MaaltijdBox" asp-action="Verwijder" asp-route-id="@Model.Id">
+                            <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Bevestigen</button>
                         </a>
                     </div>
                 </div>

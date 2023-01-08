@@ -13,8 +13,10 @@ namespace Domain
         [Required(ErrorMessage = "Stad verplicht")]
         public City City { get; set; }
         [Required(ErrorMessage = "Ophaaldatum verplicht")]
+        [DisplayFormat(DataFormatString = "{yyy}", ApplyFormatInEditMode = true)]
         public DateTime PickupDateTime  { get; set; }
         [Required(ErrorMessage = "Verloopdatum verplicht")]
+        [DisplayFormat(DataFormatString = "{yyy}", ApplyFormatInEditMode = true)]
         public DateTime ExpireTime { get; set; }
         
         public bool EighteenPlus { get; set; }

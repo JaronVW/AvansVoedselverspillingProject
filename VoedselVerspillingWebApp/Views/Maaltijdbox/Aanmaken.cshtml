@@ -1,8 +1,8 @@
 ﻿@using Domain
-@model MealBoxViewModel
+@model Core.Domain.MealBoxViewModel
 
 @{
-    ViewBag.Title = "Maaltijdbox Aanmaken";
+   // ViewBag.Title = "Maaltijdbox Aanmaken";
 }
 
 
@@ -33,19 +33,19 @@
 
         <div class="mb-3">
             <label asp-for="PickupDateTime" class="form-label">Ophaaldatum</label>
-            <input asp-for="PickupDateTime" type="datetime-local" class="form-control" id="PickupDateTime">
+            <input asp-for="PickupDateTime" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}" class="form-control" id="PickupDateTime">
         </div>
 
         <div class="mb-3">
             <label asp-for="ExpireTime" class="form-label">Verloopdatum</label>
-            <input asp-for="ExpireTime" type="datetime-local" class="form-control" id="mealBoxNameInput">
+            <input asp-for="ExpireTime" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}" class="form-control" id="mealBoxNameInput">
         </div>
 
-        <div class="mb-3 form-check">
+        @*<div class="mb-3 form-check">
             <input asp-for="EighteenPlus" type="checkbox" class="form-check-input" id="mealBoxNameInput">
             <label asp-for="EighteenPlus" value="true" class="form-check-label">Bevat producten die 18+ zijn</label>
             <input type="hidden" value="false" asp-for="EighteenPlus">
-        </div>
+        </div>*@
 
         <div class="mb-3 form-check">
             <input asp-for="WarmMeals" type="checkbox" class="form-check-input" id="mealBoxNameInput">
@@ -75,7 +75,7 @@
                 {
                     <option value="@c.Id">@c.Address</option>
                 }
-                <option selected="selected">Kantine ...</option>
+                <option value="null" selected="selected">Kantine ...</option>
             </select>
         </div>
 

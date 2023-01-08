@@ -1,29 +1,27 @@
-﻿using Core.DomainServices;
-using Domain;
+﻿using Core.Domain;
+using Core.Domain.Exceptions;
+using Core.DomainServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using VoedselVerspillingWebApp.Models;
 
 namespace VoedselVerspillingWebApp.Controllers;
 
-public class MaaltijdboxController : Controller
+public class MaaltijdBoxController : Controller
 {
     private readonly IMealBoxRepository _mealBoxRepository;
     private readonly ICanteenRepository _canteenRepository;
     private readonly IStudentRepository _studentRepository;
     private readonly IEmployeeRepository _employeeRepository;
-    private readonly IProductRepository _productRepository;
     private readonly IMealBoxUpdateMethods _mealBoxUpdateMethods;
 
-    public MaaltijdboxController(IMealBoxRepository mealBoxRepository, ICanteenRepository canteenRepository,
+    public MaaltijdBoxController(IMealBoxRepository mealBoxRepository, ICanteenRepository canteenRepository,
         IStudentRepository studentRepository, IEmployeeRepository employeeRepository,
-        IProductRepository productRepository, IMealBoxUpdateMethods mealBoxUpdateMethods)
+        IMealBoxUpdateMethods mealBoxUpdateMethods)
     {
         _mealBoxRepository = mealBoxRepository;
         _canteenRepository = canteenRepository;
         _studentRepository = studentRepository;
         _employeeRepository = employeeRepository;
-        _productRepository = productRepository;
         _mealBoxUpdateMethods = mealBoxUpdateMethods;
     }
 
@@ -63,19 +61,38 @@ public class MaaltijdboxController : Controller
 
     [HttpPost]
     [Authorize(Roles = "employee")]
-    public IActionResult Aanpassen(MealBoxViewModel mealBoxVm)
+    public IActionResult Aanpassen(MealBoxViewModel mealBoxViewModel)
     {
-        TempData["ErrorMessage"] = null;
-        if (_mealBoxUpdateMethods.updateMealBoxPost(mealBoxVm)) return RedirectToAction("Index");
-        TempData["ErrorMessage"] = "Deze maaltijd box is al gereserveerd";
-        return RedirectToAction("Index");
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
+                return View(_mealBoxUpdateMethods.updateMealBoxGet(mealBoxViewModel.Id));
+            }
+
+            TempData["ErrorMessage"] = null;
+            if (_mealBoxUpdateMethods.updateMealBoxPost(mealBoxViewModel))
+            {
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
+            return View(_mealBoxUpdateMethods.updateMealBoxGet(mealBoxViewModel.Id));
+        }
+        catch (InvalidFormdataException e)
+        {
+            ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
+            ModelState.AddModelError("CustomError", e.Message);
+            return View(_mealBoxUpdateMethods.updateMealBoxGet(mealBoxViewModel.Id));
+        }
     }
 
     [Authorize(Roles = "student")]
     public IActionResult Gereserveerd()
     {
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-        if (User == null) return RedirectToAction("Index", "Maaltijdbox");
+        if (User == null) return RedirectToAction("Index", "MaaltijdBox");
 
         var studentId = _studentRepository.GetStudentByEmail(User.Identity.Name).Id;
         return View(_mealBoxRepository.GetMealBoxes()
@@ -87,36 +104,36 @@ public class MaaltijdboxController : Controller
     public IActionResult Aanmaken()
     {
         ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
-        var vm = new MealBoxViewModel()
-        {
-            PickupDateTime = DateTime.Now,
-            ExpireTime = DateTime.Now.AddHours(2)
-        };
-        vm.ProductCheckBoxes = new List<CheckBoxItem>();
-        foreach (var p in _productRepository.GetProducts())
-        {
-            vm.ProductCheckBoxes.Add(new CheckBoxItem()
-            {
-                Id = p.Id,
-                Name = p.Name,
-                IsChecked = false
-            });
-        }
-
-        return View(vm);
+        return View(_mealBoxUpdateMethods.formCreateViewModel());
     }
 
     [HttpPost]
     [Authorize(Roles = "employee")]
     public IActionResult Aanmaken(MealBoxViewModel mealBoxVm)
     {
-        TempData["ErrorMessage"] = null;
-        if (mealBoxVm.WarmMeals && _canteenRepository.GetCanteenById(mealBoxVm.CanteenId).WarmMealsprovided != true)
+        try
         {
-            TempData["ErrorMessage"] = "Warme maaltijden zijn niet beschikbaar in deze kantine";
-            return RedirectToAction("Aanmaken");
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
+                return View(_mealBoxUpdateMethods.formCreateViewModel());
+            }
+
+            var m = _mealBoxRepository.AddMealBox(mealBoxVm);
+            return RedirectToAction("index");
         }
-        return View("BoxDetails", _mealBoxRepository.AddMealBox(mealBoxVm));
+        catch (InvalidFormdataException e)
+        {
+            ModelState.AddModelError("CustomError", e.Message);
+            ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
+            return View(_mealBoxUpdateMethods.formCreateViewModel());
+        }
+        catch
+        {
+            ModelState.AddModelError("CustomError", "Er is iets mis gegaan bij het creëren van de Maaltijdbox");
+            ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
+            return View(_mealBoxUpdateMethods.formCreateViewModel());
+        }
     }
 
     [Authorize(Roles = "employee")]
@@ -132,25 +149,25 @@ public class MaaltijdboxController : Controller
     public IActionResult Reserveer(int mealBoxId, int studentId)
     {
         TempData["ErrorMessage"] = null;
-
         var m = _mealBoxRepository.GetMealBoxById(mealBoxId);
         var s = _studentRepository.GetStudentById(studentId);
-        var age = m.PickupDateTime.Year - s.BirthDate.Year;
+
+        Console.WriteLine(s.BirthDate.Date > m.PickupDateTime.AddYears(-18) && m.EighteenPlus);
         if (s.BirthDate.Date > m.PickupDateTime.AddYears(-18) && m.EighteenPlus)
         {
             TempData["ErrorMessage"] = "U moet achttien zijn om deze maaltijdbox te reserveren";
-            return RedirectToAction("BoxDetails", "Maaltijdbox", new { id = mealBoxId });
+            return RedirectToAction("BoxDetails", "MaaltijdBox", new { id = mealBoxId });
         }
 
         if (_mealBoxRepository.GetReservedMealBoxToday(studentId, m.PickupDateTime) != null)
         {
             TempData["ErrorMessage"] = "U heeft al een maaltijdbox voor deze dag gereserveerd";
-            return RedirectToAction("BoxDetails", "Maaltijdbox", new { id = mealBoxId });
+            return RedirectToAction("BoxDetails", "MaaltijdBox", new { id = mealBoxId });
         }
 
         m.StudentId = s.Id;
         _mealBoxRepository.UpdateMealBox(m);
-        return RedirectToAction("BoxDetails", "Maaltijdbox", new { id = mealBoxId });
+        return RedirectToAction("BoxDetails", "MaaltijdBox", new { id = mealBoxId });
     }
 
     [Authorize(Roles = "student")]
@@ -159,6 +176,6 @@ public class MaaltijdboxController : Controller
         var m = _mealBoxRepository.GetMealBoxById(mealBoxId);
         m.StudentId = null;
         _mealBoxRepository.UpdateMealBox(m);
-        return RedirectToAction("BoxDetails", "Maaltijdbox", new { id = mealBoxId });
+        return RedirectToAction("BoxDetails", "MaaltijdBox", new { id = mealBoxId });
     }
 }

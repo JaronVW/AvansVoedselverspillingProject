@@ -5,23 +5,28 @@
 
 
 <h1 class="text-center">Beschikbare Maaltijdboxen</h1>
+<div asp-validation-summary="All" class="text-danger"></div>
 
 
 @if (User.IsInRole("employee") && ViewBag.cantine != null)
 {
-    <h3>Maaltijdboxen van uw kantine</h3>
-    <div class="w-75 mx-auto  mt-5 grid-container mb-5 ">
-        @foreach (var m in Model.Where(m => m.CanteenId == ViewBag.cantine))
-        {
-        <partial name="MaaltijdBox" model="m"/>
-        }
+    <div class="mt-5">
+        <h3 class="text-center">Maaltijdboxen van uw kantine:</h3>
+        <div class="w-75 mx-auto  mt-5 grid-container mb-5 ">
+            @foreach (var m in Model.Where(m => m.CanteenId == ViewBag.cantine))
+            {
+                <partial name="MaaltijdBox" model="m"/>
+            }
+        </div>
     </div>
-    <h3>Maaltijdboxen van andere kantines</h3>
-    <div class="w-75 mx-auto  mt-5 grid-container mb-5 ">
-        @foreach (var m in Model.Where(m => m.CanteenId != ViewBag.cantine))
-        {
-        <partial name="MaaltijdBox" model="m"/>
-        }
+    <div class="mt-5">
+        <h3 class="text-center">Maaltijdboxen van andere kantines</h3>
+        <div class="w-75 mx-auto  mt-5 grid-container mb-5 ">
+            @foreach (var m in Model.Where(m => m.CanteenId != ViewBag.cantine))
+            {
+                <partial name="MaaltijdBox" model="m"/>
+            }
+        </div>
     </div>
 }
 else

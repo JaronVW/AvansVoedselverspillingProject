@@ -1,4 +1,5 @@
 ﻿using Core.Domain;
+using Core.Domain.Exceptions;
 using Core.DomainServices;
 using Domain;
 using Microsoft.Data.SqlClient;
@@ -53,8 +54,20 @@ public class MealBoxEFRepository : IMealBoxRepository
 
     public MealBox AddMealBox(MealBoxViewModel mealBoxVm)
     {
+        if (mealBoxVm.WarmMeals && _context.Canteens.Find(mealBoxVm.CanteenId).WarmMealsprovided != true)
+        {
+            throw new InvalidFormdataException("Warme maaltijden zijn niet beschikbaar in deze kantine");
+
+        }
+        if (mealBoxVm.PickupDateTime > DateTime.Now.AddDays(2).AddTicks(-1))
+        {
+            throw new InvalidFormdataException("De ophaal datum moet binnen nu en twee dagen liggen");
+        }
         
-        
+        if (mealBoxVm.PickupDateTime > mealBoxVm.ExpireTime)
+        {
+            throw new InvalidFormdataException("De ophaal datum moet voor de verloopdatum liggen");
+        }
         var mealBox = new MealBox()
         {
             MealBoxName = mealBoxVm.MealBoxName,

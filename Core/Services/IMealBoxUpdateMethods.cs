@@ -1,4 +1,5 @@
-﻿using VoedselVerspillingWebApp.Models;
+﻿using Core.Domain;
+using VoedselVerspillingWebApp.Models;
 
 namespace Core.DomainServices;
 
@@ -12,5 +13,7 @@ public interface IMealBoxUpdateMethods
     {
         return true;
     }
-    
+
+    public MealBoxViewModel formCreateViewModel();
+
 }

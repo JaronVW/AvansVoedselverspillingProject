@@ -1,4 +1,5 @@
 ﻿using Core.Domain;
+using Core.Domain.Exceptions;
 using Core.DomainServices;
 using Domain;
 using Microsoft.EntityFrameworkCore;
@@ -63,7 +64,23 @@ public class MealBoxUpdateMethodsRepository : IMealBoxUpdateMethods
 
     public bool updateMealBoxPost(MealBoxViewModel mealBoxVm)
     {
+        if (mealBoxVm.WarmMeals && _context.Canteens.Find(mealBoxVm.CanteenId).WarmMealsprovided != true)
+        {
+            throw new InvalidFormdataException("Warme maaltijden zijn niet beschikbaar in deze kantine");
+        }
+
+        if (mealBoxVm.PickupDateTime > DateTime.Now.AddDays(2).AddTicks(-1))
+        {
+            throw new InvalidFormdataException("De ophaal datum moet binnen nu en twee dagen liggen");
+        }
+
+        if (mealBoxVm.PickupDateTime > mealBoxVm.ExpireTime)
+        {
+            throw new InvalidFormdataException("De ophaal datum moet voor de verloopdatum liggen");
+        }
+
         if (mealBoxVm.StudentId != null) return false;
+        
         var mealBox = new MealBox()
         {
             MealBoxName = mealBoxVm.MealBoxName,
@@ -83,21 +100,22 @@ public class MealBoxUpdateMethodsRepository : IMealBoxUpdateMethods
             {
                 mealBox.Products.Add(_context.Products.Find(sp));
             }
+
             mealBox.EighteenPlus = mealBox.Products.Any(m => m.ContainsAlcohol);
         }
-        
+
         _context.Remove(_context.MealBoxes.Find(mealBoxVm.Id));
         _context.MealBoxes.Update(mealBox);
         _context.SaveChanges();
         return true;
     }
-    
+
     public MealBoxViewModel formCreateViewModel()
     {
         var vm = new MealBoxViewModel
         {
             PickupDateTime = DateTime.Now,
-            ExpireTime = DateTime.Now.AddHours(2).AddDays(1),
+            ExpireTime = DateTime.Now.AddDays(1),
             ProductCheckBoxes = new List<CheckBoxItem>()
         };
         foreach (var p in _context.Products)

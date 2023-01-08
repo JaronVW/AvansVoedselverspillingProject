@@ -30,19 +30,19 @@
                 @*     <a class="nav-link active  " aria-current="page" asp-controller="Home" asp-action="Index">Home</a> *@
                 @* </li> *@
                 <li class="nav-item">
-                    <a class="nav-link " asp-controller="Maaltijdbox" asp-action="Index">Maaltijdboxen</a>
+                    <a class="nav-link " asp-controller="MaaltijdBox" asp-action="Index">Maaltijdboxen</a>
                 </li>
 
                 @if (User.IsInRole("student"))
                 {
                     <li class="nav-item">
-                        <a class="nav-link " asp-controller="Maaltijdbox" asp-action="Gereserveerd">Mijn Reserveringen</a>
+                        <a class="nav-link " asp-controller="MaaltijdBox" asp-action="Gereserveerd">Mijn Reserveringen</a>
                     </li>
                 }
                 else if (User.IsInRole("employee"))
                 {
                     <li class="nav-item">
-                        <a class="nav-link " asp-controller="Maaltijdbox" asp-action="Aanmaken">Maaltijdbox Maken</a>
+                        <a class="nav-link " asp-controller="MaaltijdBox" asp-action="Aanmaken">Maaltijdbox Maken</a>
                     </li>
                 }
             </ul>

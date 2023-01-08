@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using Core.Domain;
+using Domain;
 using VoedselVerspillingWebApp.Models;
 
 namespace Core.DomainServices;

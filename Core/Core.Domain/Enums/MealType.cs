@@ -2,6 +2,8 @@
 {
     public enum MealType
     {
-        Box
+        Box,
+        Brood,
+        Drank,
     }
 }
