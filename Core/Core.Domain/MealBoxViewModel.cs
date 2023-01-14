@@ -12,8 +12,7 @@ public class MealBoxViewModel
     [Required(ErrorMessage = "Naam verplicht")]
     public string MealBoxName { get; set; }
 
-    [Required(ErrorMessage = "Stad verplicht")]
-    public City City { get; set; }
+    public City City { get; set; } 
     
     [Required(ErrorMessage = "Ophaaldatum verplicht")]
     public DateTime PickupDateTime { get; set; }
@@ -38,7 +37,6 @@ public class MealBoxViewModel
 
     public Canteen? Canteen { get; set; } = null!;
     
-    [Required(ErrorMessage = "Kantine verplicht")]
     public int CanteenId { get; set; }
 
     public bool WarmMeals { get; set; } = true;

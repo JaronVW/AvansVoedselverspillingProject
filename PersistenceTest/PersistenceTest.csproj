@@ -23,11 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Core\Core.Domain\Core.Domain.csproj" />
-      <ProjectReference Include="..\Core\DomainServices\DomainServices.csproj" />
       <ProjectReference Include="..\Persistence\Persistence.csproj" />
-      <ProjectReference Include="..\VoedselVerspillingWebApp\VoedselVerspillingWebApp.csproj" />
-      <ProjectReference Include="..\WebAPI\WebAPI.csproj" />
     </ItemGroup>
 
 </Project>

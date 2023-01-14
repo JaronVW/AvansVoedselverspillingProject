@@ -23,6 +23,10 @@ public class MealBoxUpdateMethodsRepository : IMealBoxUpdateMethods
             .Include(m => m.Student)
             .Include(m => m.Products)
             .First(b => b.Id == id);
+        if (m.StudentId != null)
+        {
+            throw new Exception("MealBox is already assigned to a student");
+        }
 
         var vm = new MealBoxViewModel
         {
@@ -80,7 +84,7 @@ public class MealBoxUpdateMethodsRepository : IMealBoxUpdateMethods
         }
 
         if (mealBoxVm.StudentId != null) return false;
-        
+
         var mealBox = new MealBox()
         {
             MealBoxName = mealBoxVm.MealBoxName,

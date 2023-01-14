@@ -5,14 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add ServicesLayer to the container.
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddDbContext<ApplicationDBContext>(
-    options =>
-    {
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-    }
+    options => { options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")); }
 );
 
 
@@ -29,6 +25,7 @@ builder.Services.AddScoped<ICanteenRepository, CanteenEFRepository>();
 builder.Services.AddScoped<IProductRepository, ProductEFRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentEFRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeEFRepository>();
+builder.Services.AddScoped<IMealBoxService, MealBoxService>();
 
 builder.Services.AddScoped<IMealBoxUpdateMethods, MealBoxUpdateMethodsRepository>();
 

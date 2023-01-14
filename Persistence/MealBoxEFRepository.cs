@@ -22,8 +22,14 @@ public class MealBoxEFRepository : IMealBoxRepository
     {
         return _context.MealBoxes
             .OrderBy(box => box.PickupDateTime)
-            .Include(m => m.Products)
+            .Include(m => m.Products).Where(m => m.StudentId == null)
+            .Include(m => m.Student)
             .ToList();
+    }
+
+    public IEnumerable<MealBox> GetMealBoxesReserved(int studentId)
+    {
+        return _context.MealBoxes.Include(m => m.Products).Where(m => m.Student != null && m.StudentId == studentId);
     }
 
     public IEnumerable<MealBox> GetMealBoxesDateAscending()
@@ -52,47 +58,37 @@ public class MealBoxEFRepository : IMealBoxRepository
             .First(b => b.Id == id);
     }
 
-    public MealBox AddMealBox(MealBoxViewModel mealBoxVm)
+    public MealBox GetMealBoxByIdDetached(int id)
     {
-        if (mealBoxVm.WarmMeals && _context.Canteens.Find(mealBoxVm.CanteenId).WarmMealsprovided != true)
+        return _context.MealBoxes.AsNoTracking()
+            .Include(m => m.Student)
+            .Include(m => m.Products)
+            .First(b => b.Id == id);
+    }
+
+    public MealBox AddMealBox(MealBox mealBox, List<Product> products)
+    {
+        if (mealBox.WarmMeals && _context.Canteens.Find(mealBox.CanteenId).WarmMealsprovided != true)
         {
             throw new InvalidFormdataException("Warme maaltijden zijn niet beschikbaar in deze kantine");
         }
 
-        if (mealBoxVm.PickupDateTime > DateTime.Now.AddDays(2).AddTicks(-1))
+        if (mealBox.PickupDateTime > DateTime.Now.AddDays(2).AddTicks(-1))
         {
             throw new InvalidFormdataException("De ophaal datum moet binnen nu en twee dagen liggen");
         }
 
-        if (mealBoxVm.PickupDateTime > mealBoxVm.ExpireTime)
+        if (mealBox.PickupDateTime > mealBox.ExpireTime)
         {
             throw new InvalidFormdataException("De ophaal datum moet voor de verloopdatum liggen");
         }
 
-        var mealBox = new MealBox()
+        if (products != null)
         {
-            MealBoxName = mealBoxVm.MealBoxName,
-            City = mealBoxVm.City,
-            PickupDateTime = mealBoxVm.PickupDateTime,
-            ExpireTime = mealBoxVm.ExpireTime,
-            EighteenPlus = false,
-            Price = mealBoxVm.Price,
-            Type = mealBoxVm.Type,
-            CanteenId = mealBoxVm.CanteenId,
-            Products = new List<Product>(),
-            WarmMeals = mealBoxVm.WarmMeals
-        };
-
-        if (mealBoxVm.SelectedProducts != null)
-        {
-            foreach (var mb in mealBoxVm.SelectedProducts.Select(sp => _context.Products.Find(sp)))
+            mealBox.Products = products;
+            foreach (var mealBoxProduct in mealBox.Products)
             {
-                if (mb == null) continue;
-                mealBox.Products.Add(mb);
-                if (mb.ContainsAlcohol)
-                {
-                    mealBox.EighteenPlus = true;
-                }
+                if (mealBoxProduct.ContainsAlcohol) mealBox.EighteenPlus = true;
             }
         }
 
@@ -101,6 +97,12 @@ public class MealBoxEFRepository : IMealBoxRepository
         return mealBox;
     }
 
+    public MealBox AddMealBox(MealBox mealBox)
+    {
+        _context.MealBoxes.Add(mealBox);
+        _context.SaveChanges();
+        return mealBox;
+    }
 
     public void UpdateMealBox(MealBox mealBox)
     {
@@ -109,16 +111,84 @@ public class MealBoxEFRepository : IMealBoxRepository
     }
 
 
-    public void DeleteMealBox(MealBox mealBox)
+    public void UpdateMealBox(MealBox mealBox, List<Product> products)
     {
-        _context.MealBoxes.Remove(mealBox);
+        if (mealBox.StudentId != null)
+        {
+            throw new InvalidFormdataException("Deze maaltijd is al gereserveerd");
+        }
+
+        if (mealBox.WarmMeals && _context.Canteens.Find(mealBox.CanteenId)?.WarmMealsprovided != true)
+        {
+            throw new InvalidFormdataException("Warme maaltijden zijn niet beschikbaar in deze kantine");
+        }
+
+        if (mealBox.PickupDateTime > DateTime.Now.AddDays(2).AddTicks(-1))
+        {
+            throw new InvalidFormdataException("De ophaal datum moet binnen nu en twee dagen liggen");
+        }
+
+        if (mealBox.PickupDateTime > mealBox.ExpireTime)
+        {
+            throw new InvalidFormdataException("De ophaal datum moet voor de verloopdatum liggen");
+        }
+
+
+        mealBox.Products?.Clear();
+        var mealBoxToUpdate = _context.MealBoxes.Include(box => box.Products).First(box => box.Id == mealBox.Id);
+
+        if (products != null)
+        {
+            if (mealBoxToUpdate.Products != null)
+            {
+                mealBoxToUpdate.Products.ToList().AddRange(products.Where(x => products.All(y => y.Id != x.Id)));
+                foreach (var product in mealBoxToUpdate.Products)
+                {
+                    if (!products.Contains(product)) mealBoxToUpdate.Products.Remove(product);
+                }
+
+                foreach (var product in mealBoxToUpdate.Products)
+                {
+                    mealBox.EighteenPlus = product.ContainsAlcohol;
+                }
+            }
+        }
+
+        mealBoxToUpdate.MealBoxName = mealBox.MealBoxName;
+        mealBoxToUpdate.City = mealBox.City;
+        mealBoxToUpdate.Price = mealBox.Price;
+        mealBoxToUpdate.PickupDateTime = mealBox.PickupDateTime;
+        mealBoxToUpdate.ExpireTime = mealBox.ExpireTime;
+        mealBoxToUpdate.WarmMeals = mealBox.WarmMeals;
+        mealBoxToUpdate.EighteenPlus = mealBox.EighteenPlus;
+        mealBoxToUpdate.CanteenId = mealBox.CanteenId;
+        mealBoxToUpdate.StudentId = mealBox.StudentId;
+
+        _context.MealBoxes.Update(mealBoxToUpdate);
         _context.SaveChanges();
+    }
+
+
+    public bool DeleteMealBox(MealBox mealBox)
+    {
+        try
+        {
+            _context.MealBoxes.Remove(mealBox);
+            _context.SaveChanges();
+            return true;
+        }
+        catch (SqlException e)
+        {
+            return false;
+        }
     }
 
     public void DeleteMealBoxProducts(MealBox mealBox)
     {
-        _context.MealBoxes.First(m => m.Id == mealBox.Id).Products = null;
+        _context.MealBoxes.Include(mealBox => mealBox.Products).First(mealBox1 => mealBox1.Id == mealBox.Id).Products
+            .Clear();
         _context.SaveChanges();
+        _context.ChangeTracker.Clear();
     }
 
     public void DeleteMealBoxById(int id)
@@ -164,10 +234,21 @@ public class MealBoxEFRepository : IMealBoxRepository
             _context.SaveChanges();
             return true;
         }
-        catch 
+        catch
         {
             return false;
         }
-     
+    }
+
+    public IEnumerable<MealBox> GetMealBoxesOwnCanteen(int canteenId)
+    {
+        return _context.MealBoxes.Include(m => m.Products).Where(m => m.CanteenId == canteenId)
+            .ToList();
+    }
+
+    public IEnumerable<MealBox> GetMealBoxesOtherCanteens(int canteenId)
+    {
+        return _context.MealBoxes.Include(m => m.Products).Where(m => m.CanteenId != canteenId)
+            .ToList();
     }
 }

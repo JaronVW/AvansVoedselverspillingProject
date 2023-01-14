@@ -1,6 +1,7 @@
 ﻿using Core.Domain;
 using Core.Domain.Exceptions;
 using Core.DomainServices;
+using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,16 +14,20 @@ public class MaaltijdBoxController : Controller
     private readonly IStudentRepository _studentRepository;
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IMealBoxUpdateMethods _mealBoxUpdateMethods;
+    private readonly IProductRepository _productRepository;
+    private readonly IMealBoxService _mealBoxService;
 
     public MaaltijdBoxController(IMealBoxRepository mealBoxRepository, ICanteenRepository canteenRepository,
         IStudentRepository studentRepository, IEmployeeRepository employeeRepository,
-        IMealBoxUpdateMethods mealBoxUpdateMethods)
+        IMealBoxUpdateMethods mealBoxUpdateMethods, IProductRepository productRepository, IMealBoxService mealBoxService)
     {
         _mealBoxRepository = mealBoxRepository;
         _canteenRepository = canteenRepository;
         _studentRepository = studentRepository;
         _employeeRepository = employeeRepository;
         _mealBoxUpdateMethods = mealBoxUpdateMethods;
+        _productRepository = productRepository;
+        _mealBoxService = mealBoxService;
     }
 
     [AllowAnonymous]
@@ -35,8 +40,7 @@ public class MaaltijdBoxController : Controller
             ViewBag.cantine = _employeeRepository.GetEmployeeByEmail(User.Identity.Name).Canteen.Id;
         }
 
-        return View(_mealBoxRepository.GetMealBoxes()
-            .Where(m => m.StudentId == null).ToList());
+        return View(_mealBoxRepository.GetMealBoxes().ToList());
     }
 
     [AllowAnonymous]
@@ -55,34 +59,59 @@ public class MaaltijdBoxController : Controller
     [Authorize(Roles = "employee")]
     public IActionResult Aanpassen(int id)
     {
-        ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
-        return View(_mealBoxUpdateMethods.updateMealBoxGet(id));
+        try
+        {
+            ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
+            return View(_mealBoxUpdateMethods.updateMealBoxGet(id));
+        }
+        catch
+        {
+            if (User != null && User.IsInRole("employee"))
+            {
+                ViewBag.cantine = _employeeRepository.GetEmployeeByEmail(User.Identity.Name).Canteen.Id;
+            }
+
+            return View("Index", _mealBoxRepository.GetMealBoxes().ToList());
+        }
     }
 
     [HttpPost]
     [Authorize(Roles = "employee")]
-    public IActionResult Aanpassen(MealBoxViewModel mealBoxViewModel)
+    public IActionResult Aanpassen(MealBoxViewModel mealBoxVm)
     {
         try
         {
             if (!ModelState.IsValid)
             {
                 ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
-                return View(_mealBoxUpdateMethods.updateMealBoxGet(mealBoxViewModel.Id));
+                return View(_mealBoxUpdateMethods.updateMealBoxGet(mealBoxVm.Id));
             }
 
-            if (_mealBoxUpdateMethods.updateMealBoxPost(mealBoxViewModel))
-                return RedirectToAction("Index");
-
-            ModelState.AddModelError("CustomError", "Deze maaltijdbox is al gereserveerd");
-            ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
-            return View(_mealBoxUpdateMethods.updateMealBoxGet(mealBoxViewModel.Id));
+            var products = new List<Product>();
+            if (mealBoxVm.SelectedProducts != null)
+                products.AddRange(mealBoxVm.SelectedProducts.Select(sp => _productRepository.GetProductById(sp)));
+            var employee = _employeeRepository.GetEmployeeByEmail(User.Identity.Name);
+            _mealBoxService.UpdateMealBox(new MealBox()
+            {
+                Id = mealBoxVm.Id,
+                MealBoxName = mealBoxVm.MealBoxName,
+                City = employee.Canteen.City,
+                PickupDateTime = mealBoxVm.PickupDateTime,
+                ExpireTime = mealBoxVm.ExpireTime,
+                EighteenPlus = mealBoxVm.EighteenPlus,
+                Price = mealBoxVm.Price,
+                Type = mealBoxVm.Type,
+                CanteenId = employee.CanteenId,
+                Products = new List<Product>()
+            }, products);
+            return RedirectToAction("Index");
+            
         }
         catch (InvalidFormdataException e)
         {
             ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
             ModelState.AddModelError("CustomError", e.Message);
-            return View(_mealBoxUpdateMethods.updateMealBoxGet(mealBoxViewModel.Id));
+            return View(_mealBoxUpdateMethods.updateMealBoxGet(mealBoxVm.Id));
         }
     }
 
@@ -93,8 +122,7 @@ public class MaaltijdBoxController : Controller
         if (User == null) return RedirectToAction("Index", "MaaltijdBox");
 
         var studentId = _studentRepository.GetStudentByEmail(User.Identity.Name).Id;
-        return View(_mealBoxRepository.GetMealBoxes()
-            .Where(m => m.Student != null && m.Student.Id == studentId));
+        return View(_mealBoxRepository.GetMealBoxesReserved(studentId));
     }
 
     [HttpGet]
@@ -117,7 +145,23 @@ public class MaaltijdBoxController : Controller
                 return View(_mealBoxUpdateMethods.formCreateViewModel());
             }
 
-            var m = _mealBoxRepository.AddMealBox(mealBoxVm);
+            var products = new List<Product>();
+            if (mealBoxVm.SelectedProducts != null)
+                products.AddRange(mealBoxVm.SelectedProducts.Select(sp => _productRepository.GetProductById(sp)));
+            var employee = _employeeRepository.GetEmployeeByEmail(User.Identity.Name);
+            var m = _mealBoxService.AddMealBox(new MealBox()
+            {
+                MealBoxName = mealBoxVm.MealBoxName,
+                City = employee.Canteen.City,
+                PickupDateTime = mealBoxVm.PickupDateTime,
+                ExpireTime = mealBoxVm.ExpireTime,
+                EighteenPlus = false,
+                Price = mealBoxVm.Price,
+                Type = mealBoxVm.Type,
+                CanteenId = employee.CanteenId,
+                Products = new List<Product>(),
+                WarmMeals = mealBoxVm.WarmMeals
+            }, products);
             return RedirectToAction("index");
         }
         catch (InvalidFormdataException e)
@@ -175,6 +219,7 @@ public class MaaltijdBoxController : Controller
         {
             ViewBag.studentId = _studentRepository.GetStudentByEmail(User.Identity.Name).Id;
         }
+
         return View("BoxDetails", _mealBoxRepository.GetMealBoxes()
             .First(m => m.Id == mealBoxId));
     }

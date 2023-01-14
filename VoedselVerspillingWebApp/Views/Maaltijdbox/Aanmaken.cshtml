@@ -22,14 +22,7 @@
             <div id="mealBoxNameInputHint" class="form-text">Een unieke omschrijvende naam voor de maaltijdbox.</div>
         </div>
 
-        <div class="mb-3">
-            <label asp-for="City" class="form-label">Stad</label>
-            <select asp-for="City"
-                    class="form-control"
-                    asp-items="Html.GetEnumSelectList<City>()">
-                <option>Stad ...</option>
-            </select>
-        </div>
+     
 
         <div class="mb-3">
             <label asp-for="PickupDateTime" class="form-label">Ophaaldatum</label>
@@ -68,16 +61,7 @@
         </div>
 
 
-        <div class="mb-3">
-            <label asp-for="CanteenId" class="form-label">Kantine</label>
-            <select asp-for="CanteenId" class="form-control">
-                @foreach (var c in @ViewBag.Canteens)
-                {
-                    <option value="@c.Id">@c.Address</option>
-                }
-                <option value="null" selected="selected">Kantine ...</option>
-            </select>
-        </div>
+     
 
         <div class="mb-3">
             Beschikbare voorbeeldproducten:

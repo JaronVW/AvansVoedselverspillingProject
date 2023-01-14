@@ -5,15 +5,15 @@ namespace Infrastructure;
 
 public class ApplicationDBContext : DbContext
 {
-    public DbSet<MealBox> MealBoxes { get; set; }
+    public virtual DbSet<MealBox> MealBoxes { get; set; }
 
-    public DbSet<Canteen> Canteens { get; set; }
+    public virtual DbSet<Canteen> Canteens { get; set; }
 
-    public DbSet<Product> Products { get; set; }
+    public virtual DbSet<Product> Products { get; set; }
 
-    public DbSet<Employee> Employees { get; set; }
+    public virtual DbSet<Employee> Employees { get; set; }
 
-    public DbSet<Student> Students { get; set; }
+    public virtual DbSet<Student> Students { get; set; }
 
 
     public ApplicationDBContext()

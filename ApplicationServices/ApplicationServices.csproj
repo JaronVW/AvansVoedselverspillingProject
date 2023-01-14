@@ -4,7 +4,12 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Application</RootNamespace>
+        <RootNamespace>ApplicationProject</RootNamespace>
     </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Core\Core.Domain\Core.Domain.csproj" />
+      <ProjectReference Include="..\Core\DomainServices\DomainServices.csproj" />
+    </ItemGroup>
 
 </Project>
