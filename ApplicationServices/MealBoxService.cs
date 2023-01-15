@@ -21,7 +21,8 @@ public class MealBoxService : IMealBoxService
 
     public MealBox AddMealBox(MealBox mealBox, List<Product> products)
     {
-        if (mealBox.WarmMeals && _canteenRepository.GetCanteenById(mealBox.CanteenId).WarmMealsprovided != true)
+        var canteen = _canteenRepository.GetCanteenById(mealBox.CanteenId);
+        if (mealBox.WarmMeals && canteen.WarmMealsprovided != true)
         {
             throw new InvalidFormdataException("Warme maaltijden zijn niet beschikbaar in deze kantine");
         }
@@ -35,6 +36,11 @@ public class MealBoxService : IMealBoxService
         {
             throw new InvalidFormdataException("De ophaal datum moet voor de verloopdatum liggen");
         }
+
+
+        mealBox.CanteenId = canteen.Id;
+        mealBox.Canteen = canteen;
+
 
         if (products != null)
         {
@@ -116,7 +122,7 @@ public class MealBoxService : IMealBoxService
         {
             throw new InvalidFormdataException("De ophaal datum moet voor de verloopdatum liggen");
         }
-        
+
         _mealBoxRepository.DeleteMealBoxProducts(mealBox);
 
         if (products != null)

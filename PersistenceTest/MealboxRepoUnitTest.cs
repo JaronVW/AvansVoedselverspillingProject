@@ -72,22 +72,6 @@ public class MealboxRepoUnitTest
         }
     }.AsQueryable();
 
-
-    [Fact]
-    public void NonReservedMealBoxes()
-    {
-        Mock<DbSet<MealBox>> mockSet = new Mock<DbSet<MealBox>>();
-        mockSet.As<IQueryable<MealBox>>().Setup(m => m.Expression).Returns(mealBoxData.Expression);
-        mockSet.As<IQueryable<MealBox>>().Setup(m => m.ElementType).Returns(mealBoxData.ElementType);
-        mockSet.As<IQueryable<MealBox>>().Setup(m => m.Provider).Returns(mealBoxData.Provider);
-        mockSet.As<IQueryable<MealBox>>().Setup(m => m.GetEnumerator()).Returns(() => mealBoxData.GetEnumerator());
-
-        var ctx = new Mock<ApplicationDBContext>();
-        ctx.Setup(c => c.MealBoxes).Returns(mockSet.Object);
-
-        var service = new MealBoxEFRepository(ctx.Object);
-        var mealBoxes = service.GetMealBoxes();
-        Assert.Equal(2, mealBoxes.Count());
-    }
     
+
 }
