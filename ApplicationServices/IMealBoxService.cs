@@ -1,15 +1,14 @@
-﻿
+﻿using Core.Domain;
 
-
-using Core.Domain;
-using Domain;
+namespace ApplicationServices;
 
 public interface IMealBoxService
 {
-    public MealBox AddMealBox(MealBox mealBox, List<Product> products);
-    
-    public MealBoxViewModel UpdateMealBoxGet(int id);
-    
+    public MealBox AddMealBox(MealBox mealBox, List<Product> products, int canteenId);
+
     public MealBox UpdateMealBox(MealBox mealBox, List<Product> products);
 
+    public bool DeleteMealBox(int id);
+
+    public bool ReserveMealBox(int mealBoxId, int studentId);
 }

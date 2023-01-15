@@ -1,7 +1,7 @@
-﻿using Core.Domain;
+﻿using ApplicationServices;
+using Core.Domain;
 using Core.Domain.Exceptions;
 using Core.DomainServices;
-using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +19,8 @@ public class MaaltijdBoxController : Controller
 
     public MaaltijdBoxController(IMealBoxRepository mealBoxRepository, ICanteenRepository canteenRepository,
         IStudentRepository studentRepository, IEmployeeRepository employeeRepository,
-        IMealBoxUpdateMethods mealBoxUpdateMethods, IProductRepository productRepository, IMealBoxService mealBoxService)
+        IMealBoxUpdateMethods mealBoxUpdateMethods, IProductRepository productRepository,
+        IMealBoxService mealBoxService)
     {
         _mealBoxRepository = mealBoxRepository;
         _canteenRepository = canteenRepository;
@@ -105,7 +106,6 @@ public class MaaltijdBoxController : Controller
                 Products = new List<Product>()
             }, products);
             return RedirectToAction("Index");
-            
         }
         catch (InvalidFormdataException e)
         {
@@ -129,6 +129,7 @@ public class MaaltijdBoxController : Controller
     [Authorize(Roles = "employee")]
     public IActionResult Aanmaken()
     {
+        ViewBag.EmployeeCanteen = _employeeRepository.GetEmployeeByEmail(User.Identity.Name).Canteen;
         ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
         return View(_mealBoxUpdateMethods.formCreateViewModel());
     }
@@ -160,8 +161,8 @@ public class MaaltijdBoxController : Controller
                 Type = mealBoxVm.Type,
                 CanteenId = employee.CanteenId,
                 Products = new List<Product>(),
-                WarmMeals = mealBoxVm.WarmMeals
-            }, products);
+                WarmMeals = mealBoxVm.WarmMeals,
+            }, products, employee.CanteenId);
             return RedirectToAction("index");
         }
         catch (InvalidFormdataException e)
@@ -181,10 +182,16 @@ public class MaaltijdBoxController : Controller
     [Authorize(Roles = "employee")]
     public IActionResult Verwijder(int id)
     {
-        var m = _mealBoxRepository.GetMealBoxById(id);
-        if (m.StudentId != null) return RedirectToAction("Index");
-        _mealBoxRepository.DeleteMealBox(m);
-        return RedirectToAction("Index");
+        try
+        {
+            _mealBoxService.DeleteMealBox(id);
+            return RedirectToAction("Index");
+        }
+        catch
+        {
+            ModelState.AddModelError("CustomError", "kan de maaltijdbox niet verwijderen");
+            return RedirectToAction("Index");
+        }
     }
 
     [Authorize(Roles = "student")]
@@ -192,7 +199,7 @@ public class MaaltijdBoxController : Controller
     {
         try
         {
-            _mealBoxRepository.ReserveMealBox(mealBoxId, studentId);
+            _mealBoxService.ReserveMealBox(mealBoxId, studentId);
             return RedirectToAction("BoxDetails", "MaaltijdBox", new { id = mealBoxId });
         }
         catch (InvalidReservationException e)

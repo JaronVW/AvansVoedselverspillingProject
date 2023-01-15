@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
+using Core.Domain.Enums;
 
-namespace Domain
+namespace Core.Domain
 {
     public class MealBox
     {

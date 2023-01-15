@@ -1,4 +1,6 @@
-﻿namespace Domain
+﻿using Core.Domain.Enums;
+
+namespace Core.Domain
 {
     public class Student 
     {

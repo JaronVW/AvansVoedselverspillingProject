@@ -1,6 +1,6 @@
 ﻿using System.Reflection.Metadata.Ecma335;
+using Core.Domain;
 using Core.DomainServices;
-using Domain;
 using Infrastructure;
 
 namespace WebAPI.GraphQl;

@@ -1,3 +1,5 @@
+namespace webappTests;
+
 public class UnitTest1
 {
     [Fact]

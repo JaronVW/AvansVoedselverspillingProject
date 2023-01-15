@@ -1,10 +1,9 @@
 ﻿using Core.Domain;
 using Core.Domain.Exceptions;
 using Core.DomainServices;
-using Domain;
+using Infrastructure.ContextClasses;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using VoedselVerspillingWebApp.Models;
 
 namespace Infrastructure;
 

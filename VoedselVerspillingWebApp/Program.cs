@@ -1,5 +1,7 @@
+using ApplicationServices;
 using Core.DomainServices;
 using Infrastructure;
+using Infrastructure.ContextClasses;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

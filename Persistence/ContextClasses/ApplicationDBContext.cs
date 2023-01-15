@@ -1,7 +1,8 @@
-﻿using Domain;
+﻿using Core.Domain;
+using Core.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure;
+namespace Infrastructure.ContextClasses;
 
 public class ApplicationDBContext : DbContext
 {

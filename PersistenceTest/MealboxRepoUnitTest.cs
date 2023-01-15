@@ -1,6 +1,7 @@
+using Core.Domain;
+using Core.Domain.Enums;
 using Core.Domain.Exceptions;
 using Core.DomainServices;
-using Domain;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Moq;

@@ -1,9 +1,8 @@
 ﻿using Core.Domain;
 using Core.Domain.Exceptions;
 using Core.DomainServices;
-using Domain;
+using Infrastructure.ContextClasses;
 using Microsoft.EntityFrameworkCore;
-using VoedselVerspillingWebApp.Models;
 
 namespace Infrastructure;
 
@@ -39,7 +38,8 @@ public class MealBoxUpdateMethodsRepository : IMealBoxUpdateMethods
             Price = m.Price,
             CanteenId = m.CanteenId,
             StudentId = m.StudentId,
-            ProductCheckBoxes = new List<CheckBoxItem>()
+            ProductCheckBoxes = new List<CheckBoxItem>(),
+            Type = m.Type
         };
         foreach (var p in _context.Products)
         {

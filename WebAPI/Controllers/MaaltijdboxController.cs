@@ -1,5 +1,5 @@
-﻿using Core.DomainServices;
-using Domain;
+﻿using Core.Domain;
+using Core.DomainServices;
 using Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

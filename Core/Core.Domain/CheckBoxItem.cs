@@ -1,4 +1,4 @@
-﻿namespace VoedselVerspillingWebApp.Models;
+﻿namespace Core.Domain;
 
 public class CheckBoxItem
 {

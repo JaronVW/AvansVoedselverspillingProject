@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace VoedselVerspillingWebApp.Models;
+namespace Core.Domain;
 
 public class loginViewModel
 {

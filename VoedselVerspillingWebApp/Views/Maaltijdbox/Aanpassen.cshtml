@@ -1,4 +1,4 @@
-﻿@using Domain
+﻿@using Core.Domain.Enums
 @model Core.Domain.MealBoxViewModel
 @{
     ViewBag.Title = @Model.MealBoxName + " Aanpassen";
@@ -39,21 +39,20 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="City" class="form-label">Type</label>
-            <select asp-for="City"
+            <label asp-for="Type" class="form-label">Type </label>
+            <select asp-for="Type"
                     class="form-control"
                     asp-items="Html.GetEnumSelectList<MealType>()">
-                <option>Type maaltijdbox ...</option>
+                    <option>Type</option>
             </select>
         </div>
-
 
         <div class="mb-3">
             <label asp-for="Canteen" class="form-label">Kantine</label>
             <select asp-for="CanteenId" class="form-control">
                 @foreach (var c in @ViewBag.Canteens)
                 {
-                    <option value="@c.Id">@c.Address</option>
+                    <option value="@c.Id">@c.CanteenName - @c.City</option>
                 }
                 <option >Kantine ...</option>
             </select>

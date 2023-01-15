@@ -1,12 +1,16 @@
-﻿@using Domain
+﻿@using Core.Domain.Enums
 @model Core.Domain.MealBoxViewModel
 
 @{
-   // ViewBag.Title = "Maaltijdbox Aanmaken";
+    // ViewBag.Title = "Maaltijdbox Aanmaken";
 }
 
 
 <h2 class="text-center">Maak Een Nieuwe Maaltijdbox</h2>
+@if (@ViewBag.EmployeeCanteen != null)
+{
+    <h3 class="text-center">Eigen kantine: @ViewBag.EmployeeCanteen.CanteenName -@ViewBag.EmployeeCanteen.City </h3>
+}
 <div class="w-75 mx-auto">
     <form method="post" asp-action="Aanmaken">
         <div asp-validation-summary="All" class="text-danger"></div>
@@ -22,7 +26,6 @@
             <div id="mealBoxNameInputHint" class="form-text">Een unieke omschrijvende naam voor de maaltijdbox.</div>
         </div>
 
-     
 
         <div class="mb-3">
             <label asp-for="PickupDateTime" class="form-label">Ophaaldatum</label>
@@ -33,12 +36,7 @@
             <label asp-for="ExpireTime" class="form-label">Verloopdatum</label>
             <input asp-for="ExpireTime" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}" class="form-control" id="mealBoxNameInput">
         </div>
-
-        @*<div class="mb-3 form-check">
-            <input asp-for="EighteenPlus" type="checkbox" class="form-check-input" id="mealBoxNameInput">
-            <label asp-for="EighteenPlus" value="true" class="form-check-label">Bevat producten die 18+ zijn</label>
-            <input type="hidden" value="false" asp-for="EighteenPlus">
-        </div>*@
+        
 
         <div class="mb-3 form-check">
             <input asp-for="WarmMeals" type="checkbox" class="form-check-input" id="mealBoxNameInput">
@@ -52,16 +50,13 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="City" class="form-label">Type</label>
-            <select asp-for="City"
+            <label asp-for="Type" class="form-label">Type </label>
+            <select asp-for="Type"
                     class="form-control"
                     asp-items="Html.GetEnumSelectList<MealType>()">
-                <option>Type maaltijdbox ...</option>
             </select>
         </div>
 
-
-     
 
         <div class="mb-3">
             Beschikbare voorbeeldproducten:

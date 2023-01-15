@@ -1,5 +1,4 @@
 ﻿using Core.Domain;
-using VoedselVerspillingWebApp.Models;
 
 namespace Core.DomainServices;
 

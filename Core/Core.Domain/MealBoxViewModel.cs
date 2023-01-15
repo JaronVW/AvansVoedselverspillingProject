@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
-using Domain;
-using VoedselVerspillingWebApp.Models;
+using Core.Domain.Enums;
 
 namespace Core.Domain;
 
