@@ -41,6 +41,10 @@
                 }
                 else if (User.IsInRole("employee"))
                 {
+                    
+                    <li class="nav-item">
+                        <a class="nav-link " asp-controller="MaaltijdBox" asp-action="AndereKantines">MaaltijdBoxen Andere Kantines</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link " asp-controller="MaaltijdBox" asp-action="Aanmaken">Maaltijdbox Maken</a>
                     </li>

@@ -36,12 +36,18 @@ public class MaaltijdBoxController : Controller
     public IActionResult Index()
     {
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-        if (User != null && User.IsInRole("employee"))
-        {
-            ViewBag.cantine = _employeeRepository.GetEmployeeByEmail(User.Identity.Name).Canteen.Id;
-        }
+        if (User == null || !User.IsInRole("employee")) return View(_mealBoxService.GetMealBoxesNonReserved().ToList());
 
-        return View(_mealBoxRepository.GetMealBoxes().ToList());
+        var employee = _employeeRepository.GetEmployeeByEmail(User.Identity.Name);
+        ViewBag.cantine = employee.Canteen.Id;
+        return View(_mealBoxService.GetMealBoxesOwnCanteen(employee.CanteenId).ToList());
+    }
+
+    public IActionResult AndereKantines()
+    {
+        var employee = _employeeRepository.GetEmployeeByEmail(User.Identity.Name);
+        ViewBag.cantine = employee.Canteen.Id;
+        return View(_mealBoxService.GetMealBoxesOtherCanteens(employee.CanteenId).ToList());
     }
 
     [AllowAnonymous]
@@ -72,7 +78,7 @@ public class MaaltijdBoxController : Controller
                 ViewBag.cantine = _employeeRepository.GetEmployeeByEmail(User.Identity.Name).Canteen.Id;
             }
 
-            return View("Index", _mealBoxRepository.GetMealBoxes().ToList());
+            return View("Index", _mealBoxService.GetMealBoxesNonReserved().ToList());
         }
     }
 
@@ -122,7 +128,7 @@ public class MaaltijdBoxController : Controller
         if (User == null) return RedirectToAction("Index", "MaaltijdBox");
 
         var studentId = _studentRepository.GetStudentByEmail(User.Identity.Name).Id;
-        return View(_mealBoxRepository.GetMealBoxesReserved(studentId));
+        return View(_mealBoxService.GetMealBoxesReserved(studentId));
     }
 
     [HttpGet]
@@ -182,16 +188,15 @@ public class MaaltijdBoxController : Controller
     [Authorize(Roles = "employee")]
     public IActionResult Verwijder(int id)
     {
-        try
-        {
-            _mealBoxService.DeleteMealBox(id);
-            return RedirectToAction("Index");
-        }
-        catch
-        {
+        if (!_mealBoxService.DeleteMealBox(id))
             ModelState.AddModelError("CustomError", "kan de maaltijdbox niet verwijderen");
-            return RedirectToAction("Index");
-        }
+
+        if (User == null || !User.IsInRole("employee"))
+            return View("Index", _mealBoxService.GetMealBoxesNonReserved().ToList());
+
+        var employee = _employeeRepository.GetEmployeeByEmail(User.Identity.Name);
+        ViewBag.cantine = employee.Canteen.Id;
+        return View("Index", _mealBoxService.GetMealBoxesOwnCanteen(employee.CanteenId).ToList());
     }
 
     [Authorize(Roles = "student")]
@@ -199,8 +204,15 @@ public class MaaltijdBoxController : Controller
     {
         try
         {
-            _mealBoxService.ReserveMealBox(mealBoxId, studentId);
-            return RedirectToAction("BoxDetails", "MaaltijdBox", new { id = mealBoxId });
+            if (!_mealBoxService.ReserveMealBox(mealBoxId, studentId))
+                ModelState.AddModelError("CustomError", "Deze maaltijdbox is niet meer beschikbaar");
+
+            if (User.IsInRole("student"))
+            {
+                ViewBag.studentId = _studentRepository.GetStudentByEmail(User.Identity.Name).Id;
+            }
+
+            return RedirectToAction("BoxDetails", new { id = mealBoxId });
         }
         catch (InvalidReservationException e)
         {
@@ -210,7 +222,7 @@ public class MaaltijdBoxController : Controller
             }
 
             ModelState.AddModelError("CustomError", e.Message);
-            return View("BoxDetails", _mealBoxRepository.GetMealBoxes()
+            return View("BoxDetails", _mealBoxService.GetMealBoxesNonReserved()
                 .First(m => m.Id == mealBoxId));
         }
     }
@@ -218,16 +230,12 @@ public class MaaltijdBoxController : Controller
     [Authorize(Roles = "student")]
     public IActionResult ReserveerAnnuleer(int mealBoxId)
     {
-        if (_mealBoxRepository.ReserveMealBoxCancel(mealBoxId))
-            return RedirectToAction("BoxDetails", "MaaltijdBox", new { id = mealBoxId });
+        var student = _studentRepository.GetStudentByEmail(User.Identity.Name);
+        if (!_mealBoxService.ReserveMealBoxCancel(mealBoxId, student.Id))
+            ModelState.AddModelError("CustomError",
+                "Er is iets mis gegaan met de reservering annuleren. Maaltijdbox is door iemand anders gereserveerd, of is niet meer beschikbaar.");
 
-        ModelState.AddModelError("CustomError", "Er is iets mis gegaan met de reservering annuleren");
-        if (User.IsInRole("student"))
-        {
-            ViewBag.studentId = _studentRepository.GetStudentByEmail(User.Identity.Name).Id;
-        }
-
-        return View("BoxDetails", _mealBoxRepository.GetMealBoxes()
-            .First(m => m.Id == mealBoxId));
+        ViewBag.studentId = student.Id;
+        return View("BoxDetails", _mealBoxRepository.GetMealBoxById(mealBoxId));
     }
 }

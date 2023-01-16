@@ -17,11 +17,20 @@ public class MealBoxEFRepository : IMealBoxRepository
         _context = context;
     }
 
-    public IEnumerable<MealBox> GetMealBoxes()
+    public IEnumerable<MealBox> GetMealBoxesNonReserved()
     {
         return _context.MealBoxes
             .OrderBy(box => box.PickupDateTime)
             .Include(m => m.Products).Where(m => m.StudentId == null)
+            .Include(m => m.Student)
+            .ToList();
+    }
+
+    public IEnumerable<MealBox> GetMealBoxes()
+    {
+        return _context.MealBoxes
+            .OrderBy(box => box.PickupDateTime)
+            .Include(m => m.Products)
             .Include(m => m.Student)
             .ToList();
     }
@@ -110,64 +119,6 @@ public class MealBoxEFRepository : IMealBoxRepository
     }
 
 
-    public void UpdateMealBox(MealBox mealBox, List<Product> products)
-    {
-        if (mealBox.StudentId != null)
-        {
-            throw new InvalidFormdataException("Deze maaltijd is al gereserveerd");
-        }
-
-        if (mealBox.WarmMeals && _context.Canteens.Find(mealBox.CanteenId)?.WarmMealsprovided != true)
-        {
-            throw new InvalidFormdataException("Warme maaltijden zijn niet beschikbaar in deze kantine");
-        }
-
-        if (mealBox.PickupDateTime > DateTime.Now.AddDays(2).AddTicks(-1))
-        {
-            throw new InvalidFormdataException("De ophaal datum moet binnen nu en twee dagen liggen");
-        }
-
-        if (mealBox.PickupDateTime > mealBox.ExpireTime)
-        {
-            throw new InvalidFormdataException("De ophaal datum moet voor de verloopdatum liggen");
-        }
-
-
-        mealBox.Products?.Clear();
-        var mealBoxToUpdate = _context.MealBoxes.Include(box => box.Products).First(box => box.Id == mealBox.Id);
-
-        if (products != null)
-        {
-            if (mealBoxToUpdate.Products != null)
-            {
-                mealBoxToUpdate.Products.ToList().AddRange(products.Where(x => products.All(y => y.Id != x.Id)));
-                foreach (var product in mealBoxToUpdate.Products)
-                {
-                    if (!products.Contains(product)) mealBoxToUpdate.Products.Remove(product);
-                }
-
-                foreach (var product in mealBoxToUpdate.Products)
-                {
-                    mealBox.EighteenPlus = product.ContainsAlcohol;
-                }
-            }
-        }
-
-        mealBoxToUpdate.MealBoxName = mealBox.MealBoxName;
-        mealBoxToUpdate.City = mealBox.City;
-        mealBoxToUpdate.Price = mealBox.Price;
-        mealBoxToUpdate.PickupDateTime = mealBox.PickupDateTime;
-        mealBoxToUpdate.ExpireTime = mealBox.ExpireTime;
-        mealBoxToUpdate.WarmMeals = mealBox.WarmMeals;
-        mealBoxToUpdate.EighteenPlus = mealBox.EighteenPlus;
-        mealBoxToUpdate.CanteenId = mealBox.CanteenId;
-        mealBoxToUpdate.StudentId = mealBox.StudentId;
-
-        _context.MealBoxes.Update(mealBoxToUpdate);
-        _context.SaveChanges();
-    }
-
-
     public bool DeleteMealBox(MealBox mealBox)
     {
         try
@@ -190,12 +141,6 @@ public class MealBoxEFRepository : IMealBoxRepository
         _context.ChangeTracker.Clear();
     }
 
-    public void DeleteMealBoxById(int id)
-    {
-        _context.MealBoxes.Remove(_context.MealBoxes.Find(id));
-        _context.SaveChanges();
-    }
-
 
     public MealBox? GetReservedMealBoxToday(int studentId, DateTime date)
     {
@@ -203,51 +148,7 @@ public class MealBoxEFRepository : IMealBoxRepository
             .FirstOrDefault(box => box.StudentId == studentId && box.PickupDateTime.Date == date.Date);
     }
 
-    public void ReserveMealBox(int mealBoxId, int studentId)
-    {
-        var m = _context.MealBoxes.Find(mealBoxId);
-        var s = _context.Students.Find(studentId);
+   
 
-        if (s.BirthDate.Date > m.PickupDateTime.AddYears(-18) && m.EighteenPlus)
-        {
-            throw new InvalidReservationException("U moet achttien zijn om deze maaltijdbox te reserveren");
-        }
-
-        if (GetReservedMealBoxToday(studentId, m.PickupDateTime) != null)
-        {
-            throw new InvalidReservationException("U heeft al een maaltijdbox voor deze dag gereserveerd");
-        }
-
-        m.StudentId = s.Id;
-        _context.MealBoxes.Update(m);
-        _context.SaveChanges();
-    }
-
-    public bool ReserveMealBoxCancel(int mealBoxId)
-    {
-        try
-        {
-            var m = _context.MealBoxes.Find(mealBoxId);
-            m.StudentId = null;
-            _context.Update(m);
-            _context.SaveChanges();
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    public IEnumerable<MealBox> GetMealBoxesOwnCanteen(int canteenId)
-    {
-        return _context.MealBoxes.Include(m => m.Products).Where(m => m.CanteenId == canteenId)
-            .ToList();
-    }
-
-    public IEnumerable<MealBox> GetMealBoxesOtherCanteens(int canteenId)
-    {
-        return _context.MealBoxes.Include(m => m.Products).Where(m => m.CanteenId != canteenId)
-            .ToList();
-    }
+   
 }

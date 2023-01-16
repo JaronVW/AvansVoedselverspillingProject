@@ -11,4 +11,15 @@ public interface IMealBoxService
     public bool DeleteMealBox(int id);
 
     public bool ReserveMealBox(int mealBoxId, int studentId);
+
+    public bool ReserveMealBoxCancel(int mealBoxId, int studentId);
+
+    public IEnumerable<MealBox> GetMealBoxesReserved(int studentId);
+
+    public IEnumerable<MealBox> GetMealBoxesNonReserved();
+
+
+    public IEnumerable<MealBox> GetMealBoxesOwnCanteen(int canteenId);
+
+    public IEnumerable<MealBox> GetMealBoxesOtherCanteens(int canteenId);
 }

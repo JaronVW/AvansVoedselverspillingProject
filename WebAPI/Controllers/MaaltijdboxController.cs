@@ -21,7 +21,7 @@ public class MaaltijdboxController : ControllerBase
 
     [HttpGet(Name = "GetMaaltijdBoxen")]
     public IEnumerable<MealBox> GetMaaltijdBoxen()
-        => _mealBoxRepository.GetMealBoxes();
+        => _mealBoxRepository.GetMealBoxes().Where(box => box.StudentId == null);
 
 
     [HttpGet("{id}", Name = "GetMaaltijdBox")]

@@ -20,6 +20,16 @@ public class MealBoxService : IMealBoxService
         _studentRepository = studentRepository;
     }
 
+    public IEnumerable<MealBox> GetMealBoxesNonReserved()
+        => _mealBoxRepository.GetMealBoxes()
+            .OrderBy(box => box.PickupDateTime)
+            .Where(m => m.StudentId == null)
+            .ToList();
+
+
+    public IEnumerable<MealBox> GetMealBoxesReserved(int studentId)
+        => _mealBoxRepository.GetMealBoxes().Where(m => m.Student != null && m.StudentId == studentId);
+
 
     public MealBox AddMealBox(MealBox mealBox, List<Product> products, int canteenId)
     {
@@ -106,12 +116,12 @@ public class MealBoxService : IMealBoxService
         _mealBoxRepository.DeleteMealBox(mealBox);
         return true;
     }
-    
+
     public bool ReserveMealBox(int mealBoxId, int studentId)
     {
         var m = _mealBoxRepository.GetMealBoxById(mealBoxId);
         var s = _studentRepository.GetStudentById(studentId);
-        
+
         if (m.StudentId != null) return false;
 
         if (s.BirthDate.Date > m.PickupDateTime.AddYears(-18) && m.EighteenPlus)
@@ -129,19 +139,28 @@ public class MealBoxService : IMealBoxService
         return true;
     }
 
-    /*public bool ReserveMealBoxCancel(int mealBoxId)
-{
-    try
+    public bool ReserveMealBoxCancel(int mealBoxId,int studentId)
     {
-        var m = _context.MealBoxes.Find(mealBoxId);
-        m.StudentId = null;
-        _context.Update(m);
-        _context.SaveChanges();
-        return true;
+        var m = _mealBoxRepository.GetMealBoxById(mealBoxId);
+        if(m.StudentId != studentId) return false;
+        try
+        {
+            m.StudentId = null;
+            _mealBoxRepository.UpdateMealBox(m);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
-    catch
-    {
-        return false;
-    }
-}*/
+
+    public IEnumerable<MealBox> GetMealBoxesOwnCanteen(int canteenId)
+        => _mealBoxRepository.GetMealBoxes().Where(m => m.CanteenId == canteenId).OrderBy(box => box.PickupDateTime)
+            .ToList();
+
+
+    public IEnumerable<MealBox> GetMealBoxesOtherCanteens(int canteenId)
+        => _mealBoxRepository.GetMealBoxes().Where(m => m.CanteenId != canteenId)
+            .ToList();
 }
