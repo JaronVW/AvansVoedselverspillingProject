@@ -55,12 +55,29 @@
         <div class="col">
             <h3>€@Model.Price</h3>
         </div>
+
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>@(Model.EighteenPlus ? "18+ producten" : "16+ producten")</p>
+        </div>
     </div>
     <div class="row my-2">
         <div class="col">
-            <p>Op te halen van @Model.PickupDateTime tot @Model.ExpireTime</p>
+            <p>Op te halen van @Model.PickupDateTime.ToString("g") tot @Model.ExpireTime.ToString("g")</p>
         </div>
 
+    </div>
+    <div class="row my-2">
+        <div class="col">
+            <p>@Model.Canteen.CanteenName - @Model.City </p>
+        </div>
+
+    </div>
+    <div class="row my-2">
+        <div class="col">
+            <p>@(Model.EighteenPlus ? "Kan warme maaltijden bevatten" : "Warme maaltijden niet aangegeven")</p>
+        </div>
     </div>
     @if (@User.IsInRole("student"))
     {
