@@ -53,7 +53,7 @@ public static class MealBoxViewModeleExtension
 
         return vm;
     }
-    
+
     public static MealBoxViewModel FormCreateViewModel(IEnumerable<Product> products)
     {
         var vm = new MealBoxViewModel
@@ -74,4 +74,5 @@ public static class MealBoxViewModeleExtension
 
         return vm;
     }
+    
 }
