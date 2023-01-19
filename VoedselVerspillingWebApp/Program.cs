@@ -29,7 +29,6 @@ builder.Services.AddScoped<IStudentRepository, StudentEFRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeEFRepository>();
 builder.Services.AddScoped<IMealBoxService, MealBoxService>();
 
-builder.Services.AddScoped<IMealBoxUpdateMethods, MealBoxUpdateMethodsRepository>();
 
 
 var app = builder.Build();

@@ -10,69 +10,23 @@ namespace PersistenceTest;
 
 public class MealboxRepoUnitTest
 {
-    IQueryable<MealBox> mealBoxData = new List<MealBox>
+    [Fact]
+    public void getMealBoxes()
     {
-        new MealBox()
-        {
-            MealBoxName = "Pilsener verzameling",
-            City = City.Breda,
-            PickupDateTime = DateTime.Today.AddDays(3),
-            ExpireTime = DateTime.Today.AddDays(3).AddHours(2),
-            EighteenPlus = true,
-            Price = 5.45m,
-            Type = MealType.Box,
-            CanteenId = 1,
-            WarmMeals = false
-        },
-        new MealBox()
-        {
-            MealBoxName = "Een beetje van alles!",
-            City = City.Den_Bosch,
-            PickupDateTime = DateTime.Today,
-            ExpireTime = DateTime.Today.AddHours(2),
-            EighteenPlus = false,
-            Price = 5.45m,
-            Type = MealType.Box,
-            Products = new List<Product>(),
-            CanteenId = 4,
-            WarmMeals = true
-        },
-        new MealBox()
-        {
-            MealBoxName = "Deze is gereserveerd",
-            City = City.Den_Bosch,
-            PickupDateTime = DateTime.Today,
-            ExpireTime = DateTime.Today.AddHours(2),
-            EighteenPlus = false,
-            Price = 5.45m,
-            Type = MealType.Box,
-            Products = new List<Product>(),
-            CanteenId = 4,
-            WarmMeals = true,
-            StudentId = 1,
-            Student = new Student()
-            {
-            }
-        }
-    }.AsQueryable();
+        Mock<IMealBoxRepository> mockMealBoxRepo = new Mock<IMealBoxRepository>();
+        mockMealBoxRepo.Setup(m => m.GetMealBoxes()).Returns(new List<MealBox>());
+        var mealBoxRepo = mockMealBoxRepo.Object;
+        var mealBoxes = mealBoxRepo.GetMealBoxes();
+        Assert.NotNull(mealBoxes);
+    }
 
-    IQueryable<Product> productData = new List<Product>
+    [Fact]
+    public void getMealBoxById()
     {
-        new Product()
-        {
-            Id = 1, Name = "Broodje", ContainsAlcohol = false,
-            Photo = "https://gezinoverdekook.nl/wp-content/uploads/Broodje-gezond-recept.jpeg",
-            MealBoxes = new List<MealBox>()
-        },
-        new Product()
-        {
-            Id = 2, Name = "Broodje mozzarella", ContainsAlcohol = false,
-            Photo =
-                "https://www.modernhoney.com/wp-content/uploads/2019/01/Pesto-Panini-with-Fresh-Mozzarella-and-Tomato-1-crop.jpg",
-            MealBoxes = new List<MealBox>()
-        }
-    }.AsQueryable();
-
-    
-
+        Mock<IMealBoxRepository> mockMealBoxRepo = new Mock<IMealBoxRepository>();
+        mockMealBoxRepo.Setup(m => m.GetMealBoxById(1)).Returns(new MealBox());
+        var mealBoxRepo = mockMealBoxRepo.Object;
+        var mealBox = mealBoxRepo.GetMealBoxById(1);
+        Assert.NotNull(mealBox);
+    }
 }

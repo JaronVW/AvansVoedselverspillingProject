@@ -4,6 +4,7 @@ using Core.Domain.Exceptions;
 using Core.DomainServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using VoedselVerspillingWebApp.extensions;
 
 namespace VoedselVerspillingWebApp.Controllers;
 
@@ -13,20 +14,18 @@ public class MaaltijdBoxController : Controller
     private readonly ICanteenRepository _canteenRepository;
     private readonly IStudentRepository _studentRepository;
     private readonly IEmployeeRepository _employeeRepository;
-    private readonly IMealBoxUpdateMethods _mealBoxUpdateMethods;
     private readonly IProductRepository _productRepository;
     private readonly IMealBoxService _mealBoxService;
 
     public MaaltijdBoxController(IMealBoxRepository mealBoxRepository, ICanteenRepository canteenRepository,
         IStudentRepository studentRepository, IEmployeeRepository employeeRepository,
-        IMealBoxUpdateMethods mealBoxUpdateMethods, IProductRepository productRepository,
+        IProductRepository productRepository,
         IMealBoxService mealBoxService)
     {
         _mealBoxRepository = mealBoxRepository;
         _canteenRepository = canteenRepository;
         _studentRepository = studentRepository;
         _employeeRepository = employeeRepository;
-        _mealBoxUpdateMethods = mealBoxUpdateMethods;
         _productRepository = productRepository;
         _mealBoxService = mealBoxService;
     }
@@ -69,7 +68,8 @@ public class MaaltijdBoxController : Controller
         try
         {
             ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
-            return View(_mealBoxUpdateMethods.updateMealBoxGet(id));
+            return View(
+                MealBoxViewModeleExtension.updateMealBoxGet(_mealBoxRepository, id, _productRepository.GetProducts()));
         }
         catch
         {
@@ -91,7 +91,9 @@ public class MaaltijdBoxController : Controller
             if (!ModelState.IsValid)
             {
                 ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
-                return View(_mealBoxUpdateMethods.updateMealBoxGet(mealBoxVm.Id));
+                return View(
+                    MealBoxViewModeleExtension.updateMealBoxGet(_mealBoxRepository, mealBoxVm.Id,
+                        _productRepository.GetProducts()));
             }
 
             var products = new List<Product>();
@@ -117,7 +119,9 @@ public class MaaltijdBoxController : Controller
         {
             ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
             ModelState.AddModelError("CustomError", e.Message);
-            return View(_mealBoxUpdateMethods.updateMealBoxGet(mealBoxVm.Id));
+            return View(
+                MealBoxViewModeleExtension.updateMealBoxGet(_mealBoxRepository, mealBoxVm.Id,
+                    _productRepository.GetProducts()));
         }
     }
 
@@ -137,7 +141,7 @@ public class MaaltijdBoxController : Controller
     {
         ViewBag.EmployeeCanteen = _employeeRepository.GetEmployeeByEmail(User.Identity.Name).Canteen;
         ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
-        return View(_mealBoxUpdateMethods.formCreateViewModel());
+        return View(MealBoxViewModeleExtension.formCreateViewModel(_productRepository.GetProducts()));
     }
 
     [HttpPost]
@@ -149,7 +153,7 @@ public class MaaltijdBoxController : Controller
             if (!ModelState.IsValid)
             {
                 ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
-                return View(_mealBoxUpdateMethods.formCreateViewModel());
+                return View(MealBoxViewModeleExtension.formCreateViewModel(_productRepository.GetProducts()));
             }
 
             var products = new List<Product>();
@@ -175,13 +179,13 @@ public class MaaltijdBoxController : Controller
         {
             ModelState.AddModelError("CustomError", e.Message);
             ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
-            return View(_mealBoxUpdateMethods.formCreateViewModel());
+            return View(MealBoxViewModeleExtension.formCreateViewModel(_productRepository.GetProducts()));
         }
         catch
         {
             ModelState.AddModelError("CustomError", "Er is iets mis gegaan bij het creëren van de Maaltijdbox");
             ViewBag.Canteens = _canteenRepository.GetCanteens().ToList();
-            return View(_mealBoxUpdateMethods.formCreateViewModel());
+            return View(MealBoxViewModeleExtension.formCreateViewModel(_productRepository.GetProducts()));
         }
     }
 
