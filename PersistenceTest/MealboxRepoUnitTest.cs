@@ -11,7 +11,7 @@ namespace PersistenceTest;
 public class MealboxRepoUnitTest
 {
     [Fact]
-    public void getMealBoxes()
+    public void GetMealBoxes()
     {
         Mock<IMealBoxRepository> mockMealBoxRepo = new Mock<IMealBoxRepository>();
         mockMealBoxRepo.Setup(m => m.GetMealBoxes()).Returns(new List<MealBox>());
@@ -21,7 +21,7 @@ public class MealboxRepoUnitTest
     }
 
     [Fact]
-    public void getMealBoxById()
+    public void GetMealBoxById()
     {
         Mock<IMealBoxRepository> mockMealBoxRepo = new Mock<IMealBoxRepository>();
         mockMealBoxRepo.Setup(m => m.GetMealBoxById(1)).Returns(new MealBox());

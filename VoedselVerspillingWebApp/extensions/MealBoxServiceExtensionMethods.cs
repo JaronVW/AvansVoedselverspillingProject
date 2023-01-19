@@ -5,7 +5,7 @@ namespace VoedselVerspillingWebApp.extensions;
 
 public static class MealBoxViewModeleExtension
 {
-    public static MealBoxViewModel updateMealBoxGet(this IMealBoxRepository mealBoxRepository, int id,
+    public static MealBoxViewModel UpdateMealBoxGet(this IMealBoxRepository mealBoxRepository, int id,
         IEnumerable<Product> products)
     {
         var mealBox = mealBoxRepository.GetMealBoxById(id);
@@ -54,7 +54,7 @@ public static class MealBoxViewModeleExtension
         return vm;
     }
     
-    public static MealBoxViewModel formCreateViewModel(IEnumerable<Product> products)
+    public static MealBoxViewModel FormCreateViewModel(IEnumerable<Product> products)
     {
         var vm = new MealBoxViewModel
         {

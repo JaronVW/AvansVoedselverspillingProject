@@ -17,7 +17,7 @@ public class AppIdentityDBContext : IdentityDbContext
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
         options.UseSqlServer(
-            "data source=LAPTOP-60VI45O7;initial catalog=voedselverspillingtestId;trusted_connection=true;TrustServerCertificate=true;");
+            "Server=aei-sql2.avans.nl,1443;Initial Catalog=VerspillingIdentityDB;Persist Security Info=False;User ID=jaron1;Password=jNi^jw$5%UqN5pVB;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;trustServerCertificate=True;");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,7 +28,7 @@ public class AppIdentityDBContext : IdentityDbContext
             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210", Name = "employee",
             NormalizedName = "EMPLOYEE".ToUpper()
         });
-        
+
         modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
         {
             Id = "4c5e174e-3b0e-446f-86af-483d56fd7210", Name = "student",
