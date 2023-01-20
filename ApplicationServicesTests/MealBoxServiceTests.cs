@@ -89,7 +89,7 @@ public class MealBoxServiceTests
         var canteenRepoMock = new Mock<ICanteenRepository>();
         var studentRepoMock = new Mock<IStudentRepository>();
 
-        var mealBoxService = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var mealBoxService = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
         mealBoxRepoMock.Setup(c => c.GetMealBoxes()).Returns(_mealBoxList);
 
@@ -107,7 +107,7 @@ public class MealBoxServiceTests
         var canteenRepoMock = new Mock<ICanteenRepository>();
         var studentRepoMock = new Mock<IStudentRepository>();
 
-        var mealBoxService = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var mealBoxService = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
         mealBoxRepoMock.Setup(c => c.GetMealBoxes()).Returns(_mealBoxList);
 
@@ -123,7 +123,7 @@ public class MealBoxServiceTests
         var canteenRepoMock = new Mock<ICanteenRepository>();
         var studentRepoMock = new Mock<IStudentRepository>();
 
-        var mealBoxService = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var mealBoxService = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
         mealBoxRepoMock.Setup(c => c.GetMealBoxes()).Returns(_mealBoxList);
 
@@ -140,7 +140,7 @@ public class MealBoxServiceTests
         var canteenRepoMock = new Mock<ICanteenRepository>();
         var studentRepoMock = new Mock<IStudentRepository>();
 
-        var mealBoxService = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var mealBoxService = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
         mealBoxRepoMock.Setup(c => c.GetMealBoxes()).Returns(_mealBoxList);
 
@@ -168,7 +168,7 @@ public class MealBoxServiceTests
         canteenRepoMock.Setup(c => c.GetCanteenById(It.IsAny<int>()))
             .Returns(testCanteen);
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
 
         var mealBox = new MealBox()
@@ -214,7 +214,7 @@ public class MealBoxServiceTests
                 WarmMealsprovided = false
             });
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
 
         var mealBox = new MealBox()
@@ -256,7 +256,7 @@ public class MealBoxServiceTests
                 WarmMealsprovided = true
             });
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
 
         var mealBox = new MealBox()
@@ -298,7 +298,7 @@ public class MealBoxServiceTests
                 WarmMealsprovided = true
             });
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
 
         var mealBox = new MealBox()
@@ -340,7 +340,7 @@ public class MealBoxServiceTests
                 WarmMealsprovided = true
             });
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
 
         var mealBox = new MealBox()
@@ -386,7 +386,7 @@ public class MealBoxServiceTests
                 WarmMealsprovided = true
             });
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
 
         var mealBox = new MealBox()
@@ -425,7 +425,6 @@ public class MealBoxServiceTests
         var canteenRepoMock = new Mock<ICanteenRepository>();
         var studentRepoMock = new Mock<IStudentRepository>();
 
-       
 
         var testMealBox = new MealBox()
         {
@@ -467,7 +466,7 @@ public class MealBoxServiceTests
 
         mealBoxRepoMock.Setup(c => c.DeleteMealBoxProducts(testMealBox));
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
         var result = sut.UpdateMealBox(testMealBoxUpdated, new List<Product>()
         {
@@ -550,7 +549,7 @@ public class MealBoxServiceTests
 
         mealBoxRepoMock.Setup(c => c.DeleteMealBoxProducts(testMealBox));
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
         Assert.Throws<InvalidFormdataException>(() =>
             sut.UpdateMealBox(testMealBoxUpdated, new List<Product>() { product }));
@@ -617,7 +616,7 @@ public class MealBoxServiceTests
 
         mealBoxRepoMock.Setup(c => c.DeleteMealBoxProducts(testMealBox));
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
         Assert.Throws<InvalidFormdataException>(() =>
             sut.UpdateMealBox(testMealBoxUpdated, new List<Product>() { product }));
@@ -684,7 +683,7 @@ public class MealBoxServiceTests
 
         mealBoxRepoMock.Setup(c => c.DeleteMealBoxProducts(testMealBox));
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
         Assert.Throws<InvalidFormdataException>(() =>
             sut.UpdateMealBox(testMealBoxUpdated, new List<Product>() { product }));
@@ -752,7 +751,7 @@ public class MealBoxServiceTests
 
         mealBoxRepoMock.Setup(c => c.DeleteMealBoxProducts(testMealBox));
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
         Assert.Throws<InvalidFormdataException>(() =>
             sut.UpdateMealBox(testMealBoxUpdated, new List<Product>() { product }));
@@ -819,7 +818,7 @@ public class MealBoxServiceTests
 
         mealBoxRepoMock.Setup(c => c.DeleteMealBoxProducts(testMealBox));
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
         var result = sut.UpdateMealBox(testMealBoxUpdated, new List<Product>() { product });
         Assert.NotNull(result);
@@ -890,7 +889,7 @@ public class MealBoxServiceTests
 
         mealBoxRepoMock.Setup(c => c.DeleteMealBoxProducts(testMealBox));
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
         var result = sut.UpdateMealBox(testMealBoxUpdated, new List<Product>() { product });
         Assert.NotNull(result);
@@ -934,7 +933,7 @@ public class MealBoxServiceTests
         mealBoxRepoMock.Setup(c => c.GetMealBoxById(It.IsAny<int>()))
             .Returns(testMealBox);
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
         var result = sut.DeleteMealBox(0);
         Assert.True(result);
@@ -970,11 +969,11 @@ public class MealBoxServiceTests
             CanteenId = 4,
             WarmMeals = false
         };
-        
+
         mealBoxRepoMock.Setup(c => c.GetMealBoxById(It.IsAny<int>()))
             .Returns(testMealBox);
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
         var result = sut.DeleteMealBox(0);
         Assert.False(result);
@@ -987,7 +986,7 @@ public class MealBoxServiceTests
         var canteenRepoMock = new Mock<ICanteenRepository>();
         var studentRepoMock = new Mock<IStudentRepository>();
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
 
         var testMealBox = new MealBox()
@@ -1042,7 +1041,7 @@ public class MealBoxServiceTests
         var canteenRepoMock = new Mock<ICanteenRepository>();
         var studentRepoMock = new Mock<IStudentRepository>();
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
 
         var testMealBox = new MealBox()
@@ -1098,7 +1097,7 @@ public class MealBoxServiceTests
         var canteenRepoMock = new Mock<ICanteenRepository>();
         var studentRepoMock = new Mock<IStudentRepository>();
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
 
         var testMealBox = new MealBox()
@@ -1123,7 +1122,7 @@ public class MealBoxServiceTests
             CanteenId = 4,
             WarmMeals = false
         };
-        
+
         var testStudent = new Student()
         {
             Id = 1,
@@ -1134,12 +1133,12 @@ public class MealBoxServiceTests
             StudentNumber = 12345,
             StudyCity = City.Breda
         };
-        
+
         mealBoxRepoMock.Setup(c => c.GetMealBoxById(It.IsAny<int>()))
             .Returns(testMealBox);
-        
+
         studentRepoMock.Setup(c => c.GetStudentById(It.IsAny<int>())).Returns(testStudent);
-        
+
         Assert.Throws<InvalidReservationException>(() => sut.ReserveMealBox(1, 1));
     }
 
@@ -1151,7 +1150,7 @@ public class MealBoxServiceTests
         var canteenRepoMock = new Mock<ICanteenRepository>();
         var studentRepoMock = new Mock<IStudentRepository>();
 
-        var sut = new MealBoxService(mealBoxRepoMock.Object,  canteenRepoMock.Object,
+        var sut = new MealBoxService(mealBoxRepoMock.Object, canteenRepoMock.Object,
             studentRepoMock.Object);
 
         var testMealBox = new MealBox()

@@ -2,6 +2,7 @@
 using Core.Domain.Exceptions;
 using Core.DomainServices;
 using Infrastructure.ContextClasses;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,14 +18,6 @@ public class MealBoxEFRepository : IMealBoxRepository
         _context = context;
     }
 
-    public IEnumerable<MealBox> GetMealBoxesNonReserved()
-    {
-        return _context.MealBoxes
-            .OrderBy(box => box.PickupDateTime)
-            .Include(m => m.Products).Where(m => m.StudentId == null)
-            .Include(m => m.Student)
-            .ToList();
-    }
 
     public IEnumerable<MealBox> GetMealBoxes()
     {
@@ -35,28 +28,6 @@ public class MealBoxEFRepository : IMealBoxRepository
             .ToList();
     }
 
-    public IEnumerable<MealBox> GetMealBoxesReserved(int studentId)
-    {
-        return _context.MealBoxes.Include(m => m.Products).Where(m => m.Student != null && m.StudentId == studentId);
-    }
-
-    public IEnumerable<MealBox> GetMealBoxesDateAscending()
-    {
-        return _context.MealBoxes.Include(m => m.Products).ToList();
-    }
-
-    public async Task<List<MealBox>> GetMealBoxesAsync()
-    {
-        return await _context.MealBoxes
-            .Include(m => m.Student)
-            .Include(m => m.Products)
-            .ToListAsync();
-    }
-
-    public IEnumerable<MealBox> GetMealBoxesEighteenPlus()
-    {
-        return _context.MealBoxes.Where(b => b.EighteenPlus).ToList();
-    }
 
     public MealBox GetMealBoxById(int id)
     {
@@ -66,44 +37,6 @@ public class MealBoxEFRepository : IMealBoxRepository
             .First(b => b.Id == id);
     }
 
-    public MealBox GetMealBoxByIdDetached(int id)
-    {
-        return _context.MealBoxes.AsNoTracking()
-            .Include(m => m.Student)
-            .Include(m => m.Products)
-            .First(b => b.Id == id);
-    }
-
-    public MealBox AddMealBox(MealBox mealBox, List<Product> products)
-    {
-        if (mealBox.WarmMeals && _context.Canteens.Find(mealBox.CanteenId).WarmMealsprovided != true)
-        {
-            throw new InvalidFormdataException("Warme maaltijden zijn niet beschikbaar in deze kantine");
-        }
-
-        if (mealBox.PickupDateTime > DateTime.Now.AddDays(2).AddTicks(-1))
-        {
-            throw new InvalidFormdataException("De ophaal datum moet binnen nu en twee dagen liggen");
-        }
-
-        if (mealBox.PickupDateTime > mealBox.ExpireTime)
-        {
-            throw new InvalidFormdataException("De ophaal datum moet voor de verloopdatum liggen");
-        }
-
-        if (products != null)
-        {
-            mealBox.Products = products;
-            foreach (var mealBoxProduct in mealBox.Products)
-            {
-                if (mealBoxProduct.ContainsAlcohol) mealBox.EighteenPlus = true;
-            }
-        }
-
-        _context.MealBoxes.Add(mealBox);
-        _context.SaveChanges();
-        return mealBox;
-    }
 
     public MealBox AddMealBox(MealBox mealBox)
     {
@@ -148,7 +81,18 @@ public class MealBoxEFRepository : IMealBoxRepository
             .FirstOrDefault(box => box.StudentId == studentId && box.PickupDateTime.Date == date.Date);
     }
 
-   
+    public MealBox ReserveMealBox(int mealBoxId,int studentId )
+    {
+        var mealBox = _context.MealBoxes.Include(box => box.Products).Include(box => box.Student)
+            .FirstOrDefault(box => box.Id == mealBoxId);
+        if(mealBox == null) throw new NullReferenceException("MealBox not found");
+        if (mealBox.StudentId != null)
+        {
+            throw new InvalidReservationException("MealBox is already reserved");
+        }
 
-   
+        mealBox.StudentId = studentId;
+        _context.SaveChanges();
+        return mealBox;
+    }
 }

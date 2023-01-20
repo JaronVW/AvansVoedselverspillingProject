@@ -22,5 +22,7 @@ public interface IMealBoxRepository
 
     void DeleteMealBoxProducts(MealBox mealBox);
 
+    public MealBox? ReserveMealBox(int mealBoxId, int studentId);
+
 
 }
