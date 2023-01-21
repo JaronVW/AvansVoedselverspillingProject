@@ -34,7 +34,7 @@ var app = builder.Build();
 app.MapGraphQL();
 
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
