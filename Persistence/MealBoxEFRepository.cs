@@ -2,7 +2,6 @@
 using Core.Domain.Exceptions;
 using Core.DomainServices;
 using Infrastructure.ContextClasses;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 

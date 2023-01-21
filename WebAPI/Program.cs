@@ -2,7 +2,6 @@ using System.Text;
 using Core.DomainServices;
 using Infrastructure;
 using Infrastructure.ContextClasses;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using WebAPI.GraphQl;
