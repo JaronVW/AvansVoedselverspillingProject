@@ -1,13 +1,17 @@
-﻿using Core.Domain;
+﻿using System.Net;
+using Core.Domain;
+using Core.Domain.Exceptions;
 using Core.DomainServices;
 using Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.DTO;
 
 namespace WebAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Produces("application/json", "application/xml")]
 public class MaaltijdboxController : ControllerBase
 {
     private readonly IMealBoxRepository _mealBoxRepository;
@@ -24,25 +28,40 @@ public class MaaltijdboxController : ControllerBase
         => _mealBoxRepository.GetMealBoxes().Where(box => box.StudentId == null);
 
 
-    [HttpGet("{id}", Name = "GetMaaltijdBox")]
-    public MealBox GetMaaltijdBox(int id)
-        => _mealBoxRepository.GetMealBoxById(id);
+    [HttpGet("{Id}", Name = "GetMaaltijdBox")]
+    public MealBox GetMaaltijdBox([FromRoute] int Id)
+        => _mealBoxRepository.GetMealBoxById(Id);
 
 
-    [HttpDelete("{id}", Name = "DeleteMaaltijdBox")]
+    [HttpPatch("{mealBoxId}", Name = "ReserveerMaaltijdBox")]
+    public IActionResult ReserveerMaaltijdBox(int mealBoxId, [FromBody] studentIdDto studentIdDto)
+    {
+        try
+        {
+            return Ok(_mealBoxRepository.ReserveMealBox(mealBoxId, studentIdDto.studentId));
+        }
+        catch (NullReferenceException e)
+        {
+            return NotFound();
+        }
+        catch (InvalidReservationException e)
+        {
+            return BadRequest();
+        }catch (Exception e)
+        {
+            return StatusCode(500);
+        }
+    }
+
+
+    [HttpDelete("{Id}", Name = "DeleteMaaltijdBox")]
     public void DeleteMaaltijdBox(int id)
         => throw new NotImplementedException();
-    // _mealBoxRepository.DeleteMealBoxById(id);
+    // _mealBoxRepository.DeleteMealBoxById(Id);
 
 
     [HttpPut(Name = "UpdateMaaltijdBox"), Authorize]
-    public void UpdateMaaltijdBox(MealBox mealBox)
+    public void UpdateMaaltijdBox([FromBody] MealBox mealBox)
         => throw new NotImplementedException();
     // _mealBoxRepository.UpdateMealBox(mealBox);
-
-
-    [HttpPost("{id}", Name = "ReserveerMaaltijdbox")]
-    public void ReserveerMaaltijdbox(int id, int studentId)
-        => throw new NotImplementedException();
-    // _mealBoxRepository.ReserveMealBox(id, studentId);
 }

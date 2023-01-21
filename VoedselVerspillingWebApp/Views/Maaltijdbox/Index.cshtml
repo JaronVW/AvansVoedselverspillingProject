@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Beschikbare Maaltijdboxen";
 }
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model IEnumerable<Core.Domain.MealBox>
 
 @if (User.IsInRole("employee") && ViewBag.cantine != null)

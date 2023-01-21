@@ -15,6 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\ApplicationServicesTests\ApplicationServicesTests.csproj" />
       <ProjectReference Include="..\Core\Core.Domain\Core.Domain.csproj" />
       <ProjectReference Include="..\Core\DomainServices\DomainServices.csproj" />
       <ProjectReference Include="..\Persistence\Persistence.csproj" />
