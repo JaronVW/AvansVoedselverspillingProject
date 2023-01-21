@@ -40,7 +40,7 @@ namespace Core.Domain
         [Required(ErrorMessage = "Kantine verplicht")]
         public int CanteenId { get; set; }
 
-        [Compare("Canteen.WarmMealsprovided", ErrorMessage = "Wachtwoorden komen niet overeen")]
-        public bool WarmMeals { get; set; } = true;
+        [Compare("Canteen.WarmMealsprovided")]
+        public bool WarmMeals { get; set; }
     }
 }

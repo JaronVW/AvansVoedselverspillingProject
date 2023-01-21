@@ -58,7 +58,7 @@ public class MealBoxService : IMealBoxService
             mealBox.Products = products;
             foreach (var mealBoxProduct in mealBox.Products)
             {
-                if (mealBoxProduct.ContainsAlcohol) mealBox.EighteenPlus = true;
+                mealBox.EighteenPlus = mealBoxProduct.ContainsAlcohol;
             }
         }
 
@@ -99,7 +99,7 @@ public class MealBoxService : IMealBoxService
 
             foreach (var mealBoxProduct in mealBox.Products)
             {
-                if (mealBoxProduct.ContainsAlcohol) mealBox.EighteenPlus = true;
+                mealBox.EighteenPlus = mealBoxProduct.ContainsAlcohol;
             }
         }
 

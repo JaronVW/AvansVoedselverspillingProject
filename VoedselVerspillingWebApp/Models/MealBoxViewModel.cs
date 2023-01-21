@@ -38,7 +38,7 @@ public class MealBoxViewModel
     
     public int CanteenId { get; set; }
 
-    public bool WarmMeals { get; set; } = true;
+    public bool WarmMeals { get; set; }
     
     public List<CheckBoxItem>? ProductCheckBoxes { get; set; }
     

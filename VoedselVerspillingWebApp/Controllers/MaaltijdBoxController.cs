@@ -104,16 +104,18 @@ public class MaaltijdBoxController : Controller
             {
                 Id = mealBoxVm.Id,
                 MealBoxName = mealBoxVm.MealBoxName,
-                City = employee.Canteen.City,
+                City = mealBoxVm.City,
                 PickupDateTime = mealBoxVm.PickupDateTime,
                 ExpireTime = mealBoxVm.ExpireTime,
                 EighteenPlus = mealBoxVm.EighteenPlus,
                 Price = mealBoxVm.Price,
                 Type = mealBoxVm.Type,
-                CanteenId = employee.CanteenId,
-                Products = new List<Product>()
+                CanteenId = mealBoxVm.CanteenId,
+                Products = new List<Product>(),
+                WarmMeals = mealBoxVm.WarmMeals
+                
             }, products);
-            return RedirectToAction("Index");
+            return RedirectToAction("boxdetails", new {id = mealBoxVm.Id});
         }
         catch (InvalidFormdataException e)
         {
