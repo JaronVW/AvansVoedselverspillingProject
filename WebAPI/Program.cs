@@ -1,9 +1,7 @@
-using System.Text;
 using Core.DomainServices;
 using Infrastructure;
 using Infrastructure.ContextClasses;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using WebAPI.GraphQl;
 
 var builder = WebApplication.CreateBuilder(args);
