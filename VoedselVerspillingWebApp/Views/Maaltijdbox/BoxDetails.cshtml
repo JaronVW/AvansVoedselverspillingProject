@@ -80,6 +80,11 @@
             <p>@(Model.EighteenPlus ? "Kan warme maaltijden bevatten" : "Warme maaltijden niet aangegeven")</p>
         </div>
     </div>
+    <div class="row my-2">
+        <div class="col">
+            <p>Type product: @Model.Type</p>
+        </div>
+    </div>
     @if (@User.IsInRole("student"))
     {
         @if (@Model.StudentId != null)
