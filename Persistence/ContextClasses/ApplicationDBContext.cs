@@ -328,6 +328,6 @@ public class ApplicationDBContext : DbContext
     {
         // options.EnableSensitiveDataLogging();
         options.EnableSensitiveDataLogging();
-        options.UseSqlServer("Server=aei-sql2.avans.nl,1443;Initial Catalog=VerspillingDB;Persist Security Info=False;User ID=jaron;Password=jNi^jw$5%UqN5pVB;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;TrustServerCertificate=true;");
+        options.UseSqlServer("");
     }
 }
