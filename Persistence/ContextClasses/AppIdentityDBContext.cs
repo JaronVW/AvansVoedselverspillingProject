@@ -17,7 +17,7 @@ public class AppIdentityDBContext : IdentityDbContext
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
         options.UseSqlServer(
-            "Server=aei-sql2.avans.nl,1443;Initial Catalog=VerspillingIdentityDB;Persist Security Info=False;User ID=jaron1;Password=jNi^jw$5%UqN5pVB;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;trustServerCertificate=True;");
+            "");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
